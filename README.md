@@ -1,5 +1,6 @@
 # Wisdom-Repository
-Midterm Project of Platform-Based Programming (CSGE602022) - Organized by the Faculty of Computer Science Universitas Indonesia
+![Wisdom-Repository](./assets/images/Wisdom-Repository.png)
+
 
 ## Anggota Kelompok
 1. Alwin Djuliansah - 2206813504
