@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    
+    {% include 'navbar.html' %}
+    <br>
+    <div></div>
+    <div class="background-image-11"></div>
+    <div class="background-image-12"></div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <center>
+    <h1>List of Books</h1>
+    </center>
+    
+    <div id="carouselExample" class="carousel slide">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="https://images3.alphacoders.com/769/thumbbig-76995.webp" class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item">
+            <img src="https://images.alphacoders.com/899/thumbbig-89961.webp" class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item">
+            <img src="https://images2.alphacoders.com/666/thumbbig-666357.webp" class="d-block w-100" alt="...">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+
+    <div class="container"> 
+        <h5>Category</h5>                     
+        <div class="genre-buttons">
+            {% for selected_genre in genre %}
+            <form method="post" action="{% url 'daftar_buku:search' %}" class="form-tombol">
+                {% csrf_token %}
+                <input type="hidden" name="query" value="{{ selected_genre }}">
+                <button type="submit" class="btn btn-primary" id="button-category" >
+                    <div class="icon-container-genre">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    {{ selected_genre }}
+                </button>   
+            </form>
+            {% endfor %}
+        </div>
+
+        <i class="fas fa-sort-down"></i>
+
+        <form method="get" action="{% url 'daftar_buku:sort' %}" id="sort-form">
+            <button type="submit" class="btn btn-primary" id="button-sort" style="background-color: white; color: black;" name="Sort" value="judul">
+                <i class="fas fa-sort-alpha-down"></i>
+                Urutkan berdasarkan Judul</button>
+            <button type="submit" class="btn btn-primary" id="button-sort" style="background-color: white; color: black;" name="Sort" value="tahun">
+                <i class="fas fa-calendar-alt"></i>
+                Urutkan berdasarkan Tahun</button>
+        </form>
+
+        <!--<div id="book_container" class="row">   -->
+        
+        {% if buku %}
+            <div class="row">
+                {% for bukus in buku %}
+                    <div class="col-md-2">
+                        <div class="card small-card clickable-card  ">
+                            <img src="{{ bukus.gambar }}" class="card-img" alt="{{ bukus.judul }}" data-toggle="modal" data-target="#bookModal" data-id="{{ bukus.id }}">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title" id="judul-card" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px;" title="{{ bukus.judul }}">{{ bukus.judul }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Belum ada buku</p>
+            <a href="{% url 'daftar_buku:make_book' %}">Tambah buku</a>
+        {% endif %}
+        <div class="pagination">
+            <span class="step-links">
+            {% if buku.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ buku.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current-page">
+                Page {{ buku.number }} of {{ buku.paginator.num_pages }}.
+            </span>
+    
+            {% if buku.has_next %}
+                <a href="?page={{ buku.next_page_number }}">next</a>
+                <a href="?page={{ buku.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+            </span>
+        </div>
+
+
+        <div class="modal fade custom-modal" id="bookModal" tabindex="-1" aria-labelledby="bookModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="bookModalLabel">Detail Buku</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="background-image-1"></div>
+                        <div class="background-image-2"></div>
+                        <div class="book-info">
+                            <div class="book-image">
+                                <div class="image-wrapper">
+                                    <img src="" alt="Book Cover" id="modalImage">
+                                </div>
+                            </div>
+                            <div class="text-info">
+                                <div class="title-info">
+                                    <p id="book-title">Author Name</p>
+                                </div>
+                                <div class="author-info">
+                                    <i class="fas fa-user author-icon"></i>
+                                    <p id="book-author">Author Name</p>
+                                </div>
+                                <div class="release-info">
+                                    <i class="far fa-calendar-alt release-icon"></i>
+                                    <p id="book-release">Release Date</p>
+                                </div>
+                                <div class="deskripsi-info">
+                                    <p id="book-deskripsi">Deskripsi</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer >
+        <div style="float: left;">D11 Fasilkom</div>
+        <div style="display: inline-block;">Wisdom Repo</div>
+        <div style="float: right;">2023</div>
+    </footer>
+
+
+
+    <script>
+
+        
+
+        $("#search-button").click(function() {
+            var query = $("#search-input").val();
+            $.ajax({
+                url: "{% url 'daftar_buku:search' %}",
+                method: "POST",
+                data: { query: query }
+            });
+        });
+   
+
+        $(document).on('click', '.clickable-card', function(event) {
+            var clickedElement = $(event.target);
+            
+            if (!clickedElement.is(".show-details, .show-details *")) {
+                var bookId = $(this).find('.card-img').data("id");
+                $.ajax({
+                    url: "{% url 'daftar_buku:book_details' %}",
+                    method: "GET",
+                    data: { id: bookId },
+                    success: function(data) {
+                        $("#book-deskripsi").text(data.deskripsi);
+                        $("#book-title").text(data.judul);
+                        $("#book-author").text(data.penulis);
+                        document.getElementById('modalImage').src=data.gambar;
+                        $("#book-release").text(data.tahun);
+                        $("#bookModal").modal("show");
+                    },
+                });
+            }
+        });
+
+        async function getBooks() {
+            return fetch("{% url 'daftar_buku:get_books_json' %}").then((res) => res.json());
+        }
+
+        const carouselContainer = document.querySelector('#carousel');
+
+        async function refreshBooks() {
+            const books = await getBooks();
+            let index = 0;
+            let carouselHTML = '';
+            books.forEach((book) => {
+                const carouselItem = document.createElement('div');
+                carouselItem.classList.add('hidden', 'duration-700', 'ease-in-out');
+                carouselItem.setAttribute('data-carousel-item', '');
+
+                const img = document.createElement('img');
+                img.src = book.fields.gambar;
+                img.classList.add('absolute', 'block', 'w-full', '-translate-x-1/2', '-translate-y-1/2', 'top-1/2', 'left-1/2');
+                img.alt = book.fields.judul;
+
+                carouselItem.appendChild(img);
+                console.log(carouselItem);
+                carouselContainer.appendChild(carouselItem);
+            });
+        }
+
+        refreshBooks();
+       
+    </script>
+
+    <style id="navbar-css">
+
+        .carousel-item img {
+            height: 500px; /* Atur tinggi yang Anda inginkan di sini */
+            object-fit: cover;
+            object-position: center;
+            width: 100%;
+        }
+
+
+        footer {
+            background-color: #13294B;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px; 
+            width: 100%;
+        }
+
+        #button-sort:hover{
+            transform: scale(1.05);
+            transition: all .2s ease-in-out;
+
+        }
+
+        #button-sort{
+            margin: 5px 5px; 
+            border-radius: 5px; 
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: solid 1px black;
+        }
+
+        .icon-container-genre {
+            text-align: center;
+            margin-bottom: 5px; 
+        }
+
+        .icon-container-genre i {
+            font-size: 20px;
+            color: black;
+        }
+
+        .custom-modal {
+            max-width: 300%;
+        }
+
+        .card-img {
+            max-width: 100px;
+            object-fit: contain;
+        }
+        .small-card {
+            max-width: 10rem;
+            height: 14rem; 
+            transition: transform 0.2s;
+            background-color: rgb(255, 255, 255);
+            color: black;
+            margin-top: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            
+
+        }
+
+        .small-card .card {
+            height: 100%;
+            margin-top: 0;
+            padding: 0;
+            
+        }
+
+        .small-card .card-img {
+            margin-top: 15px;
+            max-width: 100px;
+            object-fit: contain;
+            height: 60%;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+
+        .small-card .card-body {
+            height: 25%; 
+        }
+
+        .small-card.clickable-card {
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .small-card:hover {
+            transform: scale(1.05);
+            color: #9b51e0;
+        } 
+
+
+        body.dark .small-card:hover {
+            transform: scale(1.05);
+            color: #9b51e0;
+        }   
+
+        body.light .small-card:hover {
+            transform: scale(1.05); 
+            color: #9b51e0;
+        } 
+
+        .checkbox-label {
+            color: red; 
+        }
+
+        #id_Sort label {
+            color: red; 
+        }
+        #button-category{
+            background-color: #fffeff;
+            color: black;
+            width: 8rem; 
+            height: 8rem;
+            border: 2px solid #010101;
+        }
+
+        #button-category:hover{
+
+            transform: scale(1.05)
+
+        }
+
+        .form-tombol {
+            background-color: transparent;
+            color: black;
+            border: none;  
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        
+        .form-tombol i {
+            font-size: 20px;
+            color: black;
+            flex: 0 0 auto;
+        }
+
+        .genre-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px; 
+            align-items: flex-start; 
+        }
+
+        
+
+        .book-info {
+            display: flex;
+            align-items: flex-start;
+            position: relative;
+            z-index: 1;
+
+        }
+
+        .book-image {
+            margin-right: 30px;     
+        }
+
+        .book-image img {
+            max-width: 100px;   
+        }
+
+        .image-wrapper {
+
+            background-color: white;
+            border: 1px solid #ddd;     
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);   
+            width: 135px;   
+            height: 195px;     
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .author-info, .release-info {
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+            align-self: flex-start;
+        }
+
+        .author-icon, .release-icon{
+            margin-right: 10px;
+            margin-top: 5px;
+            color:#fff;
+        }
+
+        #book-title{
+            margin-right: 10px;
+            margin-top: 0;
+            margin-bottom: 5px;
+            color:#fff;
+            font-size: 20px;
+        }
+
+        #book-deskripsi{
+            margin-right: 10px;
+            margin-top: 50px;
+            margin-bottom: 5px;
+            color:#000;
+            font-size: px;
+        }
+
+
+
+        #book-author, #book-release {
+            line-height: 1;
+            margin: 0;
+            margin-top: 5px;
+            color: #fff;
+        }
+
+
+        body.light {
+            background-color: #fff;
+            color: #333;
+        }
+
+
+        body.dark {
+            background-color: #333;
+            color: #333;
+        }
+
+        body.dark .small-card {
+            max-width: 10rem; 
+            height: 22rem; 
+            transition: transform 0.2s;
+            background-color: rgba(255, 255, 255, 0);
+            color: white;
+        }
+        body.light .small-card {
+            max-width: 10rem;
+            height: 22rem;
+            transition: transform 0.2s;
+            background-color: rgba(255, 255, 255, 0);
+            color: #333;
+    
+        }
+
+        .theme-toggle {
+            display: inline-flex;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+
+        .theme-toggle i {
+            margin-right: 5px;
+            transition: transform 0.3s;
+        }
+
+        body.dark .pagination {
+            color:aliceblue
+        }
+
+        .pagination {
+            width: 620px; 
+            margin: 20px auto;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        .step-links a {
+            padding: 8px 16px;
+            text-decoration: none;
+            background-color: transparent;
+            color: #000000;
+            border-radius: 5px;
+            margin: 0 5px;
+            transition: background-color 0.3s;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .step-links a:hover {
+            background-color: #9b51e0;
+        }
+
+        .current-page {
+            font-size: 18px;
+            margin: 0 20px;
+        }
+
+        .step-links .current-page {
+            display: inline-block;
+            background-color: #333;;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .step-links a:last-child {
+            margin-right: 0;
+        }
+
+        .step-links a.page-number {
+            background-color: #f0f0f0;
+            color: #000;
+        }
+
+        .step-links a.page-number.next {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .step-links a.page-number.previous {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .modal-body {
+            position: relative;
+            
+        }
+
+        .background-image-1 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: contain;
+            background-position: center;
+            opacity: 0.7; 
+          
+        }
+
+        .background-image-2{
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: contain;
+            background-position: center;
+            opacity: 0.9;
+        }
+
+        .background-image-1 {
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSe9obl4JUEAHL-vWTOGbffyKVok13HZMr-Dw&usqp=CAU');
+            max-height: 120px;
+        }
+
+        .background-image-2 {
+            background-color: #555;
+            max-height: 120px;
+        }
+
+        .background-image-11 {
+            position: absolute;
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSe9obl4JUEAHL-vWTOGbffyKVok13HZMr-Dw&usqp=CAU');
+            max-height: 190px;
+            background-size: contain;
+            background-position: center;
+            opacity: 0.7;
+            top: 100px;
+            left: 0;
+            right: 0;
+            bottom: 20px;
+        }
+
+        .background-image-12 {
+            position: absolute;
+            background-color: #555;
+            max-height: 190px;
+            background-size: contain;
+            background-position: center;
+            opacity: 0.9;
+            top: 100px;
+            left: 0;
+            right: 0;
+            bottom: 20px;
+        }
+
+
+
+
+    </style>
+    
+</body>
+</html>
