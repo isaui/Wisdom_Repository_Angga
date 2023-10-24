@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+
+<body>
+    {% include "navbar.html" %}
+    <div class="container">
+        <h1>List of Books</h1>
+  
+        <a href="{% url 'daftar_buku:show_main' %}">Home</a>
+
+        <div id="book_container" class="row">
+            <!-- Your book cards are rendered here -->
+        </div>
+        <form method="post" action="{% url 'daftar_buku:search' %}" id="search-form">
+            {% csrf_token %}
+            <input type="text" name="query" id="search-input" placeholder="Cari...">
+            <button type="submit" class="btn btn-primary" id="search-button">Cari</button>
+        </form>
+
+        <div class="modal fade" id="bookModal" tabindex="-1" aria-labelledby="bookModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="bookModalLabel">Detail Buku</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h5>Judul:</h5>
+                        <p id="book-title"></p>
+                        <h5>Penulis:</h5>
+                        <p id="book-author"></p>
+                        <h5>Rating:</h5>
+                        <p id="book-rating"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pagination">
+            <span class="step-links">
+            {% if buku.has_previous %}
+                <a href="?page=1" id="first-page">&laquo; first</a>
+                <a href="?page={{ buku.previous_page_number }}" id="previous-page">previous</a>
+            {% endif %}
+
+            <span class="current-page">
+                Page {{ buku.number }} of {{ buku.paginator.num_pages }}.
+            </span>
+
+            {% if buku.has_next %}
+                <a href="?page={{ buku.next_page_number }}" id="next-page">next</a>
+                <a href="?page={{ buku.paginator.num_pages }}" id="last-page">last &raquo;</a>
+            {% endif %}
+            </span>
+        </div>
+    </div>
+
+    <script>
+        $(document).on('click', '.show-details', function() {
+            var bookId = $(this).data("id");
+            $.ajax({
+                url: "{% url 'daftar_buku:book_details' %}",
+                method: "GET",
+                data: { id: bookId },
+                success: function(data) {
+                    $("#book-title").text("Judul: " + data.judul);
+                    $("#book-author").text("Penulis: " + data.penulis);
+                },
+            });
+        });
+
+        fetch('{% url "daftar_buku:show_main" %}')
+            .then(response => response.text())
+            .then(data => {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = data;
+                const navbarStyle = tempDiv.querySelector('#navbar-css').textContent;
+
+                const styleElement = document.createElement('style');
+                styleElement.textContent = navbarStyle;
+                document.head.appendChild(styleElement);
+
+                const navbarElement = tempDiv.querySelector('.navbar');
+                if (navbarElement) {
+                    document.getElementById('navbar-container').appendChild(navbarElement);
+                }
+            });
+
+        async function getBooks() {
+            return fetch("{% url 'daftar_buku:get_books_json' %}").then((res) => res.json());
+        }
+
+        async function refreshBooks() {
+            const books = await getBooks();
+
+            // Clear the existing book cards
+            const bookContainer = document.getElementById("book_container");
+            bookContainer.innerHTML = "";
+
+            books.forEach((book) => {
+                const card = document.createElement("div");
+                card.className = "col-md-2 card small-card";
+
+                const image = document.createElement("img");
+                image.className = "card-img";
+                image.src = book.fields.gambar;
+                image.alt = book.fields.judul;
+
+                const cardBody = document.createElement("div");
+                cardBody.className = "card-body d-flex flex-column";
+
+                const cardTitle = document.createElement("h5");
+                cardTitle.className = "card-title";
+                cardTitle.style = "white-space: nowrap; overflow: hidden; text-overflow: ellipsis;";
+                cardTitle.title = book.fields.judul;
+                cardTitle.innerText = book.fields.judul;
+
+                const detailButton = document.createElement("button");
+                detailButton.type = "button";
+                detailButton.className = "btn btn-primary show-details";
+                detailButton.setAttribute("data-bs-toggle", "modal");
+                detailButton.setAttribute("data-bs-target", "#bookModal");
+                detailButton.setAttribute("data-id", book.id);
+                detailButton.innerText = "Detail";
+
+                cardBody.appendChild(cardTitle);
+                cardBody.appendChild(detailButton);
+
+                card.appendChild(image);
+                card.appendChild(cardBody);
+
+                bookContainer.appendChild(card);
+            });
+        }
+
+        // Call the refreshBooks function to initially populate the book cards
+        refreshBooks();
+
+        
+
+        
+    </script>
+
+    <style>
+        .card-img {
+            width: 100%; 
+            height: 600px;
+            object-fit: cover;
+        }
+        .small-card {
+            max-width: 10rem;
+            height: 22rem;
+        }
+
+        .small-card .card {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .small-card .card-img {
+            max-width: 100%; 
+            height: 60%; 
+            object-fit: cover; 
+        }
+
+        .small-card .card-title {
+            font-size: 14px; 
+        }
+
+        .small-card .card-body {
+            height: 40%;
+        }
+
+        
+        
+
+    </style>
+</body>
+</html>
