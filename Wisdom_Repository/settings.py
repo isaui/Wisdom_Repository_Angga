@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'daftar_buku',
+    'authentication_bookmark'
 ]
 
 MIDDLEWARE = [
