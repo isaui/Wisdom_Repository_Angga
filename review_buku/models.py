@@ -22,3 +22,4 @@ class Review(models.Model):
     buku = models.ForeignKey(Buku, on_delete=models.CASCADE, related_name='reviews')
     review_text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
