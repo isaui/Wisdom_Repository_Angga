@@ -1,7 +1,17 @@
-from django.forms import ModelForm
-from authentication_bookmark.models import Product
+from django.contrib.auth.forms import UserCreationForm
+from django import forms
+from .models import CustomUser
 
-class ProductForm(ModelForm):
+class SignupForm(UserCreationForm):
+    member = forms.ChoiceField(
+        widget=forms.RadioSelect,
+        choices=[
+            ('regular', 'Regular'),
+            ('premium', 'Premium')
+        ],
+        initial='regular'
+    )
+
     class Meta:
-        model = Product
-        fields = ["name", "price", "description"]
+        model = CustomUser
+        fields = ('username', 'member')

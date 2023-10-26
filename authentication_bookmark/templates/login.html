@@ -1,45 +1,85 @@
-{% extends 'base.html' %}
 
 {% block meta %}
     <title>Login</title>
 {% endblock meta %}
 
+<style>
+    section {
+        background-image: url(https://github.com/PBP-D-11-2023/Wisdom-Repository/raw/anisha/assets/images/login.png);
+        background-size: cover; /* Untuk mengisi seluruh area section */
+        background-position: center center; /* Untuk posisi tengah secara horizontal dan vertikal */
+        background-repeat: no-repeat; /* Agar gambar latar belakang tidak diulang */
+        height: 100vh; /* Mengatur tinggi section sejajar dengan tinggi tampilan (viewport height) */
+    }
+
+    .card {
+        font-family: 'Baskerville Regular', Baskerville;
+        width: 400px; /* Lebar form login */
+        background-color: #37465D;
+        margin: 0 auto; /* Mengatur margin otomatis pada sisi kiri dan kanan, membuat form berada di tengah */
+        padding: 20px; /* Ruang dalam form login */
+        text-align: center; /* Teks berada di tengah form login */
+        border-radius: 3%;
+        color: white; /* Mengatur warna teks menjadi putih */
+        position: absolute;
+        transform: translate(-50%,-50%);
+        top: 50%;
+        left: 50%;
+    }
+
+    input{
+        font-family: 'Baskerville Regular', Baskerville;
+    }
+    a{
+        color: wheat;
+    }
+</style>
+
 {% block content %}
-
-<div class = "login">
-
-    <h1>Login</h1>
-
-    <form method="POST" action="">
-        {% csrf_token %}
-        <table>
-            <tr>
-                <td>Username: </td>
-                <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
-            </tr>
-                    
-            <tr>
-                <td>Password: </td>
-                <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
-            </tr>
-
-            <tr>
-                <td></td>
-                <td><input class="btn login_btn" type="submit" value="Login"></td>
-            </tr>
-        </table>
-    </form>
-
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}     
-        
-    Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a>
-
-</div>
+<body>
+    <section>
+        <div class="hero-body has-text-centered is-flex is-justify-content-center is-align-items-center" >
+            <div class="card">
+                <div class="card-content">
+                <div class="login">
+                    <img src="https://github.com/PBP-D-11-2023/Wisdom-Repository/raw/anisha/assets/images/logo%20wr%20putih.png" height= "60px" width="180px" style="padding-bottom: 20px;">
+                    <form method="POST" action="">
+                    {% csrf_token %}
+                    <div class="field">
+                        <div class="control">
+                        <input class="input is-medium is-rounded" type="text" name="username" placeholder="Username" autocomplete="username" required />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                        <input class="input is-medium is-rounded" type="password" name="password" placeholder="Password" autocomplete="current-password" required />
+                        </div>
+                    </div>
+                    <br />
+                    <button class="button is-block is-fullwidth is-primary is-medium is-rounded" type="submit" value="Login">
+                        Login
+                    </button>
+                    </form>
+                    {% if messages %}
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}     
+                    <br>
+                    <nav class="level">
+                    <div class="level-item has-text-centered">
+                        <div>
+                            Don't have an account yet? <a href="{% url 'authentication_bookmark:register' %}">Register Now</a>
+                        </div>
+                    </div>
+                    </nav>
+                </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
 
 {% endblock content %}
