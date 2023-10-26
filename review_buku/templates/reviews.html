@@ -1,0 +1,34 @@
+{% include 'navbar2.html' %}
+<section class="book-detail">
+    <img src="{{ buku.image.url }}" alt="{{ buku.judul }}">
+    <h2>{{ buku.judul }}</h2>
+    <p>🖋 {{ buku.penulis }}</p>
+    <p>⭐ {{ buku.rating }}/5</p>
+    <p>📅 {{ buku.tahun }}</p>
+</section>
+
+<section class="book-review-form">
+    <h2>Write a Review</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit Review</button>
+    </form>
+</section>
+
+<section class="book-reviews">
+    <h2>Reviews:</h2>
+    {% for review in reviews %}
+    <div class="review">
+        <p>{{ review.text }}</p>  <!-- Asumsikan model Review memiliki field 'text' untuk isi review -->
+    </div>
+    {% endfor %}
+</section>
+
+
+<style>
+    .submit-button-container {
+        margin-top: 10px;
+        text-align: center;  /* Jika Anda ingin menengahkan tombol */
+    }
+</style>
