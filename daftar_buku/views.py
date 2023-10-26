@@ -69,6 +69,8 @@ def sort_books(request):
             buku_list = buku_list.order_by(Lower('judul'))
         if 'tahun' in sort:
             buku_list = buku_list.order_by('tahun')
+        if 'rating' in sort:
+            buku_list = buku_list.order_by('-rating')
         paginator = Paginator(buku_list, 12)  
         page = request.GET.get('page')
         buku = paginator.get_page(page)
