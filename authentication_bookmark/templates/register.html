@@ -1,0 +1,66 @@
+{% block meta %}
+    <title>Register</title>
+{% endblock meta %}
+
+{% block content %}  
+<style>
+    section {
+        background-image: url(https://github.com/PBP-D-11-2023/Wisdom-Repository/raw/anisha/assets/images/login.png);
+        background-size: cover; /* Untuk mengisi seluruh area section */
+        background-position: center center; /* Untuk posisi tengah secara horizontal dan vertikal */
+        background-repeat: no-repeat; /* Agar gambar latar belakang tidak diulang */
+        height: 100vh; /* Mengatur tinggi section sejajar dengan tinggi tampilan (viewport height) */
+    }
+
+    .register {
+        font-family: 'Baskerville Regular', Baskerville;
+        width: 600px; /* Lebar form login */
+        background-color: #37465D;
+        margin: 0 auto; /* Mengatur margin otomatis pada sisi kiri dan kanan, membuat form berada di tengah */
+        padding: 20px; /* Ruang dalam form login */
+        text-align: center; /* Teks berada di tengah form login */
+        border-radius: 3%;
+        color: white; /* Mengatur warna teks menjadi putih */
+        position: absolute;
+        transform: translate(-50%,-50%);
+        top: 50%;
+        left: 50%;
+    }
+
+    table{
+        color: white;
+    }
+
+    input{
+        font-family: 'Baskerville Regular', Baskerville;
+    }
+    a{
+        color: wheat;
+    }
+</style>
+<section>
+
+    <div class = "register">
+        <img src="https://github.com/PBP-D-11-2023/Wisdom-Repository/raw/anisha/assets/images/logo%20wr%20putih.png" height= "60px" width="180px" style="padding-bottom: 20px;">
+            <form method="POST" >  
+                {% csrf_token %}  
+                <table>  
+                    {{ form.as_table }}  
+                    <tr>  
+                        <td></td>
+                        <td><input type="submit" name="submit" value="Daftar"/></td>  
+                    </tr>  
+                </table>  
+            </form>
+
+        {% if messages %}  
+            <ul>   
+                {% for message in messages %}  
+                    <li>{{ message }}</li>  
+                    {% endfor %}  
+            </ul>   
+        {% endif %}
+
+    </div>  
+</section>
+{% endblock content %}

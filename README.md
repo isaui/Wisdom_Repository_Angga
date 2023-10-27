@@ -13,8 +13,8 @@
 Data menunjukkan bahwa minat membaca masyarakat Indonesia masih rendah. Banyak faktor yang berkontribusi terhadap rendahnya minat membaca, diantaranya adalah kurangnya akses terhadap bahan bacaan yang menarik dan relevan. Oleh karena itu, dibuatlah aplikasi "Wisdom Repository" yang menjadi solusi dari permasalahan tersebut. Aplikasi ini tidak hanya mempermudah administrasi dalam peminjaman buku, tetapi juga memberikan platform bagi pengguna untuk saling berbagi ulasan dan rekomendasi buku. Dengan demikian, aplikasi ini diharapkan dapat mendorong minat membaca, meningkatkan akses ke bahan bacaan, serta menciptakan komunitas pembaca yang aktif di Indonesia.
 
 ## Daftar Modul
-1. Login, Register, Logout (Anisha Putri Qonitah)  
-  Halaman ini digunakan untuk user mendaftarkan akun pada web dan memilih role sebagai Member Premium atau Member Reguler dan untuk user yang sudah terdaftar akan masuk dan dapat mengakses web.
+1. Login, Register, Logout, dan Bookmark Buku (Anisha Putri Qonitah)  
+  Halaman ini digunakan untuk user mendaftarkan akun pada web dan memilih role sebagai Member Premium atau Member Reguler dan untuk user yang sudah terdaftar akan masuk dan dapat mengakses web. Halaman Bookmark berisi buku-buku yang sudah di-bookmark.
 2. Daftar Buku (Wahyu Ridho Anggoro)  
   Halaman ini memperlihatkan semua daftar buku. Pada halaman ini, user dapat melakukan pencarian buku tertentu dengan memasukkan judul buku yang dicari. Pencarian buku juga dapat menggunakan filter berdasarkan genre, penulis, atau tahun penerbitan buku.
 3. Peminjaman dan Pengembalian Buku (Alwin Djuliansah)  
