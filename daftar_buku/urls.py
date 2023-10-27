@@ -9,7 +9,7 @@ urlpatterns = [
     path('make-book/', make_buku, name='make_book'),
     path('book_details/', book_details, name='book_details'),
     path('search/', search_books, name='search'),
-    path('sort/', sort_books, name='sort'),
+    path('sort/<str:query>', sort_books, name='sort'),
     path('xml/<int:id>/', show_xml, name='show_xml'),
     path('get_books_json/', get_books_json, name='get_books_json'),
 ]

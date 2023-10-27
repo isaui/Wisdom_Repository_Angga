@@ -11,12 +11,17 @@ class Buku(models.Model):
     kategori = models.CharField(max_length=100)
     gambar = models.CharField(max_length=100)
     deskripsi = models.TextField()
-    rating = models.FloatField()
+    rating = models.ForeignKey('Rating', on_delete=models.CASCADE, default=0)
     def __str__(self):
         return self.judul
     def __unicode__(self):
         return self.judul
     
-class review(models.Model):
-    judul = models.CharField(max_length=100)
+class Rating(models.Model):
+    rating = models.DecimalField(max_digits=5, decimal_places=2)
+    def __str__(self):
+        return self.rating
+    def __unicode__(self):
+        return self.rating
+
 

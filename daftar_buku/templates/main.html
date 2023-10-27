@@ -7,7 +7,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
-    
     {% include 'navbar.html' %}
  
     <img src="https://raw.githubusercontent.com/PBP-D-11-2023/Wisdom-Repository/anisha/assets/images/homee.png" style="width:100%">
@@ -31,6 +30,7 @@
                         </div>
                         <div class="col-md-6">
                             <h2>Judul Buku 1</h2>
+                            <span class="fa fa-star"><span>10</span></span>
                             <p>Nama Pengarang: Penulis Buku 1</p>
                             <p>Tahun Terbit: 2022</p>
                             <p>Peringkat: 4.5/5</p>
@@ -91,7 +91,7 @@
         <h5>Category</h5>                     
         <div class="genre-buttons">
             {% for selected_genre in genre %}
-            <form method="post" action="{% url 'daftar_buku:search' %}" class="form-tombol">
+            <form method="post" action="{% url 'daftar_buku:search'%}" class="form-tombol">
                 {% csrf_token %}
                 <input type="hidden" name="query" value="{{ selected_genre }}">
                 <button type="submit" class="btn btn-primary" id="button-category" >
@@ -106,17 +106,23 @@
 
         <i class="fas fa-sort-down">Sort By</i>
 
-        <form method="get" action="{% url 'daftar_buku:sort' %}" id="sort-form">
-            <button type="submit" class="btn btn-primary" id="button-sort" style="background-color: white; color: black;" name="Sort" value="judul">
+        <div id="sort-form">
+            <form action="/sort/judul">
+            <button type="submit" class="btn btn-primary" id="button-sort" style="background-color: white; color: black;">
                 <i class="fas fa-sort-alpha-down"></i>
                 Judul</button>
-            <button type="submit" class="btn btn-primary" id="button-sort" style="background-color: white; color: black;" name="Sort" value="tahun">
-                <i class="fas fa-calendar-alt"></i>
+            </form>
+            <form action="/sort/tahun">
+            <button type="submit" class="btn btn-primary" id="button-sort" style="background-color: white; color: black;">
+                <i class="fas fa-calendar"></i>
                 Tahun</button>
-            <button type="submit" class="btn btn-primary" id="button-sort" style="background-color: white; color: black;" name="Sort" value="rating">
+            </form>
+            <form action="/sort/rating">
+            <button type="submit" class="btn btn-primary" id="button-sort" style="background-color: white; color: black;">
                 <i class="fas fa-star"></i>
                 Rating</button>
-        </form>
+            </form>
+        </div>
 
         <!--<div id="book_container" class="row">   -->
         
@@ -125,7 +131,13 @@
                 {% for bukus in buku %}
                     <div class="col-md-2 col-sm-3 col-4">
                         <div class="card small-card clickable-card  ">
-                            <img src="{{ bukus.gambar }}" class="card-img" alt="{{ bukus.judul }}" data-toggle="modal" data-target="#bookModal" data-id="{{ bukus.id }}">
+                            <div class="card-icon">
+                            <span class="fa-stack">
+                                <i class="fas fa-star fa-stack-1x " style="color:rgb(222, 222, 15); font-size: 3em;"></i>
+                                <span class="fa-stack-1x star-number" style="padding-left: 13px; padding-top: 1px;">{{ bukus.rating.rating }}</span>
+                              </span>
+                            </div>
+                            <img src="{{ bukus.gambar }}" id="buku-card" class="card-img" alt="{{ bukus.judul }}" data-toggle="modal" data-target="#bookModal" data-id="{{ bukus.id }}">
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title" id="judul-card" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px;" title="{{ bukus.judul }}">{{ bukus.judul }}</h5>
                             </div>
@@ -196,7 +208,7 @@
                             <button type="button" class="btn btn-primary">Bookmarks</button>
                             <button type="button" class="btn btn-primary">Lihat Review</button>
                         </div>
-                        <button type="button" class="btn btn-secondary">Close</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -279,6 +291,13 @@
 
     <style id="navbar-css">
 
+        .card-icon {
+            position: absolute;
+            top: 10px; /* Sesuaikan dengan posisi vertikal yang diinginkan */
+            right: 15px; /* Sesuaikan dengan posisi horizontal yang diinginkan */
+            z-index: 1; /* Untuk menempatkan ikon di atas gambar */
+        }
+
         body{
             font-family: "Book Antiqua";
             background-color: #F5F2ED;
@@ -340,16 +359,17 @@
 
         .card-img {
             max-width: 100px;
-            object-fit: contain;
+            object-fit: cover;
         }
+
         .small-card {
             max-width: 10rem;
             height: 14rem; 
             transition: transform 0.2s;
             background-color: rgb(255, 255, 255);
             color: black;
-            margin-top: 15px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            margin-top: 28px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             text-align: center;
             width: 100%;
             white-space: nowrap;
@@ -364,31 +384,41 @@
             margin-top: 0;
             padding: 0;
             
+            
         }
 
         .small-card .card-img {
             margin-top: 15px;
             max-width: 100px;
-            object-fit: contain;
+            object-fit: cover;
             height: 60%;
             margin-right: auto;
             margin-left: auto;
+            border: 2px solid #010101;
         }
 
 
         .small-card .card-body {
             height: 25%; 
+            
         }
 
         .small-card.clickable-card {
             transition: background-color 0.3s;
             cursor: pointer;
+            
         }
 
         .small-card:hover {
             transform: scale(1.05);
             color: #9b51e0;
         } 
+
+        #buku-card:hover{
+            transform: scale(1.05);
+        }
+        
+
 
 
         body.dark .small-card:hover {
@@ -466,8 +496,9 @@
         .image-wrapper {
 
             background-color: white;
+            background-image: "https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/3163065/book-clipart-md.png";
             border: 1px solid #ddd;     
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);   
+            box-shadow: 0 8px 4px rgba(0, 0, 0, 0.2);   
             width: 135px;   
             height: 195px;     
             display: flex;
