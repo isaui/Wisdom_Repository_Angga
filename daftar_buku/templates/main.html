@@ -87,7 +87,6 @@
             </div>
         {% else %}
             <p>Belum ada buku</p>
-            <a href="{% url 'daftar_buku:make_book' %}">Tambah buku</a>
         {% endif %}
         <div class="pagination">
             <span class="step-links">
@@ -217,10 +216,6 @@
         });
 
 
-
-
-
-        
         $(document).on('click', '#cariauthor', function(event) {
             $.ajax({
                 url: "{% url 'daftar_buku:get_user' %}",
