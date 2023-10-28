@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.urls import reverse
 from django.core.paginator import Paginator, Page
 from django.http import JsonResponse
@@ -13,15 +13,46 @@ from django.views.decorators.csrf import csrf_exempt
 from daftar_buku.models import Buku, Rating
 from daftar_buku.forms import SearchForm
 from daftar_buku.views import daftar_genre
+from admin_buku.forms import BukuForm
 import pandas
 
-@require_http_methods(["DELETE"])
 def delete_book(request, bookID):
     book = Buku.objects.get(pk=bookID)
 
     if request.method == 'DELETE':
         book.delete()
         return JsonResponse({'success': True,})
+    
+def create_book(request):
+    if request.method == 'POST':
+        isbn = request.POST.get('isbn', '')
+        judul = request.POST.get('judul', '')
+        penulis = request.POST.get('penulis', '')
+        tahun = request.POST.get('tahun', 0)  
+        kategori = request.POST.get('kategori', '')
+        gambar = request.POST.get('gambar', '')
+        deskripsi = request.POST.get('deskripsi', '')
+        rating_obj = Rating(rating=request.POST.get('rating', 0.0))
+        rating_obj.save()
+
+        rating = Rating.objects.get(pk=rating_obj.pk)
+
+        buku = Buku(
+            isbn=isbn,
+            judul=judul,
+            penulis=penulis,
+            tahun=tahun,
+            kategori=kategori,
+            gambar=gambar,
+            deskripsi=deskripsi,
+            rating=rating
+        )
+
+        buku.save()
+
+        return HttpResponse(b"CREATED", status=201)
+    
+    return HttpResponseNotFound()
 
 def search_books(request):
     if not request.method == 'POST':
