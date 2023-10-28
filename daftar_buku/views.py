@@ -58,9 +58,17 @@ def search_books(request):
 
             print(request)
 
-            return render(request, 'main.html', {'buku': buku_list,
-                                                 'genre': daftar_genre,
-                                                })
+            try:
+                tipe = request.user.member
+            except:
+                tipe = 'guest'
+            context = {
+                'buku': buku_list,
+                'genre' : daftar_genre,
+                'tipe' : tipe,
+            }
+
+            return render(request, 'main.html', context)
 
         else:
             return render(request, 'main.html', {'form': form})
@@ -88,9 +96,14 @@ def sort_books(request, query):
         paginator = Paginator(buku_list, 24)  
         page = request.GET.get('page')
         buku = paginator.get_page(page)
+        try:
+            tipe = request.user.member
+        except:
+            tipe = 'guest'
         context = {
             'buku': buku,
             'genre' : daftar_genre,
+            'tipe' : tipe,
         }
         request.session['Sort'] = sort
         return render(request, 'main.html', context)
