@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
-<body>
+<body data-csrf-token="{{ csrf_token }}">
     
     {% include 'navbar.html' %}
  
@@ -124,7 +124,7 @@
             <div class="row">
                 {% for bukus in buku %}
                     <div class="col-md-2 col-sm-3 col-4">
-                        <div class="card small-card clickable-card  ">
+                        <div class="card small-card clickable-card" id="{{bukus.id}}">
                             <img src="{{ bukus.gambar }}" class="card-img" alt="{{ bukus.judul }}" data-toggle="modal" data-target="#bookModal" data-id="{{ bukus.id }}">
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title" id="judul-card" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px;" title="{{ bukus.judul }}">{{ bukus.judul }}</h5>
@@ -190,12 +190,30 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer" style="display: flex; justify-content: space-between;">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                        <div style="display: flex; gap: 5px;">
-                            <button type="button" class="btn btn-primary">Pinjam</button>
-                            <button type="button" class="btn btn-primary">Bookmarks</button>
-                            <button type="button" class="btn btn-primary">Lihat Review</button>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button type="button" id="confirmHapusButton" class="btn btn-danger" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">Hapus</button>
+                        <div class="d-flex">
+                            <button type="button" class="btn btn-primary">Edit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel">Konfirmasi Hapus</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Apakah Anda yakin ingin menghapus buku berjudul "<span id="deleteBookTitle"></span>"?
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <div class="d-flex">
+                            <button type="button" class="btn btn-danger" id="confirmDeleteButton" data-bs-dismiss="modal">Konfirmasi</button>
                         </div>
                     </div>
                 </div>
@@ -212,9 +230,7 @@
 
 
     <script>
-        
-
-        
+        const csrf_token = document.body.getAttribute("data-csrf-token");
 
         $("#search-button").click(function() {
             var query = $("#search-input").val();
@@ -224,17 +240,16 @@
                 data: { query: query }
             });
         });
-   
 
         $(document).on('click', '.clickable-card', function(event) {
             var clickedElement = $(event.target);
             
             if (!clickedElement.is(".show-details, .show-details *")) {
-                var bookId = $(this).find('.card-img').data("id");
+                var bookID = $(this).find('.card-img').data("id");
                 $.ajax({
                     url: "{% url 'daftar_buku:book_details' %}",
                     method: "GET",
-                    data: { id: bookId },
+                    data: { id: bookID },
                     success: function(data) {
                         $("#book-deskripsi").text(data.deskripsi);
                         $("#book-title").text(data.judul);
@@ -242,10 +257,55 @@
                         document.getElementById('modalImage').src=data.gambar;
                         $("#book-release").text(data.tahun);
                         $("#bookModal").modal("show");
+
+                        // Memanggil fungsi untuk mengisi data modal konfirmasi penghapusan
+                        fillDeleteConfirmationModal(data.judul, bookID);
                     },
                 });
             }
         });
+
+        // Fungsi untuk mengisi data modal konfirmasi penghapusan
+        function fillDeleteConfirmationModal(bookTitle, bookID) {
+            // Set judul buku yang akan dihapus di modal konfirmasi
+            $("#deleteBookTitle").text(bookTitle);
+
+            // Simpan ID buku yang akan dihapus 
+            $("#confirmDeleteButton").data("book-id", bookID);
+        }
+
+        // Tangani klik tombol "Hapus" pada modal konfirmasi penghapusan
+        $("#confirmDeleteButton").on('click', function() {
+            // Ambil ID buku yang akan dihapus dari atribut data
+            var bookID = $(this).data("book-id");
+
+            // Panggil fungsi deleteBook dengan bookID sebagai argumen
+            deleteBook(bookID);
+        });
+
+        async function deleteBook(bookID) {
+            const response = await fetch(`delete-book/${bookID}/`, {
+                method: "DELETE",
+                headers: {
+                    "X-CSRFToken": csrf_token,
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success) {
+                    // Hapus baris item dari tabel berdasarkan ID
+                    const bookToDelete = document.getElementById(bookID);
+                    bookToDelete.remove();
+                    
+                } else {
+                    console.error("Gagal menghapus buku.");
+                }
+            } else {
+                console.error("Terjadi kesalahan saat mengirim permintaan.");
+            }
+        }
 
         async function getBooks() {
             return fetch("{% url 'daftar_buku:get_books_json' %}").then((res) => res.json());
@@ -297,14 +357,12 @@
             background-color: #37465D;
         }
 
-
         .carousel-item {
             height: 500px;
             object-fit: cover;
             object-position: center;
             width: 100%;
         }
-
 
         footer {
             background-color: #13294B;
@@ -321,7 +379,6 @@
         #button-sort:hover{
             transform: scale(1.05);
             transition: all .2s ease-in-out;
-
         }
 
         #button-sort{
@@ -351,6 +408,7 @@
             max-width: 100px;
             object-fit: contain;
         }
+
         .small-card {
             max-width: 10rem;
             height: 14rem; 
@@ -364,15 +422,12 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            
-
         }
 
         .small-card .card {
             height: 100%;
             margin-top: 0;
             padding: 0;
-            
         }
 
         .small-card .card-img {
@@ -383,7 +438,6 @@
             margin-right: auto;
             margin-left: auto;
         }
-
 
         .small-card .card-body {
             height: 25%; 
@@ -398,7 +452,6 @@
             transform: scale(1.05);
             color: #9b51e0;
         } 
-
 
         body.dark .small-card:hover {
             transform: scale(1.05);
@@ -417,6 +470,7 @@
         #id_Sort label {
             color: red; 
         }
+
         #button-category{
             background-color: #fffeff;
             color: black;
@@ -426,9 +480,7 @@
         }
 
         #button-category:hover{
-
             transform: scale(1.05)
-
         }
 
         .form-tombol {
@@ -439,7 +491,6 @@
             align-items: center;
             justify-content: space-between;
         }
-
         
         .form-tombol i {
             font-size: 20px;
@@ -453,8 +504,6 @@
             gap: 5px; 
             align-items: flex-start; 
         }
-
-        
 
         .book-info {
             display: flex;
@@ -473,7 +522,6 @@
         }
 
         .image-wrapper {
-
             background-color: white;
             border: 1px solid #ddd;     
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);   
@@ -513,8 +561,6 @@
             font-size: px;
         }
 
-
-
         #book-author, #book-release {
             line-height: 1;
             margin: 0;
@@ -522,12 +568,10 @@
             color: #fff;
         }
 
-
         body.light {
             background-color: #fff;
             color: #333;
         }
-
 
         body.dark {
             background-color: #333;
@@ -541,6 +585,7 @@
             background-color: rgba(255, 255, 255, 0);
             color: white;
         }
+        
         body.light .small-card {
             max-width: 10rem;
             height: 22rem;
@@ -625,7 +670,6 @@
 
         .modal-body {
             position: relative;
-            
         }
 
         .background-image-1 {
@@ -637,7 +681,6 @@
             background-size: contain;
             background-position: center;
             opacity: 0.7; 
-          
         }
 
         .background-image-2{
@@ -687,9 +730,6 @@
             right: 0;
             bottom: 20px;
         }
-
-
-
 
     </style>
     

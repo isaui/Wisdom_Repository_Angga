@@ -10,8 +10,17 @@ from django.db.models.functions import Lower
 from daftar_buku.forms import Sort, SearchForm
 from daftar_buku.views import daftar_genre
 from django.core import serializers
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.http import require_http_methods
 import pandas
+
+@require_http_methods(["DELETE"])
+def delete_book(request, bookID):
+    book = Buku.objects.get(pk=bookID)
+
+    if request.method == 'DELETE':
+        book.delete()
+        return JsonResponse({'success': True,})
 
 def search_books(request):
     if not request.method == 'POST':
