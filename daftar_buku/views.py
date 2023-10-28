@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from daftar_buku.models import Buku
+from daftar_buku.models import Buku, Rating
 import pandas
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -8,10 +8,13 @@ from django.http import JsonResponse
 from django.db.models import Q
 from django.core.paginator import EmptyPage, PageNotAnInteger
 from django.db.models.functions import Lower
-from .forms import Sort
 from .forms import SearchForm
 from django.core import serializers
 from django.http import HttpResponse
+#import session
+from django.contrib.sessions.models import Session
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
 
 daftar_genre = [
         "Fiction",
@@ -26,8 +29,9 @@ daftar_genre = [
         "Juvenile Nonfiction",
     ]
 
-
+@require_http_methods(["GET", "POST"])
 def search_books(request):
+    
     if not request.method == 'POST':
         if 'search-books' in request.session:
             if 'search-books' in request.session:
@@ -42,7 +46,7 @@ def search_books(request):
             query = form.cleaned_data['query']
             buku_list = Buku.objects.filter(Q(judul__icontains=query) | Q(penulis__icontains=query) | Q(kategori__icontains=query))
 
-            paginator = Paginator(buku_list, 12)
+            paginator = Paginator(buku_list, 24)
             page = request.GET.get('page', 1)
 
             try:
@@ -52,32 +56,41 @@ def search_books(request):
             except EmptyPage:
                 buku_list = paginator.page(paginator.num_pages)
 
+            print(request)
+
             return render(request, 'main.html', {'buku': buku_list,
                                                  'genre': daftar_genre,
-                                                 'sort' : sortForm,})
+                                                })
 
         else:
             return render(request, 'main.html', {'form': form})
-        
-def sort_books(request):
+
+@csrf_exempt
+def get_buku_by_author(request):
+
+    if request.method == 'POST':
+        form = request.POST.get('query')
+        buku = Buku.objects.filter(Q(penulis__icontains=form))
+        buku_list_json = serializers.serialize('json', buku)
+        return HttpResponse(buku_list_json)
+def sort_books(request, query):
    
     if request.method == 'GET':
 
         sort = request.GET.getlist('Sort', request.session.get('Sort'))
         buku_list = Buku.objects.all()
-        if 'judul' in sort:
+        if query == 'judul':
             buku_list = buku_list.order_by(Lower('judul'))
-        if 'tahun' in sort:
+        if query == 'tahun':
             buku_list = buku_list.order_by('tahun')
-        if 'rating' in sort:
-            buku_list = buku_list.order_by('-rating')
-        paginator = Paginator(buku_list, 12)  
+        if query == 'rating':
+            buku_list = buku_list.order_by('-rating__rating')
+        paginator = Paginator(buku_list, 24)  
         page = request.GET.get('page')
         buku = paginator.get_page(page)
         context = {
             'buku': buku,
             'genre' : daftar_genre,
-            'sort' : sortForm,
         }
         request.session['Sort'] = sort
         return render(request, 'main.html', context)
@@ -88,19 +101,24 @@ def book_details(request):
 
     book_id = request.GET.get('id')
     book = Buku.objects.get(id=book_id)
-    
+    try:
+        if request.user.member == 'regular' or request.user.member == 'premium':
+            deskripsi = book.deskripsi
+        else:
+            deskripsi = "kamu perlu login dulu untuk melihat deskripsi buku ini"
+    except:
+        deskripsi = "kamu perlu login dulu untuk melihat deskripsi buku ini"
     return JsonResponse({'judul': book.judul,
                         'penulis': book.penulis,
                         'tahun': book.tahun,
                         'kategori': book.kategori,
                         'gambar': book.gambar,
-                        'deskripsi':book.deskripsi,
-                        'rating': book.rating})
+                        'deskripsi':deskripsi,})
 
 
 def make_buku(request):
 
-    file_csv = open('daftar_buku\\static\\books.csv', 'r', encoding='utf-8')
+    file_csv = open('daftar_buku\\book\\books.csv', 'r', encoding='utf-8')
     data = pandas.read_csv(file_csv, encoding='utf-8')
 
     buku = {}
@@ -118,7 +136,11 @@ def make_buku(request):
         try:
             if counter == 100:
                 break
-            buku_obj = Buku(isbn=buku['isbn'][i], judul=buku['judul'][i], penulis=buku['penulis'][i], tahun=buku['tahun'][i], kategori=buku['kategori'][i], gambar=buku['gambar'][i], deskripsi=buku['deskripsi'][i], rating=buku['rating'][i])
+            rating_obj = Rating(rating=buku['rating'][i])
+            rating_obj.save()
+
+            rating = Rating.objects.get(pk=rating_obj.pk)
+            buku_obj = Buku(isbn=buku['isbn'][i], judul=buku['judul'][i], penulis=buku['penulis'][i], tahun=buku['tahun'][i], kategori=buku['kategori'][i], gambar=buku['gambar'][i], deskripsi=buku['deskripsi'][i], rating=rating)
             buku_obj.save()
             counter += 1
         except:
@@ -131,39 +153,41 @@ def show_xml(request, id):
     data = Buku.objects.filter(pk=id)
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
 
-sortForm = Sort()
 
 def show_main(request):
 
     if(len(Buku.objects.all()) == 0):
         make_buku(request)    
     buku_list = Buku.objects.all()
-    paginator = Paginator(buku_list, 12)  
+    paginator = Paginator(buku_list, 24)  
     page = request.GET.get('page')
     buku = paginator.get_page(page)
+    try:
+        tipe = request.user.member
+    except:
+        tipe = 'guest'
     context = {
         'buku': buku,
-        'sort' : sortForm,
-        'genre' : daftar_genre
+        'genre' : daftar_genre,
+        'tipe' : tipe,
     }
     return render(request, 'main.html', context)
 
-def sort(request):
-    if request.method == 'GET':
-        sort = request.GET.get('sort')
-        if sort == 'judul':
+def sort(request, query):
+        if query == 'judul':
             buku_list = Buku.objects.all().order_by(Lower('judul'))
-        elif sort == 'tahun':
+        elif query == 'tahun':
             buku_list = Buku.objects.all().order_by('tahun')
+        elif query == 'rating':
+            buku_list = Buku.objects.all().order_by('-rating__rating')
         else:
             buku_list = Buku.objects.all()
-        paginator = Paginator(buku_list, 12)  
+        paginator = Paginator(buku_list, 24)  
         page = request.GET.get('page')
         buku = paginator.get_page(page)
         context = {
             'buku': buku,
             'genre': daftar_genre,
-            'sort' : sortForm,
         }
         return render(request, 'main.html', context)
     
@@ -172,6 +196,14 @@ def get_books_json(request):
     buku_list = Buku.objects.all().order_by('rating')[:10]
     buku_list_json = serializers.serialize('json', buku_list)
     return HttpResponse(buku_list_json)
+
+
+def get_user(request):
+    if request.user.is_authenticated:
+        return JsonResponse({'username': request.user.username})
+    else:
+        return JsonResponse({'username': 'Anonymous'})
+
 
 
 
