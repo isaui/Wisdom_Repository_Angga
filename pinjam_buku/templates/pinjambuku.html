@@ -19,6 +19,8 @@
             font-size: 16px;
             font-family: "Book Antiqua";
 			background-color: #F5F2ED;
+            display: flex;
+            font-weight:bold;
         }
         .top-section {
             background-image: url('https://raw.githubusercontent.com/PBP-D-11-2023/Wisdom-Repository/anisha/assets/images/review.png');
@@ -60,35 +62,25 @@
             margin-left:50vh;
             font-size: 18px;
             position:relative;
-            margin-top:-30vh;
+            margin-top:-100vh;
         }
         .button-pinjam{
             background-color: white;
             color: #37465D;
             padding: 10px 20px;
             border: 1px solid #37465D;
-            border-radius: 5px;
             cursor: pointer;
 			margin-top:5vh;
             margin-left:70vw;
-        }
-        .button-bookmark{
-            background-color: white;
-            color: #37465D;
-            padding: 10px 20px;
-            border: 1px solid #37465D;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-left:1vw;
         }
         .button-back{
             background-color: #37465D;
             color: white;
             padding: 10px 20px;
             border: 1px solid black;
-            border-radius: 5px;
             cursor: pointer;
             margin-left:5vw;
+            margin-top:70vh;
         }
 	</style>
 </head>
@@ -107,19 +99,19 @@
                 <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
                     <ul class="nav justify-content-end me-3">
                         <li class="nav-item me-2">
-                            <a class="nav-link active text-dark" href="#">Bookmark</a>
+                            <a class="nav-link active text-dark" href="{% url 'authentication_bookmark:show_bookmark' %}">Bookmark</a>
                         </li>
                         <li class="nav-item me-2">
-                            <a class="nav-link active text-dark" href="#">Returned</a>
+                            <a class="nav-link active text-dark" href="{% url 'pinjam_buku:show_pengembalian' %}">Returned</a>
                         </li>
                         <li class="nav-item me-2">
-                            <a class="nav-link active text-dark" href="#">Borrowed</a>
+                            <a class="nav-link active text-dark" href="{% url 'pinjam_buku:list_pinjam' %}">Borrowed</a>
                         </li>
                         <li class="nav-item me-2">
-                            <a class="nav-link active text-dark" href="#">Profile</a>
+                            <a class="nav-link active text-dark" href="{% url 'daftar_buku:show_main' %}">Profile</a>
                         </li>
                         <li class="nav-item me-2">
-                            <a class="nav-link active text-dark" href="#">Log Out</a>
+                            <a class="nav-link active text-dark" href="{% url 'authentication_bookmark:logout' %}">Log Out</a>
                         </li>
                     </ul>
                 </div>
@@ -131,14 +123,16 @@
             <div class="bg-image top-section">
                 <p class="text-margin-first">{{ buku.judul }}</p>
                 <p class="text-margin"><i class="fas fa-user"></i> {{ buku.penulis }}</p>
-                <p class="text-margin"><i class="fas fa-star"></i> {{ buku.rating }} / 5</p>
+                <p class="text-margin"><i class="fas fa-star"></i> {{ buku.rating.rating }} / 5</p>
                 <p class="text-margin"><i class="fas fa-calendar"></i> {{ buku.tahun }}</p>
             </div>
             <div class="col-md-0 centered-image">
                 <img src="{{ buku.gambar }}" class="centered-image border-image" alt="Gambar Buku">
             </div>
             <div class="col-md-0 bottom-section">
-                <button type="button" class="button-back">Back</button>
+                <a href="{% url 'daftar_buku:show_main' %}">
+                    <button type="button" class="button-back">Back</button>
+                </a>
                 <p class="text-margin-bottom">
                     {{ buku.deskripsi }}
                 </p>
@@ -153,27 +147,46 @@
                     <h1 class="modal-title fs-5" id="modalLabel">Konfirmasi Peminjaman</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <form id="form" onsubmit="return false;">
+                <form id="form" method="POST">
+                    <div class="modal-body">
                         {% csrf_token %}
                         <div class="mb-3">
                             <label for="username" class="col-form-label">Username</label>
-                            <input type="text" class="form-control" id="username" name="username" value="DummyUser" readonly></input>
+                            <input type="text" class="form-control" id="username" name="username" value="{{username}}" readonly>
                         </div>
                         <div class="mb-3">
                             <label for="tipe" class="col-form-label">Tipe Member:</label>
-                            <input type="text" class="form-control" id="tipe" name="tipe" value="Reguler" readonly></input>
+                            <input type="text" class="form-control" id="tipe" name="tipe" value="{{member}}" readonly>
                         </div>
                         <div class="mb-3">
                             <label for="book" class="col-form-label">Judul Buku:</label>
-                            <input type="text" class="form-control" id="book" name="book" value="{{buku.judul}}" readonly></textarea>
+                            <input type="text" class="form-control" id="book" name="book" value="{{buku.judul}}" readonly>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                    <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Konfirmasi</button>
-                </div>
+                        <div class="mb-3">
+                            <label for="return" class="col-form-label">Tanggal Pengembalian:</label>
+                            <input type="text" class="form-control" id="return" name="return" value="{{return}}" readonly>
+                        </div>
+                        {{ form.non_field_errors }}
+                        <div class="mb-3" style="display: none;">
+                            {{ form.idBuku.errors }}
+                            <label for="{{ form.sender.id_for_label }}">ID Buku:</label>
+                            {{ form.idBuku }}
+                        </div>
+                        {% if form.errors %}
+                        <ul class="errorlist" style="display: none;">
+                            {% for field in form %}
+                            {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <input type="submit" class="btn btn-primary" id="button_add" data-bs-dismiss="modal" value="Konfirmasi">
+                    </div>
+                </form>
             </div>
         </div>
     </div>
