@@ -14,7 +14,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mx-auto">
             <li class="nav-item d-flex align-items-center">
-                <form method="post" action="{% url 'daftar_buku:search' %}" class="form-inline">
+                <form method="post" action="{% url 'daftar_buku:search'%}" class="form-inline">
                     {% csrf_token %}
                     <div class="input-group">
                         <input type="search" name="query" placeholder="Cari..." aria-describedby="button-addon">

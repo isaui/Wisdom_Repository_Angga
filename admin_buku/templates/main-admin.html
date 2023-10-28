@@ -93,7 +93,7 @@
         <h5>Category</h5>                     
         <div class="genre-buttons">
             {% for selected_genre in genre %}
-            <form method="post" action="{% url 'daftar_buku:search' %}" class="form-tombol">
+            <form method="post" action="{% url 'admin_buku:search' %}" class="form-tombol">
                 {% csrf_token %}
                 <input type="hidden" name="query" value="{{ selected_genre }}">
                 <button type="submit" class="btn btn-primary" id="button-category" >
@@ -108,17 +108,23 @@
 
         <i class="fas fa-sort-down">Sort By</i>
 
-        <form method="get" action="{% url 'daftar_buku:sort' %}" id="sort-form">
-            <button type="submit" class="btn btn-primary" id="button-sort" style="background-color: white; color: black;" name="Sort" value="judul">
+        <div id="sort-form">
+            <form action="sort/judul">
+            <button type="submit" class="btn btn-primary" id="button-sort" style="background-color: white; color: black;">
                 <i class="fas fa-sort-alpha-down"></i>
                 Judul</button>
-            <button type="submit" class="btn btn-primary" id="button-sort" style="background-color: white; color: black;" name="Sort" value="tahun">
-                <i class="fas fa-calendar-alt"></i>
+            </form>
+            <form action="sort/tahun">
+            <button type="submit" class="btn btn-primary" id="button-sort" style="background-color: white; color: black;">
+                <i class="fas fa-calendar"></i>
                 Tahun</button>
-            <button type="submit" class="btn btn-primary" id="button-sort" style="background-color: white; color: black;" name="Sort" value="rating">
+            </form>
+            <form action="sort/rating">
+            <button type="submit" class="btn btn-primary" id="button-sort" style="background-color: white; color: black;">
                 <i class="fas fa-star"></i>
                 Rating</button>
-        </form>
+            </form>
+        </div>
         
         {% if buku %}
             <div class="row" id="bookRow">
@@ -251,7 +257,7 @@
             if (!clickedElement.is(".show-details, .show-details *")) {
                 var bookID = $(this).find('.card-img').data("id");
                 $.ajax({
-                    url: "{% url 'daftar_buku:book_details' %}",
+                    url: "{% url 'admin_buku:book_details' %}",
                     method: "GET",
                     data: { id: bookID },
                     success: function(data) {

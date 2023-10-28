@@ -9,8 +9,9 @@ from django.db.models.functions import Lower
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_http_methods
-from daftar_buku.models import Buku
-from daftar_buku.forms import Sort, SearchForm
+from django.views.decorators.csrf import csrf_exempt
+from daftar_buku.models import Buku, Rating
+from daftar_buku.forms import SearchForm
 from daftar_buku.views import daftar_genre
 import pandas
 
@@ -49,37 +50,36 @@ def search_books(request):
 
             return render(request, 'main-admin.html', {'buku': buku_list,
                                                  'genre': daftar_genre,
-                                                 'sort' : sortForm,})
+                                                 })
 
         else:
             return render(request, 'main-admin.html', {'form': form})
         
-def sort_books(request):
+def sort_books(request, query):
    
     if request.method == 'GET':
 
         sort = request.GET.getlist('Sort', request.session.get('Sort'))
         buku_list = Buku.objects.all()
-        if 'judul' in sort:
+        if query == 'judul':
             buku_list = buku_list.order_by(Lower('judul'))
-        if 'tahun' in sort:
+        if query == 'tahun':
             buku_list = buku_list.order_by('tahun')
-        if 'rating' in sort:
-            buku_list = buku_list.order_by('-rating')
-        paginator = Paginator(buku_list, 12)  
+        if query == 'rating':
+            buku_list = buku_list.order_by('-rating__rating')
+        paginator = Paginator(buku_list, 24)  
         page = request.GET.get('page')
         buku = paginator.get_page(page)
         context = {
             'buku': buku,
             'genre' : daftar_genre,
-            'sort' : sortForm,
         }
         request.session['Sort'] = sort
         return render(request, 'main-admin.html', context)
 
 def make_buku(request):
 
-    file_csv = open('daftar_buku\\static\\books.csv', 'r', encoding='utf-8')
+    file_csv = open('daftar_buku\\book\\books.csv', 'r', encoding='utf-8')
     data = pandas.read_csv(file_csv, encoding='utf-8')
 
     buku = {}
@@ -97,7 +97,11 @@ def make_buku(request):
         try:
             if counter == 100:
                 break
-            buku_obj = Buku(isbn=buku['isbn'][i], judul=buku['judul'][i], penulis=buku['penulis'][i], tahun=buku['tahun'][i], kategori=buku['kategori'][i], gambar=buku['gambar'][i], deskripsi=buku['deskripsi'][i], rating=buku['rating'][i])
+            rating_obj = Rating(rating=buku['rating'][i])
+            rating_obj.save()
+
+            rating = Rating.objects.get(pk=rating_obj.pk)
+            buku_obj = Buku(isbn=buku['isbn'][i], judul=buku['judul'][i], penulis=buku['penulis'][i], tahun=buku['tahun'][i], kategori=buku['kategori'][i], gambar=buku['gambar'][i], deskripsi=buku['deskripsi'][i], rating=rating)
             buku_obj.save()
             counter += 1
         except:
@@ -105,8 +109,6 @@ def make_buku(request):
             pass
 
     return HttpResponseRedirect(reverse('admin_buku:show_main'))
-
-sortForm = Sort()
 
 def show_main(request):
 
@@ -118,30 +120,37 @@ def show_main(request):
     buku = paginator.get_page(page)
     context = {
         'buku': buku,
-        'sort' : sortForm,
         'genre' : daftar_genre
     }
     return render(request, 'main-admin.html', context)
 
-def sort(request):
-    if request.method == 'GET':
-        sort = request.GET.get('sort')
-        if sort == 'judul':
-            buku_list = Buku.objects.all().order_by(Lower('judul'))
-        elif sort == 'tahun':
-            buku_list = Buku.objects.all().order_by('tahun')
-        else:
-            buku_list = Buku.objects.all()
-        paginator = Paginator(buku_list, 12)  
-        page = request.GET.get('page')
-        buku = paginator.get_page(page)
-        context = {
-            'buku': buku,
-            'genre': daftar_genre,
-            'sort' : sortForm,
-        }
-        return render(request, 'main-admin.html', context)
+def book_details(request):
+
+    book_id = request.GET.get('id')
+    book = Buku.objects.get(id=book_id)
+    
+    return JsonResponse({'judul': book.judul,
+                        'penulis': book.penulis,
+                        'tahun': book.tahun,
+                        'kategori': book.kategori,
+                        'gambar': book.gambar,
+                        'deskripsi':book.deskripsi,})
 
 def get_books_json(request):
     books = Buku.objects.all()[:12]
     return HttpResponse(serializers.serialize('json', books))
+
+def get_user(request):
+    if request.user.is_authenticated:
+        return JsonResponse({'username': request.user.username})
+    else:
+        return JsonResponse({'username': 'Anonymous'})
+    
+@csrf_exempt
+def get_buku_by_author(request):
+
+    if request.method == 'POST':
+        form = request.POST.get('query')
+        buku = Buku.objects.filter(Q(penulis__icontains=form))
+        buku_list_json = serializers.serialize('json', buku)
+        return HttpResponse(buku_list_json)
