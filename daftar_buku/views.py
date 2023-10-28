@@ -14,6 +14,7 @@ from django.http import HttpResponse
 #import session
 from django.contrib.sessions.models import Session
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
 
 daftar_genre = [
         "Fiction",
@@ -55,13 +56,23 @@ def search_books(request):
             except EmptyPage:
                 buku_list = paginator.page(paginator.num_pages)
 
+            print(request)
+
             return render(request, 'main.html', {'buku': buku_list,
                                                  'genre': daftar_genre,
                                                 })
 
         else:
             return render(request, 'main.html', {'form': form})
-        
+
+@csrf_exempt
+def get_buku_by_author(request):
+
+    if request.method == 'POST':
+        form = request.POST.get('query')
+        buku = Buku.objects.filter(Q(penulis__icontains=form))
+        buku_list_json = serializers.serialize('json', buku)
+        return HttpResponse(buku_list_json)
 def sort_books(request, query):
    
     if request.method == 'GET':
@@ -90,18 +101,24 @@ def book_details(request):
 
     book_id = request.GET.get('id')
     book = Buku.objects.get(id=book_id)
-    
+    try:
+        if request.user.member == 'regular' or request.user.member == 'premium':
+            deskripsi = book.deskripsi
+        else:
+            deskripsi = "kamu perlu login dulu untuk melihat deskripsi buku ini"
+    except:
+        deskripsi = "kamu perlu login dulu untuk melihat deskripsi buku ini"
     return JsonResponse({'judul': book.judul,
                         'penulis': book.penulis,
                         'tahun': book.tahun,
                         'kategori': book.kategori,
                         'gambar': book.gambar,
-                        'deskripsi':book.deskripsi,})
+                        'deskripsi':deskripsi,})
 
 
 def make_buku(request):
 
-    file_csv = open('daftar_buku\\static\\books.csv', 'r', encoding='utf-8')
+    file_csv = open('daftar_buku\\book\\books.csv', 'r', encoding='utf-8')
     data = pandas.read_csv(file_csv, encoding='utf-8')
 
     buku = {}
@@ -145,9 +162,14 @@ def show_main(request):
     paginator = Paginator(buku_list, 24)  
     page = request.GET.get('page')
     buku = paginator.get_page(page)
+    try:
+        tipe = request.user.member
+    except:
+        tipe = 'guest'
     context = {
         'buku': buku,
-        'genre' : daftar_genre
+        'genre' : daftar_genre,
+        'tipe' : tipe,
     }
     return render(request, 'main.html', context)
 
@@ -181,6 +203,7 @@ def get_user(request):
         return JsonResponse({'username': request.user.username})
     else:
         return JsonResponse({'username': 'Anonymous'})
+
 
 
 

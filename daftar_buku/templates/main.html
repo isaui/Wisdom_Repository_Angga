@@ -7,81 +7,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
+
     {% include 'navbar.html' %}
- 
-    <img src="https://raw.githubusercontent.com/PBP-D-11-2023/Wisdom-Repository/anisha/assets/images/homee.png" style="width:100%">
+    {% load static %}
+    <img src="{% static 'img/homee.png' %}" style="width:100%">
     <br>
     <br>
     <br>
-
-    <div class="container">
-    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" data-bs-interval="1000">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        </div>
-        <div class="carousel-inner">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="row" style="display: flex; height:100%;align-items: center;">
-                        <div class="col-md-6" style="display: flex; justify-content: end;">
-                            <img class="" src="http://books.google.com/books/content?id=YtjxFRb39Z4C&amp;printsec=frontcover&amp;img=1&amp;zoom=1&amp;source=gbs_api" alt="Gambar Buku 1">
-                        </div>
-                        <div class="col-md-6">
-                            <h2>Judul Buku 1</h2>
-                            <span class="fa fa-star"><span>10</span></span>
-                            <p>Nama Pengarang: Penulis Buku 1</p>
-                            <p>Tahun Terbit: 2022</p>
-                            <p>Peringkat: 4.5/5</p>
-                            <p>Deskripsi Buku 1 yang panjang dan informatif.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="http://books.google.com/books/content?id=YtjxFRb39Z4C&amp;printsec=frontcover&amp;img=1&amp;zoom=1&amp;source=gbs_api" alt="Gambar Buku 2">
-                        </div>
-                        <div class="col-md-6">
-                            <h2>Judul Buku 2</h2>
-                            <p>Nama Pengarang: Penulis Buku 2</p>
-                            <p>Tahun Terbit: 2021</p>
-                            <p>Peringkat: 4.0/5</p>
-                            <p>Deskripsi Buku 2 yang panjang dan informatif.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="http://books.google.com/books/content?id=YtjxFRb39Z4C&amp;printsec=frontcover&amp;img=1&amp;zoom=1&amp;source=gbs_api" alt="Gambar Buku 3">
-                        </div>
-                        <div class="col-md-6">
-                            <h2>Judul Buku 3</h2>
-                            <p>Nama Pengarang: Penulis Buku 3</p>
-                            <p>Tahun Terbit: 2020</p>
-                            <p>Peringkat: 4.2/5</p>
-                            <p>Deskripsi Buku 3 yang panjang dan informatif.</p>
-                        </div>
-                    </div>
-                </div>
-            </div> 
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div>
-    </div>
-
-      <br>
-      <br>
-      <br>
 
     <center>
         <h1 style= "color: #37465D; font-size: 50px;" ><u>List of Books</u></h1>
@@ -124,7 +56,12 @@
             </form>
         </div>
 
-        <!--<div id="book_container" class="row">   -->
+        <button type="button" class="btn btn-primary" id="cariauthor" data-toggle="modal">
+            Cari Author
+        </button>
+
+        <div id="book_container2" class="scrolling-container"></div>
+        <button id="clearButton" style="display: none;">clear</button>
         
         {% if buku %}
             <div class="row">
@@ -133,8 +70,10 @@
                         <div class="card small-card clickable-card  ">
                             <div class="card-icon">
                             <span class="fa-stack">
+                                {% if tipe == 'premium' %}
                                 <i class="fas fa-star fa-stack-1x " style="color:rgb(222, 222, 15); font-size: 3em;"></i>
                                 <span class="fa-stack-1x star-number" style="padding-left: 13px; padding-top: 1px;">{{ bukus.rating.rating }}</span>
+                                {% endif %}
                               </span>
                             </div>
                             <img src="{{ bukus.gambar }}" id="buku-card" class="card-img" alt="{{ bukus.judul }}" data-toggle="modal" data-target="#bookModal" data-id="{{ bukus.id }}">
@@ -203,17 +142,49 @@
                         </div>
                     </div>
                     <div class="modal-footer" style="display: flex; justify-content: space-between;">
+                        {% if tipe != 'guest' %}
                         <div style="display: flex; gap: 5px;">
                             <button type="button" class="btn btn-primary">Pinjam</button>
                             <button type="button" class="btn btn-primary">Bookmarks</button>
                             <button type="button" class="btn btn-primary">Lihat Review</button>
                         </div>
+                        {% endif %}
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
+
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="myModalLabel">Modal Title</h5>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <label for="inputField">Input Field</label>
+                  <input type="text" name='query' class="form-control" id="inputField2" placeholder="Masukkan sesuatu">
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+              <button type="button" class="btn btn-primary">Kirim</button>
+            </div>
+          </div>
+        </div>
+    </div>
+
+
+
 
     <footer >
         <div style="float: left;">D11 Fasilkom</div>
@@ -223,19 +194,91 @@
 
 
 
+
     <script>
-        
+
+        const clearButton = document.getElementById("clearButton");
+        const bookContainer = document.getElementById("book_container2");
+
+        function toggleClearButton() {
+            if (bookContainer.children.length > 0) {
+                clearButton.style.display = "block";
+            } else {
+                clearButton.style.display = "none";
+            }
+        }
+
+        clearButton.addEventListener("click", function () {
+            while (bookContainer.firstChild) {
+                bookContainer.removeChild(bookContainer.firstChild);
+            }
+            clearButton.style.display = "none";
+        });
+
+
+
+
 
         
-
-        $("#search-button").click(function() {
-            var query = $("#search-input").val();
+        $(document).on('click', '#cariauthor', function(event) {
             $.ajax({
-                url: "{% url 'daftar_buku:search' %}",
+                url: "{% url 'daftar_buku:get_user' %}",
+                method: "GET",
+                success: function(data) {
+                    $("#myModalLabel").text("Halo " + data.username);
+                    $("#myModal2").modal("show");
+                },
+            });
+        });   
+        
+       
+        $("#myModal2").on('click', '.btn-primary', function(event) {
+            var query = $("#inputField2").val();
+            console.log(query)
+            $.ajax({
+                url: "{% url 'daftar_buku:get_buku_by_author' %}",
                 method: "POST",
-                data: { query: query }
+                data: { query: query },
+                success: function(data) {
+                   
+                    const books = JSON.parse(data);
+                    const bookContainer = document.getElementById("book_container2");
+                    bookContainer.innerHTML = "";
+
+                    books.forEach((book) => {
+                        const card = document.createElement("div");
+                        card.className = "card small-card clickable-card"; 
+                        card.style.display = "inline-block"
+
+                        const image = document.createElement("img");
+                        image.className = "card-img";
+                        image.src = book.fields.gambar;
+                        image.alt = book.fields.judul;
+                        image.setAttribute("data-id", book.pk);
+
+                        const cardBody = document.createElement("div");
+                        cardBody.className = "card-body d-flex flex-column";
+
+                        const cardTitle = document.createElement("h5");
+                        cardTitle.className = "card-title";
+                        cardTitle.style = "white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 15px";
+                        cardTitle.title = book.fields.judul;
+                        cardTitle.innerText = book.fields.judul;
+
+                        cardBody.appendChild(cardTitle);
+
+                        card.appendChild(image);
+                        card.appendChild(cardBody);
+
+                        const bookContainer = document.getElementById("book_container2");
+                        bookContainer.appendChild(card);
+                        toggleClearButton();
+                    });
+                }
+                    
             });
         });
+
    
 
         $(document).on('click', '.clickable-card', function(event) {
@@ -259,43 +302,22 @@
             }
         });
 
-        async function getBooks() {
-            return fetch("{% url 'daftar_buku:get_books_json' %}").then((res) => res.json());
-        }
-
-        const carouselContainer = document.querySelector('#carousel');
-
-        async function refreshBooks() {
-            const books = await getBooks();
-            let index = 0;
-            let carouselHTML = '';
-            books.forEach((book) => {
-                const carouselItem = document.createElement('div');
-                carouselItem.classList.add('hidden', 'duration-700', 'ease-in-out');
-                carouselItem.setAttribute('data-carousel-item', '');
-
-                const img = document.createElement('img');
-                img.src = book.fields.gambar;
-                img.classList.add('absolute', 'block', 'w-full', '-translate-x-1/2', '-translate-y-1/2', 'top-1/2', 'left-1/2');
-                img.alt = book.fields.judul;
-
-                carouselItem.appendChild(img);
-                console.log(carouselItem);
-                carouselContainer.appendChild(carouselItem);
-            });
-        }
-
-        refreshBooks();
        
     </script>
 
     <style id="navbar-css">
 
+        .scrolling-container {
+            width: 100%; 
+            overflow-x: auto; 
+            white-space: nowrap; 
+        }
+
         .card-icon {
             position: absolute;
-            top: 10px; /* Sesuaikan dengan posisi vertikal yang diinginkan */
-            right: 15px; /* Sesuaikan dengan posisi horizontal yang diinginkan */
-            z-index: 1; /* Untuk menempatkan ikon di atas gambar */
+            top: 10px;
+            right: 15px; 
+            z-index: 1;
         }
 
         body{
@@ -364,6 +386,7 @@
 
         .small-card {
             max-width: 10rem;
+            min-width: 10rem;
             height: 14rem; 
             transition: transform 0.2s;
             background-color: rgb(255, 255, 255);
