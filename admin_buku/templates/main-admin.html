@@ -121,7 +121,7 @@
         </form>
         
         {% if buku %}
-            <div class="row">
+            <div class="row" id="bookRow">
                 {% for bukus in buku %}
                     <div class="col-md-2 col-sm-3 col-4">
                         <div class="card small-card clickable-card" id="{{bukus.id}}">
@@ -232,6 +232,10 @@
     <script>
         const csrf_token = document.body.getAttribute("data-csrf-token");
 
+        async function getBooks() {
+            return fetch(`get-books/`).then((res) => res.json());
+        }
+
         $("#search-button").click(function() {
             var query = $("#search-input").val();
             $.ajax({
@@ -295,10 +299,9 @@
             if (response.ok) {
                 const data = await response.json();
                 if (data.success) {
-                    // Hapus baris item dari tabel berdasarkan ID
                     const bookToDelete = document.getElementById(bookID);
                     bookToDelete.remove();
-                    
+                    refreshBooks();    
                 } else {
                     console.error("Gagal menghapus buku.");
                 }
@@ -307,14 +310,37 @@
             }
         }
 
-        async function getBooks() {
+        async function getCarouselBooks() {
             return fetch("{% url 'daftar_buku:get_books_json' %}").then((res) => res.json());
         }
 
         const carouselContainer = document.querySelector('#carousel');
 
         async function refreshBooks() {
+            document.getElementById("bookRow").innerHTML = "";
+
             const books = await getBooks();
+
+            books.forEach((book, index) => {
+                const card = document.createElement("div");
+                card.className = "col-md-2 col-sm-3 col-4";
+
+                card.innerHTML = `
+                    <div class="card small-card clickable-card" id="${book.pk}">
+                        <img src="${ book.fields.gambar }" class="card-img" alt="${ book.fields.judul }" data-toggle="modal" data-target="#bookModal" data-id="${ book.pk }">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title" id="judul-card" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px;" title="${ book.fields.judul }">${ book.fields.judul }</h5>
+                        </div>
+                    </div>
+                     `;
+
+                document.getElementById("bookRow").appendChild(card)
+            })
+
+        }
+
+        async function refreshCarouselBooks() {
+            const books = await getCarouselBooks();
             let index = 0;
             let carouselHTML = '';
             books.forEach((book) => {
@@ -333,7 +359,7 @@
             });
         }
 
-        refreshBooks();
+        refreshCarouselBooks();
        
     </script>
 

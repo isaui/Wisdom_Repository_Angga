@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from daftar_buku.models import Buku
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.core.paginator import Paginator, Page
@@ -7,11 +6,12 @@ from django.http import JsonResponse
 from django.db.models import Q
 from django.core.paginator import EmptyPage, PageNotAnInteger
 from django.db.models.functions import Lower
-from daftar_buku.forms import Sort, SearchForm
-from daftar_buku.views import daftar_genre
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_http_methods
+from daftar_buku.models import Buku
+from daftar_buku.forms import Sort, SearchForm
+from daftar_buku.views import daftar_genre
 import pandas
 
 @require_http_methods(["DELETE"])
@@ -141,3 +141,7 @@ def sort(request):
             'sort' : sortForm,
         }
         return render(request, 'main-admin.html', context)
+
+def get_books_json(request):
+    books = Buku.objects.all()[:12]
+    return HttpResponse(serializers.serialize('json', books))
