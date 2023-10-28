@@ -193,7 +193,7 @@
                     <div class="modal-footer" style="display: flex; justify-content: space-between;">
                         <div style="display: flex; gap: 5px;">
                             <button type="button" class="btn btn-primary">Pinjam</button>
-                            <button type="button" class="btn btn-primary">Bookmarks</button>
+                            <a href="#" id="addBookmark">Bookmarks</a>
                             <button type="button" class="btn btn-primary">Lihat Review</button>
                         </div>
                         <button type="button" class="btn btn-secondary">Close</button>
@@ -231,6 +231,8 @@
             
             if (!clickedElement.is(".show-details, .show-details *")) {
                 var bookId = $(this).find('.card-img').data("id");
+                var addBookmarkLink = "{% url 'authentication_bookmark:add_bookmark_ajax' %}?id_buku=" + bookId;
+                $("#addBookmark").attr("href", addBookmarkLink);
                 $.ajax({
                     url: "{% url 'daftar_buku:book_details' %}",
                     method: "GET",
@@ -274,6 +276,29 @@
         }
 
         refreshBooks();
+
+        
+        // function addBookmark(bookId) {
+        //     // Kirim permintaan AJAX ke view yang menangani penambahan bookmark
+        //     $.ajax({
+        //         url: "{% url 'authentication_bookmark:add_bookmark_ajax' %}",
+        //         type: 'POST',
+        //         data: JSON.stringify({ 'idbuku': bookId }), // Kirim ID buku ke view
+        //         headers: {
+        //             'X-CSRFToken': '{{ csrf_token }}' // Token CSRF untuk keamanan
+        //         },
+        //         contentType: 'application/json',
+        //         success: function (response) {
+        //             // Tanggapan jika bookmark berhasil ditambahkan
+        //             console.log('Bookmark ditambahkan');
+        //         },
+        //         error: function (error) {
+        //             // Tanggapan jika terjadi kesalahan
+        //             console.error('Terjadi kesalahan', error);
+        //         }
+        //     });
+        // }
+
        
     </script>
 

@@ -3,11 +3,12 @@
 {% endblock meta %}
 
 {% block content %}
+{% include 'navbar.html' %}
 <style>
     body{
         background-color: #F5F2ED;
-        background-image: url('https://raw.githubusercontent.com/PBP-D-11-2023/Wisdom-Repository/anisha/assets/images/bookmark.png');
         background-repeat: no-repeat;
+
        
         font-family: 'Baskerville Regular', Baskerville;
     }
@@ -15,81 +16,46 @@
         font-size: 70;
         text-align: center;
         padding-top: 50;
+        top: auto;
     }
     p{
         color: #37465D;
         font-size: 30;
     }
 </style>
-
+<img src="https://raw.githubusercontent.com/PBP-D-11-2023/Wisdom-Repository/anisha/assets/images/bookmark.png">
 <h1>Bookmark</h1>
 
 <p>{{name}}</p> 
 <h5>{{member}}</h5>
 <p>D11</p>
 <p>List of Books</p>
-<div class="columns is-multiline" id="item_table">
-    <!-- Dynamic content will be loaded here -->
-</div>
-
-<script>
-    async function getItems() {
-        return fetch("{% url 'authentication_bookmark:get_bookmark_json' %}").then((res) => res.json());
-    }
-
-    async function refreshItems() {
-        const items = await getItems();
-        let totalTickets = 0;
-        let totalItems = items.length;
-        let htmlString = "";
-        items.forEach((item, index) => {
-            totalTickets += item.amount;
-            htmlString += `
-                <div class="column is-one-third ${index === items.length - 1 ? 'bg-blue-200' : ''}">
-                    <div class="card" style="background-color: #f1eacc; border: 1px solid #bd9189;">
-                        <div class="card-content">
-                            <p class="title has-text-black">${item.name}</p>
-                            <p class="subtitle has-text-black">${item.description}</p>
-                            <p class="has-text-weight-bold">Price: ${item.price}</p>
-                            
-                            <!--controls for this item-->
-                            
-                        </div>
-                        <footer class="card-footer is-centered" style="background-color: #caa99b;">
-                            <div class="card-footer-item">
-                                <a href="${item.edit_url}" class="button is-info">Edit</a>
-                            </div>
-                        
-                            <div class="card-footer-item">
-                                <button onclick="deleteItem(${item.pk})" class="button is-danger">Delete</button>
-                            </div>
-                        </footer>
-                    </div>
-                </div>`;
-        });
-        document.getElementById("ticket-count").textContent = totalTickets;
-        document.getElementById("item-count").textContent = totalItems;
-        document.getElementById("item_table").innerHTML = htmlString;
-    }
-
-    async function deleteItem(id) {
-        const response = await fetch(`/delete-item/${id}`);
-        refreshItems();
-    }
-
-    function addItem() {
-        fetch("{% url 'authentication_bookmark:add_bookmark_ajax' %}", {
-            method: "POST",
-            body: new FormData(document.querySelector('#form'))
-        }).then(() => {
-            refreshItems();
-            document.getElementById("form").reset(); 
-            document.getElementById("exampleModal").classList.remove("is-active");
-        });
-        return false;
-    }   
-        
-        // Perbarui item saat halaman dimuat.
-        refreshItems();
-    </script>
+<table id="product_table"></table>
 {% endblock content %}
+<script>
+    async function getProducts() {
+        return fetch("{% url 'authentication_bookmark:get_bookmark_json' %}").then((res) => res.json())
+    }
+
+    async function refreshProducts() {
+        document.getElementById("product_table").innerHTML = ""
+        const products = await getProducts()
+        let htmlString = `<tr>
+            <th>Judul</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th>Date Added</th>
+        </tr>`
+        products.forEach((item) => {
+            htmlString += `\n<tr>
+            <td>${item.fields.judul}</td>
+            <td>${item.gambar}</td>
+        </tr>` 
+        })
+        
+        document.getElementById("product_table").innerHTML = htmlString
+    }
+
+    refreshProducts()
+</script>
+
