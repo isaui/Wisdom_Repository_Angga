@@ -41,21 +41,20 @@
         <i class="fas fa-sort-down">Sort By</i>
 
         <div id="sort-form">
-            <form action="/sort/judul">
-            <button type="submit" class="btn btn-primary" id="button-sort" style="background-color: white; color: black;">
-                <i class="fas fa-sort-alpha-down"></i>
-                Judul</button>
-            </form>
-            <form action="/sort/tahun">
-            <button type="submit" class="btn btn-primary" id="button-sort" style="background-color: white; color: black;">
-                <i class="fas fa-calendar"></i>
-                Tahun</button>
-            </form>
-            <form action="/sort/rating">
-            <button type="submit" class="btn btn-primary" id="button-sort" style="background-color: white; color: black;">
-                <i class="fas fa-star"></i>
-                Rating</button>
-            </form>
+            <div id="sort-form">
+                <a href="/main/sort/judul" class="btn btn-primary" id="button-sort-judul" style="background-color: white; color: black;">
+                    <i class="fas fa-sort-alpha-down"></i>
+                    Judul
+                </a>
+                <a href="/main/sort/tahun" class="btn btn-primary" id="button-sort-tahun" style="background-color: white; color: black;">
+                    <i class="fas fa-calendar"></i>
+                    Tahun
+                </a>
+                <a href="/main/sort/rating" class="btn btn-primary" id="button-sort-rating" style="background-color: white; color: black;">
+                    <i class="fas fa-star"></i>
+                    Rating
+                </a>
+            </div>
         </div>
 
         <button type="button" class="btn btn-primary" id="cariauthor" data-toggle="modal">

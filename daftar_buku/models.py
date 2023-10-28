@@ -19,9 +19,6 @@ class Buku(models.Model):
     
 class Rating(models.Model):
     rating = models.DecimalField(max_digits=5, decimal_places=2)
-    def __str__(self):
-        return self.rating
-    def __unicode__(self):
-        return self.rating
+
 
 
