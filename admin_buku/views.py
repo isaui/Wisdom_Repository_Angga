@@ -54,6 +54,40 @@ def create_book(request):
     
     return HttpResponseNotFound()
 
+def edit_book(request, bookID):
+    if request.method == 'POST':
+        isbn = request.POST.get('isbn', '')
+        judul = request.POST.get('judul', '')
+        penulis = request.POST.get('penulis', '')
+        tahun = request.POST.get('tahun', 0)  
+        kategori = request.POST.get('kategori', '')
+        gambar = request.POST.get('gambar', '')
+        deskripsi = request.POST.get('deskripsi', '')
+        rating = request.POST.get('rating', 0.0)
+
+        buku = Buku.objects.get(pk=bookID)
+
+        rating_obj = buku.rating
+        rating_obj.rating = rating
+        rating_obj.save()
+
+        rating = Rating.objects.get(pk=rating_obj.pk)
+
+        buku.isbn = isbn
+        buku.judul = judul
+        buku.penulis = penulis
+        buku.tahun = tahun
+        buku.kategori = kategori
+        buku.gambar = gambar
+        buku.deskripsi = deskripsi
+        buku.rating = rating
+
+        buku.save()
+
+        return HttpResponse(b"CREATED", status=201)
+    
+    return HttpResponseNotFound()
+
 def search_books(request):
     if not request.method == 'POST':
         if 'search-books' in request.session:
@@ -159,13 +193,17 @@ def book_details(request):
 
     book_id = request.GET.get('id')
     book = Buku.objects.get(id=book_id)
+
+    rating = Rating.objects.get(id=book.rating.pk)
     
-    return JsonResponse({'judul': book.judul,
+    return JsonResponse({'isbn': book.isbn,
+                        'judul': book.judul,
                         'penulis': book.penulis,
                         'tahun': book.tahun,
                         'kategori': book.kategori,
                         'gambar': book.gambar,
-                        'deskripsi':book.deskripsi,})
+                        'deskripsi':book.deskripsi,
+                        'rating': float(rating.rating)})
 
 def get_books_json(request):
     books = Buku.objects.all()[:12]
