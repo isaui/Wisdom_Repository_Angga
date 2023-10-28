@@ -176,7 +176,7 @@
               </form>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+              <button type="button" id="tutupModal" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
               <button type="button" class="btn btn-primary">Kirim</button>
             </div>
           </div>
@@ -274,6 +274,8 @@
                         bookContainer.appendChild(card);
                         toggleClearButton();
                     });
+                    document.getElementById("tutupModal").click();
+                    document.getElementById("inputField2").value = "";
                 }
                     
             });
