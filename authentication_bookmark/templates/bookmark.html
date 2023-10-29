@@ -1,95 +1,251 @@
-{% block meta %}
-    <title>Bookmark</title>
-{% endblock meta %}
+{% extends 'base.html' %}
 
 {% block content %}
+
+{% include 'navbaruser.html' %}
+{% load static %}
+
 <style>
-    body{
+    body {
         background-color: #F5F2ED;
-        background-image: url('https://raw.githubusercontent.com/PBP-D-11-2023/Wisdom-Repository/anisha/assets/images/bookmark.png');
         background-repeat: no-repeat;
-       
         font-family: 'Baskerville Regular', Baskerville;
     }
-    h1{
-        font-size: 70;
+    h1 {
+        font-size: 70px;
         text-align: center;
-        padding-top: 50;
-    }
-    p{
+        padding-top: 50px; 
+        padding-left: 30px;
+        top: auto;
         color: #37465D;
-        font-size: 30;
     }
+    p {
+        color: #37465D;
+        font-size: 30px; /* Added 'px' */
+    }
+
+    .header{
+        position: absolute;
+        top: 30%; /* Pusatkan header secara vertikal */
+        left: 50%; /* Pusatkan header secara horizontal */
+        transform: translate(-50%, -50%); /* Koreksi posisi untuk menjaga header di tengah */
+        display: flex;
+        align-items: center;
+    }
+
+    .header img{
+        width: 70px;
+        height: 70px;
+        box-shadow: none;
+    }
+
+    p{
+        padding-left: 50px;
+    }
+
+    .backimg{
+        padding-top: 78px;
+    }
+    .imgbuku {
+        max-width: 100%; /* Ensure the image doesn't exceed the card width */
+        width: 130px;
+        height: 200px;
+        display: block; /* Remove any extra space around the image */
+        margin: 0 auto; /* Center the image horizontally */
+        padding: 10;
+        border-radius: 5px;
+        box-shadow: 0 0 3px 5px rgba(209, 209, 209, 0.3);
+    }
+
+    .mark{
+        position: absolute;
+        background: transparent;
+        top: 5px; /* Adjust as needed for positioning */
+        right: 5px; /* Adjust as needed for positioning */
+        width: 40px; /* Adjust the size of the 'bookmark' icon */
+        height: 35px; /* Adjust the size of the 'bookmark' icon */
+        box-shadow: none;
+    }
+
+    .card button {
+        padding: 3px 5px;
+        font-size: 14px;
+        text-align: center;
+        cursor: pointer;
+        outline: none;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0 4px #c7c7c7;
+    }
+
+    .card button:hover {background-color: #f5d41a}
+
+    .card button:active {
+        box-shadow: 0 1px #c7c7c7;
+        transform: translateY(4px);
+    }
+
+    .deletebutton{
+        background-color: rgb(255, 97, 97);
+    }
+
+    .pinjambutton{
+        padding: 3px 5px;
+        font-size: 14px;
+        text-align: center;
+        cursor: pointer;
+        outline: none;
+        color: #fff;
+        background-color: rgb(65, 194, 119);
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0 4px #c7c7c7;
+    }
+    
+    .delete{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .delete > * {
+        margin: 2px; /* Menambahkan jarak 10px di sekitar setiap elemen di dalam .delete */
+    }
+    .delete img{
+        width: 20px;
+        height: 20px;
+    }
+
+    .card{
+        box-shadow: 0 0 3px 5px rgba(209, 209, 209, 0.3);
+        align-items: center;
+        width: fit-content;
+        height: fit-content;
+        margin: 10px; /* Adding margin between cards */
+        padding: 10px; /* Fixing the padding unit */
+    }
+
+    h3{
+        font-size: 15px;
+        align-items: center;
+        font-weight: bold;
+        color: #37465D;
+    }
+
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center; /* Align cards in the center horizontally */
+        margin: 30;
+    }
+
+    .user {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        padding-right: 20px;
+    }
+
+    .member{
+        display: flex;
+        color: #37465D;
+        text-transform: capitalize;
+        vertical-align: sub;
+    }
+    .member img{
+        width: 20px;
+        height: 20px;
+    }
+
 </style>
 
-<h1>Bookmark</h1>
+<div class="header">
+    <img src="https://www.iconsdb.com/icons/preview/color/37465D/bookmark-5-xxl.png">
+    <h1>Bookmark</h1>
+</div>
+<img class='backimg' src="https://raw.githubusercontent.com/PBP-D-11-2023/Wisdom-Repository/anisha/assets/images/bookmark.png">
 
-<p>{{name}}</p> 
-<h5>{{member}}</h5>
-<p>D11</p>
-<p>List of Books</p>
-<div class="columns is-multiline" id="item_table">
-    <!-- Dynamic content will be loaded here -->
+<div class="user">
+    <p>Hey, {{ name }}!</p>
+    <div class="member">
+        <img src="{% static 'authentication_bookmark/img/user.png' %} ">
+        <h5>{{ member }}</h5>
+    </div>
+</div>
+{% csrf_token %}
+<p><u>List of Books:</u></p>
+<div class="container">
+    <div class="card-container" id="product-table"></div>
 </div>
 
 <script>
-    async function getItems() {
+    async function getProducts() {
         return fetch("{% url 'authentication_bookmark:get_bookmark_json' %}").then((res) => res.json());
     }
 
-    async function refreshItems() {
-        const items = await getItems();
-        let totalTickets = 0;
-        let totalItems = items.length;
-        let htmlString = "";
-        items.forEach((item, index) => {
-            totalTickets += item.amount;
-            htmlString += `
-                <div class="column is-one-third ${index === items.length - 1 ? 'bg-blue-200' : ''}">
-                    <div class="card" style="background-color: #f1eacc; border: 1px solid #bd9189;">
-                        <div class="card-content">
-                            <p class="title has-text-black">${item.name}</p>
-                            <p class="subtitle has-text-black">${item.description}</p>
-                            <p class="has-text-weight-bold">Price: ${item.price}</p>
-                            
-                            <!--controls for this item-->
-                            
-                        </div>
-                        <footer class="card-footer is-centered" style="background-color: #caa99b;">
-                            <div class="card-footer-item">
-                                <a href="${item.edit_url}" class="button is-info">Edit</a>
-                            </div>
-                        
-                            <div class="card-footer-item">
-                                <button onclick="deleteItem(${item.pk})" class="button is-danger">Delete</button>
-                            </div>
-                        </footer>
+    async function refreshProducts() {
+        const productsContainer = document.getElementById("product-table");
+        productsContainer.innerHTML = ""; // Clear the container before appending new items
+        const products = await getProducts();
+
+        products.forEach((item) => {
+            const pinjamLink = "{% url 'pinjam_buku:pinjam_buku' 0 %}".replace('0', item.fields.buku);
+            const card = `
+                <div class="card" data-product-id="${item.pk}">
+                    <img class= 'mark' src="https://www.iconsdb.com/icons/preview/color/37465D/bookmark-5-xxl.png">
+                    <img class = 'imgbuku' src="${item.fields.gambar}">
+                    <h3>${item.fields.judul}</h3>
+
+                    <div class="delete">
+                        <img src=https://www.iconsdb.com/icons/preview/red/delete-xxl.png>
+                        <button class='deletebutton' onclick="deleteItem(${item.pk})">Delete</button>
+                        <a class='pinjambutton' href="${pinjamLink}">Pinjam</a>
                     </div>
-                </div>`;
+                </div>
+            
+            `;
+            productsContainer.insertAdjacentHTML("beforeend", card);
         });
-        document.getElementById("ticket-count").textContent = totalTickets;
-        document.getElementById("item-count").textContent = totalItems;
-        document.getElementById("item_table").innerHTML = htmlString;
     }
 
     async function deleteItem(id) {
-        const response = await fetch(`/delete-item/${id}`);
-        refreshItems();
+        try {
+            const csrftoken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+            const response = await fetch(`/delete/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                },
+            });
+            refreshProducts();
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Delete request successful', data);
+                refreshProducts();
+            } else {
+                console.error('Delete request failed:', response.status);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 
-    function addItem() {
-        fetch("{% url 'authentication_bookmark:add_bookmark_ajax' %}", {
-            method: "POST",
-            body: new FormData(document.querySelector('#form'))
-        }).then(() => {
-            refreshItems();
-            document.getElementById("form").reset(); 
-            document.getElementById("exampleModal").classList.remove("is-active");
-        });
-        return false;
-    }   
-        
-        // Perbarui item saat halaman dimuat.
-        refreshItems();
-    </script>
+    function pinjamItem(id) {
+        const pinjamBookmarkLink = "{% url 'pinjam_buku:pinjam_buku' 0 %}".replace('0', id);
+        try {
+            const response = fetch(pinjamBookmarkLink, {
+                method: 'GET' // Sesuaikan dengan metode yang diharapkan oleh view Django
+            });
+
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+
+
+    refreshProducts();
+</script>
 {% endblock content %}

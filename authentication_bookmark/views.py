@@ -1,6 +1,6 @@
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+import json
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
-from django.shortcuts import redirect
 from django.contrib import messages  
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
@@ -13,16 +13,18 @@ from .forms import SignupForm
 from django.views.decorators.csrf import csrf_exempt
 from authentication_bookmark.models import Bookmark
 from django.core import serializers
+from daftar_buku.models import Buku
 
 # Create your views here.
 @login_required(login_url='/login')
 def show_bookmark(request):
-    bookmark = Bookmark.objects.filter(user=request.user)    
+    bookmarks = Bookmark.objects.filter(user=request.user)
+    data = Buku.objects.all()    
     context = {
         'name': request.user.username,
         'member' : request.user.member,
-        'bookmark': bookmark,
-        # 'last_login': request.COOKIES['last_login'],
+        'bookmarks': bookmarks,
+        'data' : data,
     }
 
     return render(request, "bookmark.html", context)
@@ -46,8 +48,10 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            response = HttpResponseRedirect(reverse('authentication_bookmark:show_bookmark')) 
-            response.set_cookie('last_login', str(datetime.datetime.now()))
+            if user.is_superuser:
+                response = HttpResponseRedirect(reverse('admin_buku:show_main')) 
+            else:
+                response = HttpResponseRedirect(reverse('daftar_buku:show_main')) 
             return response
         else:
             messages.info(request, 'Sorry, incorrect username or password. Please try again.')
@@ -56,25 +60,35 @@ def login_user(request):
 
 def logout_user(request):
     logout(request)
-    return redirect('authentication_bookmark:login')
+    return redirect('daftar_buku:show_main')
 
 @csrf_exempt
 def add_bookmark_ajax(request):
-    if request.method == 'POST':
-        buku = request.POST.get("buku")
-        gambar = request.POST.get("gambar")
+    if request.method == 'GET':
+        id_buku = request.GET.get('id_buku')
+        buku = Buku.objects.get(pk=id_buku)
         user = request.user
 
-        new_bookmark = Bookmark(buku=buku, gambar=gambar, user=user)
+        # Periksa apakah buku sudah ada di bookmark user
+        existing_bookmark = Bookmark.objects.filter(buku=buku, user=user)
+        if existing_bookmark.exists():
+            # Jika sudah ada, kirim pesan bahwa buku sudah ada di bookmark
+            return JsonResponse({'message': 'Buku sudah ada di bookmark'}, status=201)
+
+        # Jika belum ada, tambahkan ke bookmark
+        new_bookmark = Bookmark(buku=buku, user=user, judul=buku.judul, gambar=buku.gambar)
         new_bookmark.save()
+        return JsonResponse({'message': 'Bookmark berhasil ditambahkan'}, status=201)
 
-        return HttpResponse(b"CREATED", status=201)
-
-    return HttpResponseNotFound()
-
+    return JsonResponse({'message': 'Metode tidak diizinkan'}, status=405)
+ 
 def get_bookmark_json(request):
     bookmark_item = Bookmark.objects.all()
     return HttpResponse(serializers.serialize('json', bookmark_item))
+
+def show_json(request):
+    data = Bookmark.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 def delete_bookmark(request, id):
     # Get data berdasarkan ID
