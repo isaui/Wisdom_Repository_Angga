@@ -142,7 +142,7 @@
                             </div>
                             <div class="text-info">
                                 <div class="title-info">
-                                    <p id="book-title">Author Name</p>
+                                    <p id="book-title" value="">Author Name</p>
                                 </div>
                                 <div class="author-info">
                                     <i class="fas fa-user author-icon"></i>
@@ -161,7 +161,9 @@
                     <div class="modal-footer" style="display: flex; justify-content: space-between;">
                         {% if tipe != 'guest' %}
                         <div style="display: flex; gap: 5px;">
-                            <button type="button" class="btn btn-primary">Pinjam</button>
+                            <a id="book-details-link" href="#" data-url="{% url 'daftar_buku:book_details' %}">
+                                <button type="button" class="btn btn-primary">Pinjam</button>
+                            </a>
                             <button type="button" class="btn btn-primary">Bookmarks</button>
                             <button type="button" class="btn btn-primary">Lihat Review</button>
                         </div>
@@ -298,7 +300,6 @@
 
         $(document).on('click', '.clickable-card', function(event) {
             var clickedElement = $(event.target);
-            
             if (!clickedElement.is(".show-details, .show-details *")) {
                 var bookId = $(this).find('.card-img').data("id");
                 $.ajax({
@@ -312,6 +313,11 @@
                         document.getElementById('modalImage').src=data.gambar;
                         $("#book-release").text(data.tahun);
                         $("#bookModal").modal("show");
+                        const bookTitle = document.getElementById('book-title');
+                        const pinjamButton = document.getElementById('book-details-link');
+                        const newUrl = "{% url 'pinjam_buku:pinjam_buku' 0 %}".replace('0', bookId);
+                        pinjamButton.href = newUrl;
+                        console.log(pinjamButton.href);
                     },
                 });
             }
