@@ -3,6 +3,7 @@
 {% block content %}
     <title>List Buku Dikembalikan</title>
     {% include 'navbaruser.html' %}
+    {% load static %}
 	<div class="container-fluid">
         <div class="row">
             <div class="bg-image top-section">
@@ -24,7 +25,7 @@
                                     style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px;"
                                     title="{{ pengembalian.buku.judul }}"><strong>{{ pengembalian.buku.judul }}</strong></h5>
                             </div>
-                            <a href="#">
+							<a href="{% url 'review_buku:review' pengembalian.idBuku %}">
                                 <button type="button" class="button-review"><strong>Review</strong></button>
                             </a>
                         </div>
@@ -46,7 +47,7 @@
         }
     
         .top-section {
-            background-image: url('https://raw.githubusercontent.com/PBP-D-11-2023/Wisdom-Repository/anisha/assets/images/bookmark.png');
+            background-image: url("{% static 'pinjam_buku/img/bookmark.png' %}");
             background-size: cover;
             background-position: center;
             width: 100vw;
