@@ -19,3 +19,5 @@ class CustomUser(AbstractUser):
 class Bookmark(models.Model):
     buku = models.ForeignKey(Buku, on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    judul = models.CharField(max_length=100, default='default')
+    gambar = models.CharField(max_length=100, default='default')

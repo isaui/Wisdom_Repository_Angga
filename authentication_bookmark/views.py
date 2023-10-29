@@ -18,11 +18,13 @@ from daftar_buku.models import Buku
 # Create your views here.
 @login_required(login_url='/login')
 def show_bookmark(request):
-    bookmarks = Bookmark.objects.filter(user=request.user)    
+    bookmarks = Bookmark.objects.filter(user=request.user)
+    data = Buku.objects.all()    
     context = {
         'name': request.user.username,
         'member' : request.user.member,
         'bookmarks': bookmarks,
+        'data' : data,
     }
 
     return render(request, "bookmark.html", context)
@@ -65,38 +67,19 @@ def add_bookmark_ajax(request):
         buku = Buku.objects.get(pk=id_buku)
         user = request.user
 
-        new_bookmark = Bookmark(buku=buku, user=user)
+        # Periksa apakah buku sudah ada di bookmark user
+        existing_bookmark = Bookmark.objects.filter(buku=buku, user=user)
+        if existing_bookmark.exists():
+            # Jika sudah ada, kirim pesan bahwa buku sudah ada di bookmark
+            return JsonResponse({'message': 'Buku sudah ada di bookmark'}, status=400)
+
+        # Jika belum ada, tambahkan ke bookmark
+        new_bookmark = Bookmark(buku=buku, user=user, judul=buku.judul, gambar=buku.gambar)
         new_bookmark.save()
         return JsonResponse({'message': 'Bookmark berhasil ditambahkan'}, status=201)
 
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            id_buku = data.get('idbuku')  # Pastikan kunci dalam data adalah 'idbuku'
-            buku = Buku.objects.get(pk=id_buku)
-            user = request.user
-
-            new_bookmark = Bookmark(buku=buku, user=user)
-            new_bookmark.save()
-
-            return JsonResponse({'message': 'Bookmark berhasil ditambahkan'}, status=201)
-        except Buku.DoesNotExist:
-            return JsonResponse({'message': 'ID buku tidak ditemukan'}, status=400)
-        except Exception as e:
-            return JsonResponse({'message': f'Gagal menambahkan bookmark: {str(e)}'}, status=400)
 
     return JsonResponse({'message': 'Metode tidak diizinkan'}, status=405)
-
-# def add_bookmark_ajax(request, id):
-#     # Get data berdasarkan ID
-#     buku = Buku.objects.get(pk = id)
-#     user = request.user
-#     # Hapus data
-#     new_bookmark = Bookmark(buku=buku, user=user)
-#     new_bookmark.save()
-
-#     return HttpResponse(b"CREATED", status=201)
-  
  
 def get_bookmark_json(request):
     bookmark_item = Bookmark.objects.all()

@@ -1,61 +1,213 @@
-{% block meta %}
-    <title>Bookmark</title>
-{% endblock meta %}
+{% extends 'base.html' %}
 
 {% block content %}
-{% include 'navbar.html' %}
+
+{% include 'navbaruser.html' %}
 <style>
-    body{
+    body {
         background-color: #F5F2ED;
         background-repeat: no-repeat;
-
-       
         font-family: 'Baskerville Regular', Baskerville;
     }
-    h1{
-        font-size: 70;
+    h1 {
+        font-size: 70px;
         text-align: center;
-        padding-top: 50;
+        padding-top: 50px; 
+        padding-left: 30px;
         top: auto;
-    }
-    p{
         color: #37465D;
-        font-size: 30;
     }
-</style>
-<img src="https://raw.githubusercontent.com/PBP-D-11-2023/Wisdom-Repository/anisha/assets/images/bookmark.png">
-<h1>Bookmark</h1>
+    p {
+        color: #37465D;
+        font-size: 30px; /* Added 'px' */
+    }
 
-<p>{{name}}</p> 
-<h5>{{member}}</h5>
-<p>D11</p>
+    .header{
+        position: absolute;
+        top: 30%; /* Pusatkan header secara vertikal */
+        left: 50%; /* Pusatkan header secara horizontal */
+        transform: translate(-50%, -50%); /* Koreksi posisi untuk menjaga header di tengah */
+        display: flex;
+        align-items: center;
+    }
+
+    .header img{
+        width: 70px;
+        height: 70px;
+        box-shadow: none;
+    }
+
+    p{
+        padding-left: 30px;
+    }
+
+    .backimg{
+        padding-top: 78px;
+    }
+    .imgbuku {
+        max-width: 100%; /* Ensure the image doesn't exceed the card width */
+        width: 130px;
+        height: 200px;
+        display: block; /* Remove any extra space around the image */
+        margin: 0 auto; /* Center the image horizontally */
+        padding: 10;
+        border-radius: 5px;
+        box-shadow: 0 0 3px 5px rgba(209, 209, 209, 0.3);
+    }
+
+    .mark{
+        position: absolute;
+        background: transparent;
+        top: 5px; /* Adjust as needed for positioning */
+        right: 5px; /* Adjust as needed for positioning */
+        width: 40px; /* Adjust the size of the 'bookmark' icon */
+        height: 35px; /* Adjust the size of the 'bookmark' icon */
+        box-shadow: none;
+    }
+
+    .card button {
+        padding: 5px 8px;
+        font-size: 14px;
+        text-align: center;
+        cursor: pointer;
+        outline: none;
+        color: #fff;
+        background-color: rgb(255, 97, 97);
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0 4px #c7c7c7;
+    }
+
+    .card button:hover {background-color: #ec2424}
+
+    .card button:active {
+        background-color: #ff0000;
+        box-shadow: 0 1px #c7c7c7;
+        transform: translateY(4px);
+    }
+
+    .delete{
+        display: flex;
+    }
+    .delete img{
+        width: 20px;
+        height: 20px;
+    }
+
+    .card{
+        box-shadow: 0 0 3px 5px rgba(209, 209, 209, 0.3);
+        align-items: center;
+        width: fit-content;
+        height: fit-content;
+        margin: 10px; /* Adding margin between cards */
+        padding: 10px; /* Fixing the padding unit */
+    }
+
+    h3{
+        font-size: 15px;
+        align-items: center;
+        font-weight: bold;
+        color: #37465D;
+    }
+
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center; /* Align cards in the center horizontally */
+        margin: 30;
+    }
+
+    .user {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        padding-right: 20px;
+    }
+
+    .member{
+        display: flex;
+        color: #37465D;
+        text-transform: capitalize;
+        vertical-align: sub;
+    }
+    .member img{
+        width: 20px;
+        height: 20px;
+    }
+
+</style>
+
+<div class="header">
+    <img src="https://www.iconsdb.com/icons/preview/color/37465D/bookmark-5-xxl.png">
+    <h1>Bookmark</h1>
+</div>
+<img class='backimg' src="https://raw.githubusercontent.com/PBP-D-11-2023/Wisdom-Repository/anisha/assets/images/bookmark.png">
+
+<div class="user">
+    <p>Hey, {{ name }}!</p>
+    <div class="member">
+        <img src="https://www.iconsdb.com/icons/preview/color/37465D/user-xxl.png">
+        <h5>{{ member }}</h5>
+    </div>
+</div>
+{% csrf_token %}
 <p>List of Books</p>
-<table id="product_table"></table>
-{% endblock content %}
+<div class="container">
+    <div class="card-container" id="product-table"></div>
+</div>
+
 <script>
     async function getProducts() {
-        return fetch("{% url 'authentication_bookmark:get_bookmark_json' %}").then((res) => res.json())
+        return fetch("{% url 'authentication_bookmark:get_bookmark_json' %}").then((res) => res.json());
     }
 
     async function refreshProducts() {
-        document.getElementById("product_table").innerHTML = ""
-        const products = await getProducts()
-        let htmlString = `<tr>
-            <th>Judul</th>
-            <th>Price</th>
-            <th>Description</th>
-            <th>Date Added</th>
-        </tr>`
+        const productsContainer = document.getElementById("product-table");
+        productsContainer.innerHTML = ""; // Clear the container before appending new items
+        const products = await getProducts();
+
         products.forEach((item) => {
-            htmlString += `\n<tr>
-            <td>${item.fields.judul}</td>
-            <td>${item.gambar}</td>
-        </tr>` 
-        })
-        
-        document.getElementById("product_table").innerHTML = htmlString
+            const card = `
+                <div class="card" data-product-id="${item.pk}">
+                    <img class= 'mark' src="https://www.iconsdb.com/icons/preview/color/37465D/bookmark-5-xxl.png">
+                    <img class = 'imgbuku' src="${item.fields.gambar}">
+                    <h3>${item.fields.judul}</h3>
+
+                    <div class="delete">
+                        <img src=https://www.iconsdb.com/icons/preview/red/delete-xxl.png>
+                        <button onclick="deleteItem(${item.pk})">Delete</button>
+                    </div>
+                </div>
+            
+            `;
+            productsContainer.insertAdjacentHTML("beforeend", card);
+        });
     }
 
-    refreshProducts()
-</script>
+    async function deleteItem(id) {
+        try {
+            const csrftoken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 
+            const response = await fetch(`/delete/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                },
+            });
+            refreshProducts();
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Delete request successful', data);
+                refreshProducts();
+            } else {
+                console.error('Delete request failed:', response.status);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+
+    refreshProducts();
+</script>
+{% endblock content %}
