@@ -22,8 +22,23 @@ def review(request, id):
     return render(request, "review.html", context)
 
 def show_reviews(request, id):
-    reviews = Review.objects.filter(buku_id=id)  # Mengambil semua ulasan untuk buku dengan ID yang sesuai
-    return render(request, 'lihat_review.html', {'reviews': reviews})
+    buku = Buku.objects.get(pk=id)
+    reviews = Review.objects.filter(buku=buku)
+    return render(request, 'lihat_review.html', {'reviews': reviews, 'buku': buku})
+# def show_reviews(request, id):
+#     reviews = Review.objects.filter(buku_id=id)  # Mengambil semua ulasan untuk buku dengan ID yang sesuai
+#     context = {
+#         'review': Review,
+#     }
+#     return render(request, 'lihat_review.html', {'reviews': reviews})
+# def show_reviews(request, id):
+#     reviews = Review.objects.filter(buku_id=id)
+#     review_list = []
+#     for review in reviews:
+#         review_list.append({
+#             'review_text': review.review_text,
+#         })
+#     return render(request, 'lihat_review.html', {'review': reviews})
 
 @csrf_exempt
 @login_required(login_url='/login')  # Perlu login untuk mengakses view ini
@@ -37,6 +52,4 @@ def post_review(request):
         review = Review(review_text=text, buku=buku)
         review.save()
         return JsonResponse({"success": True})
-    
-
     return JsonResponse({"message": "Invalid method"})
