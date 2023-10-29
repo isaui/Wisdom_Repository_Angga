@@ -1,186 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-        crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+{% block content %}
     <title>List Buku Dipinjam</title>
-	<style>
-        body {
-            font-size: 16px;
-            font-family: "Book Antiqua";
-			background-color: #F5F2ED;
-            font-weight:bold;
-        }
-        .top-section {
-            background-image: url('https://raw.githubusercontent.com/PBP-D-11-2023/Wisdom-Repository/anisha/assets/images/bookmark.png');
-            background-size: cover;
-            background-position: center;
-            width: 100vw;
-			height: 30vh;
-            color: #37465D;
-            position: relative;
-            z-index:2;
-        }
-        .bottom-left-section {
-            padding: 20px;
-			height: 70vh;
-            margin-left: 2vw;
-            max-width: 30vw;
-            z-index:1;
-        }
-        .bottom-right-section {
-            padding: 20px;
-			height: 70vh;
-            margin-left: 30vw;
-            max-width: 70vw;
-            z-index:1;
-            margin-top:-70vh
-        }
-        .border-image {
-            border: 1vh solid white;
-        }
-        .text-margin-first {
-            margin-left:38vw;
-            margin-top:17vh;
-            font-size: 36px;
-            position:relative;
-        }
-        .button-return{
-            background-color: #37465D;
-            color: white;
-            padding: 10px 20px;
-            border: 1px solid white;
-            cursor: pointer;
-            font-size:18px;
-        }
-        .small-card {
-            width: 30vw;
-            height: 30vh; 
-            transition: transform 0.2s;
-            background-color: rgb(255, 255, 255);
-            color: black;
-            margin-top: 15px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .small-card .card {
-            height: 100%;
-            margin-top: 0;
-            padding: 0;
-            
-        }
-
-        .small-card .card-img {
-            margin-top: 15px;
-            max-width: 40%;
-            object-fit: contain;
-            height: 90%;
-            margin-right: auto;
-            margin-left: 10%;
-        }
-
-        .small-card .card-body {
-            height: 25%; 
-        }
-
-        .container-aturan {
-            background-color: #37465D;
-            color: white;
-            padding: 20px;
-            width: 25vw;
-            height: 100vh;
-            border-radius: 1vh;
-        }
-        .hurufrules {
-            font-size: 40px;
-            text-decoration-line: underline;
-        }
-        .card {
-            display: flex;
-        }
-
-        .judultext {
-            font-size: 30px;
-        }
-        @media (max-width: 767px) {
-            .card {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-            .card .card-img {
-                margin-top: 5%;
-                margin-bottom: 5%;
-                max-width: 40%;
-                object-fit: contain;
-                height: 50%;
-                margin-right: 5%;
-                margin-left: 5%;
-            }
-        }
-        @media (min-width: 768px) {
-            .card {
-                flex-direction: row;
-            }
-            .card .card-img {
-                margin-top: 5%;
-                margin-bottom: 5%;
-                max-width: 40%;
-                object-fit: contain;
-                height: 50%;
-                margin-right: 5%;
-                margin-left: 5%;
-            }
-        }
-	</style>
-</head>
-
-<body>
-    <header data-bs-theme="light">
-        <nav class="navbar navbar-expand-md fixed-top bg-light" id="navbar-1">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">
-                    <img src="https://raw.githubusercontent.com/PBP-D-11-2023/Wisdom-Repository/anisha/assets/images/wr%20logo.png" alt="Logo" width="156" height="52" class="d-inline-block align-text-top">
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
-                    <ul class="nav justify-content-end me-3">
-                        <li class="nav-item me-2">
-                            <a class="nav-link active text-dark" href="{% url 'authentication_bookmark:show_bookmark' %}">Bookmark</a>
-                        </li>
-                        <li class="nav-item me-2">
-                            <a class="nav-link active text-dark" href="{% url 'pinjam_buku:show_pengembalian' %}">Returned</a>
-                        </li>
-                        <li class="nav-item me-2">
-                            <a class="nav-link active text-dark" href="{% url 'pinjam_buku:list_pinjam' %}">Borrowed</a>
-                        </li>
-                        <li class="nav-item me-2">
-                            <a class="nav-link active text-dark" href="{% url 'daftar_buku:show_main' %}">Profile</a>
-                        </li>
-                        <li class="nav-item me-2">
-                            <a class="nav-link active text-dark" href="{% url 'authentication_bookmark:logout' %}">Log Out</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+    {% include 'navbaruser.html' %}
 	<div class="container-fluid">
         <div class="row">
             <div class="bg-image top-section">
@@ -229,7 +51,7 @@
                 </div>
                 {% else %}
                 <div class="row">
-                <p>Belum ada buku yang dipinjam</p>
+                <p>Belum ada buku yang dipinjam saat ini</p>
                 </div>
                 {% endif %}
             </div>
@@ -311,7 +133,7 @@
             const peminjamans = await getPeminjaman()
             let htmlString = `<div class="row">`
             if (peminjamans.length == 0) {
-                htmlString += `<p>Belum ada buku yang dipinjam</p>`
+                htmlString += `<p>Belum ada buku yang dipinjam saat ini</p>`
             }
             else {
                 peminjamans.forEach((peminjaman) => {
@@ -342,8 +164,158 @@
             }).then(refreshPeminjaman)
 
             document.getElementById("form").reset()
+            const userConfirmed = confirm('Apakah anda mau mereview buku yang sudah dikembalikan?');
+            if (userConfirmed) {
+                window.location.href = "{% url 'pinjam_buku:show_pengembalian' %}";
+            }
             return false
         }
         document.getElementById("button_add").onclick = addPengembalian
     </script>
-</body>
+    <style>
+        body {
+            font-size: 16px;
+            font-family: "Book Antiqua";
+            background-color: #F5F2ED;
+            font-weight: bold;
+        }
+    
+        .top-section {
+            background-image: url('https://raw.githubusercontent.com/PBP-D-11-2023/Wisdom-Repository/anisha/assets/images/bookmark.png');
+            background-size: cover;
+            background-position: center;
+            width: 100vw;
+            height: 30vh;
+            color: #37465D;
+            position: relative;
+            z-index: 2;
+        }
+    
+        .bottom-left-section {
+            padding: 20px;
+            height: 70vh;
+            margin-left: 2vw;
+            max-width: 30vw;
+            z-index: 1;
+        }
+    
+        .bottom-right-section {
+            padding: 20px;
+            height: 70vh;
+            margin-left: 30vw;
+            max-width: 70vw;
+            z-index: 1;
+            margin-top: -70vh
+        }
+    
+        .border-image {
+            border: 1vh solid white;
+        }
+    
+        .text-margin-first {
+            margin-left: 38vw;
+            margin-top: 17vh;
+            font-size: 36px;
+            position: relative;
+        }
+    
+        .button-return {
+            background-color: #37465D;
+            color: white;
+            padding: 10px 20px;
+            border: 1px solid white;
+            cursor: pointer;
+            font-size: 18px;
+        }
+    
+        .small-card {
+            width: 30vw;
+            height: 30vh;
+            transition: transform 0.2s;
+            background-color: rgb(255, 255, 255);
+            color: black;
+            margin-top: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    
+        .small-card .card {
+            height: 100%;
+            margin-top: 0;
+            padding: 0;
+    
+        }
+    
+        .small-card .card-img {
+            margin-top: 15px;
+            max-width: 40%;
+            object-fit: contain;
+            height: 90%;
+            margin-right: auto;
+            margin-left: 10%;
+        }
+    
+        .small-card .card-body {
+            height: 25%;
+        }
+    
+        .container-aturan {
+            background-color: #37465D;
+            color: white;
+            padding: 20px;
+            width: 25vw;
+            height: 100vh;
+            border-radius: 1vh;
+        }
+    
+        .hurufrules {
+            font-size: 40px;
+            text-decoration-line: underline;
+        }
+    
+        .card {
+            display: flex;
+        }
+    
+        .judultext {
+            font-size: 30px;
+        }
+    
+        @media (max-width: 767px) {
+            .card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+    
+            .card .card-img {
+                margin-top: 5%;
+                margin-bottom: 5%;
+                max-width: 40%;
+                object-fit: contain;
+                height: 50%;
+                margin-right: 5%;
+                margin-left: 5%;
+            }
+        }
+    
+        @media (min-width: 768px) {
+            .card {
+                flex-direction: row;
+            }
+    
+            .card .card-img {
+                margin-top: 5%;
+                margin-bottom: 5%;
+                max-width: 40%;
+                object-fit: contain;
+                height: 50%;
+                margin-right: 5%;
+                margin-left: 5%;
+            }
+        }
+    </style>
+{% endblock content %}

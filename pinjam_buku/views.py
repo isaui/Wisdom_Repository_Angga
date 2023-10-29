@@ -86,9 +86,12 @@ def pengembalian_by_ajax(request):
         peminjaman.delete()
         user = request.user
         buku_dikembalikan = Buku.objects.filter(pk = id_buku).first()
-        new_pengembalian = Pengembalian(buku = buku_dikembalikan, peminjam = user, idBuku = id_buku, review = False)
-        new_pengembalian.save()
-        return HttpResponse(b"CREATED", status=201)
+        check_pengembalian = Pengembalian.objects.filter(buku = buku_dikembalikan, peminjam=user)
+        if len(check_pengembalian) == 0:
+            new_pengembalian = Pengembalian(buku = buku_dikembalikan, peminjam = user, idBuku = id_buku, review = False)
+            new_pengembalian.save()
+            return HttpResponse(b"CREATED", status=201)
+        return HttpResponse(b"DELETED PEMINJAMAN", status=201)
     return HttpResponseNotFound()
 
 @login_required(login_url='/login')
