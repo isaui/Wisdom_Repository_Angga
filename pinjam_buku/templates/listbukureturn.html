@@ -3,6 +3,7 @@
 {% block content %}
     <title>List Buku Dikembalikan</title>
     {% include 'navbaruser.html' %}
+    {% load static %}
 	<div class="container-fluid">
         <div class="row">
             <div class="bg-image top-section">
@@ -46,7 +47,7 @@
         }
     
         .top-section {
-            background-image: url('https://raw.githubusercontent.com/PBP-D-11-2023/Wisdom-Repository/anisha/assets/images/bookmark.png');
+            background-image: url("{% static 'pinjam_buku/img/bookmark.png' %}");
             background-size: cover;
             background-position: center;
             width: 100vw;

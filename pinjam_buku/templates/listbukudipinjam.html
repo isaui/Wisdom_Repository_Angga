@@ -3,6 +3,7 @@
 {% block content %}
     <title>List Buku Dipinjam</title>
     {% include 'navbaruser.html' %}
+    {% load static %}
 	<div class="container-fluid">
         <div class="row">
             <div class="bg-image top-section">
@@ -103,7 +104,7 @@
             return fetch("{% url 'pinjam_buku:get_peminjaman_json' %}").then((res) => res.json())
         }
         async function getPeminjamanByID(id) {
-            const url = `/borrow/peminjamanjsonbyid/${id}`;
+            const url = `{% url 'pinjam_buku:get_peminjaman_json_by_id' id=1 %}`.replace('1', id);
             return fetch(url).then((res) => res.json())
         }
 
@@ -112,7 +113,6 @@
             const returnButtons = Array.from(returnButtons1);
             returnButtons.forEach(button => {
                 button.addEventListener('click', function (event) {
-                    console.log(button)
                     const id = parseInt(event.target.dataset.id);
                     refreshIsiModal(id);
                 });
@@ -181,7 +181,7 @@
         }
     
         .top-section {
-            background-image: url('https://raw.githubusercontent.com/PBP-D-11-2023/Wisdom-Repository/anisha/assets/images/bookmark.png');
+            background-image: url("{% static 'pinjam_buku/img/bookmark.png' %}");
             background-size: cover;
             background-position: center;
             width: 100vw;
