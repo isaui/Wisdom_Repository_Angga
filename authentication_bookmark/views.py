@@ -60,7 +60,7 @@ def login_user(request):
 
 def logout_user(request):
     logout(request)
-    return redirect('authentication_bookmark:login')
+    return redirect('daftar_buku:show_main')
 
 @csrf_exempt
 def add_bookmark_ajax(request):

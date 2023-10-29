@@ -3,10 +3,12 @@ from authentication_bookmark.views import show_bookmark
 from authentication_bookmark.views import register #sesuaikan dengan nama fungsi yang dibuat
 from authentication_bookmark.views import login_user #sesuaikan dengan nama fungsi yang dibuat
 from authentication_bookmark.views import logout_user, delete_bookmark , add_bookmark_ajax, get_bookmark_json, show_json
+from daftar_buku.views import show_main
 
 app_name = 'authentication_bookmark'
 
 urlpatterns = [
+    path('', show_main, name='show_main'),
     path('bookmark/', show_bookmark, name='show_bookmark'),
     path('register/', register, name='register'), 
     path('login/', login_user, name='login'),
