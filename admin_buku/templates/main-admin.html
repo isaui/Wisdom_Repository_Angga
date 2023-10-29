@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% include 'navbaruser.html' %}
+{% include 'navbaradmin.html' %}
 <br>
 <br>
 <br>
@@ -12,79 +12,24 @@
 <br>
 <br>
 
-<div class="container">
-<div id="carouselExample" class="carousel slide" data-bs-ride="carousel" data-bs-interval="1000">
-    <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-    </div>
-    <div class="carousel-inner">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <div class="row">
-                    <div class="col-md-6" style="display: flex; justify-content: end;">
-                        <img class="" src="http://books.google.com/books/content?id=YtjxFRb39Z4C&amp;printsec=frontcover&amp;img=1&amp;zoom=1&amp;source=gbs_api" alt="Gambar Buku 1">
-                    </div>
-                    <div class="col-md-6">
-                        <h2>Judul Buku 1</h2>
-                        <p>Nama Pengarang: Penulis Buku 1</p>
-                        <p>Tahun Terbit: 2022</p>
-                        <p>Peringkat: 4.5/5</p>
-                        <p>Deskripsi Buku 1 yang panjang dan informatif.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div class="row">
-                    <div class="col-md-6" style="display: flex; justify-content: end;">
-                        <img src="http://books.google.com/books/content?id=YtjxFRb39Z4C&amp;printsec=frontcover&amp;img=1&amp;zoom=1&amp;source=gbs_api" alt="Gambar Buku 2">
-                    </div>
-                    <div class="col-md-6">
-                        <h2>Judul Buku 2</h2>
-                        <p>Nama Pengarang: Penulis Buku 2</p>
-                        <p>Tahun Terbit: 2021</p>
-                        <p>Peringkat: 4.0/5</p>
-                        <p>Deskripsi Buku 2 yang panjang dan informatif.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div class="row">
-                    <div class="col-md-6" style="display: flex; justify-content: end;">
-                        <img src="http://books.google.com/books/content?id=YtjxFRb39Z4C&amp;printsec=frontcover&amp;img=1&amp;zoom=1&amp;source=gbs_api" alt="Gambar Buku 3">
-                    </div>
-                    <div class="col-md-6">
-                        <h2>Judul Buku 3</h2>
-                        <p>Nama Pengarang: Penulis Buku 3</p>
-                        <p>Tahun Terbit: 2020</p>
-                        <p>Peringkat: 4.2/5</p>
-                        <p>Deskripsi Buku 3 yang panjang dan informatif.</p>
-                    </div>
-                </div>
-            </div>
-        </div> 
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
-    </div>
-</div>
-
-    <br>
-    <br>
-    <br>
-
 <center>
     <h1 style= "color: #37465D; font-size: 50px;" ><u>List of Books</u></h1>
 </center>
 
 <div class="container"> 
+    <div>
+        <form method="post" action="{% url 'admin_buku:search'%}" class="form-inline">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="search" name="query" placeholder="Cari..." aria-describedby="button-addon">
+                <div class="input-group-append">
+                    <button id="cariUtama" type="submit" class="btn btn-primary" id="button-addon">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
     <h5>Category</h5>                     
     <div class="genre-buttons">
         {% for selected_genre in genre %}
