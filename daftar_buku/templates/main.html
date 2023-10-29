@@ -59,15 +59,15 @@
 
         <div id="sort-form">
             <div id="sort-form">
-                <a href="/main/sort/judul" class="btn btn-primary" id="button-sort-judul" style="background-color: white; color: black;">
+                <a href="{% url 'daftar_buku:sort' query='judul' %}" class="btn btn-primary" id="button-sort-judul" style="background-color: white; color: black;">
                     <i class="fas fa-sort-alpha-down"></i>
                     Judul
                 </a>
-                <a href="/main/sort/tahun" class="btn btn-primary" id="button-sort-tahun" style="background-color: white; color: black;">
+                <a href="{% url 'daftar_buku:sort' query='tahun' %}" class="btn btn-primary" id="button-sort-tahun" style="background-color: white; color: black;">
                     <i class="fas fa-calendar"></i>
                     Tahun
                 </a>
-                <a href="/main/sort/rating" class="btn btn-primary" id="button-sort-rating" style="background-color: white; color: black;">
+                <a href="{% url 'daftar_buku:sort' query='rating' %}" class="btn btn-primary" id="button-sort-rating" style="background-color: white; color: black;">
                     <i class="fas fa-star"></i>
                     Rating
                 </a>
