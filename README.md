@@ -16,7 +16,7 @@ Data menunjukkan bahwa minat membaca masyarakat Indonesia masih rendah. Banyak f
 1. Login, Register, Logout, dan Bookmark Buku (Anisha Putri Qonitah)  
   Halaman ini digunakan untuk user mendaftarkan akun pada web dan memilih role sebagai Member Premium atau Member Reguler dan untuk user yang sudah terdaftar akan masuk dan dapat mengakses web. Halaman Bookmark berisi buku-buku yang sudah di-bookmark.
 2. Daftar Buku (Wahyu Ridho Anggoro)  
-  Halaman ini memperlihatkan semua daftar buku. Pada halaman ini, user dapat melakukan pencarian buku tertentu dengan memasukkan judul buku yang dicari. Pencarian buku juga dapat menggunakan filter berdasarkan genre, penulis, atau tahun penerbitan buku.
+  Halaman ini memperlihatkan semua daftar buku atau bisa disebut main page. Pada halaman ini, user dapat melakukan pencarian buku tertentu dengan memasukkan judul buku yang dicari. Pencarian buku juga dapat menggunakan filter berdasarkan genre, penulis, atau tahun penerbitan buku. pengurutan bisa melalui tahun, judul, atau rating buku. user dapat melihat detail buku dengan menekan card, dan jika user guest tidak bisa melihat deskripsi dan tombol pinjam, bookmarks, lihat review. jika user sebagai member biasa tidak bisa melihat rating (rating hanya untuk premium)
 3. Peminjaman dan Pengembalian Buku (Alwin Djuliansah)  
   Halaman dimana member dapat meminjam buku yang diinginkan dan mengembalikan buku yang dipinjam. Setelah konfirmasi pengembalian, member akan ditawarkan untuk me-review buku yang dipinjam.
 4. Review Buku (Rafah Azizah)  
