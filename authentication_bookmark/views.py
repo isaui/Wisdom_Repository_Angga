@@ -48,8 +48,10 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            response = HttpResponseRedirect(reverse('daftar_buku:show_main')) 
-            response.set_cookie('last_login', str(datetime.datetime.now()))
+            if user.is_superuser:
+                response = HttpResponseRedirect(reverse('admin_buku:show_main')) 
+            else:
+                response = HttpResponseRedirect(reverse('daftar_buku:show_main')) 
             return response
         else:
             messages.info(request, 'Sorry, incorrect username or password. Please try again.')
@@ -71,13 +73,12 @@ def add_bookmark_ajax(request):
         existing_bookmark = Bookmark.objects.filter(buku=buku, user=user)
         if existing_bookmark.exists():
             # Jika sudah ada, kirim pesan bahwa buku sudah ada di bookmark
-            return JsonResponse({'message': 'Buku sudah ada di bookmark'}, status=400)
+            return JsonResponse({'message': 'Buku sudah ada di bookmark'}, status=201)
 
         # Jika belum ada, tambahkan ke bookmark
         new_bookmark = Bookmark(buku=buku, user=user, judul=buku.judul, gambar=buku.gambar)
         new_bookmark.save()
         return JsonResponse({'message': 'Bookmark berhasil ditambahkan'}, status=201)
-
 
     return JsonResponse({'message': 'Metode tidak diizinkan'}, status=405)
  

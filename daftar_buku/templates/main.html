@@ -147,7 +147,7 @@
                         {% if tipe != 'guest' %}
                         <div style="display: flex; gap: 5px;">
                             <button type="button" class="btn btn-primary">Pinjam</button>
-                            <button type="button" class="btn btn-primary" id="bookmarkButton">Bookmarks</button>
+                            <button type="button" class="btn btn-primary" id="bookmarkButton" onclick="addBookmark(event)">Bookmarks</button>
                             <button type="button" class="btn btn-primary">Lihat Review</button>
                         </div>
                         {% endif %}
@@ -283,8 +283,6 @@
             });
         });
 
-   
-
         $(document).on('click', '.clickable-card', function(event) {
             var clickedElement = $(event.target);
             if (!clickedElement.is(".show-details, .show-details *")) {
@@ -306,14 +304,14 @@
             }
         });
 
-        document.getElementById("bookmarkButton").addEventListener("click", function() {
-            var bookId = $(this).attr("data-id");
+        function addBookmark(event){
+            var bookId = $('#bookmarkButton').data("id");
             var addBookmarkLink = "{% url 'authentication_bookmark:add_bookmark_ajax' %}?id_buku=" + bookId;
             fetch(addBookmarkLink)
                 .then(response => response.json())
                 .then(data => alert(data.message))
                 .catch(error => console.error('Error:', error));
-        });
+        };
 
         
 

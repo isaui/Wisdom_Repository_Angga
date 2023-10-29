@@ -66,28 +66,49 @@
     }
 
     .card button {
-        padding: 5px 8px;
+        padding: 3px 5px;
         font-size: 14px;
         text-align: center;
         cursor: pointer;
         outline: none;
         color: #fff;
-        background-color: rgb(255, 97, 97);
         border: none;
         border-radius: 5px;
         box-shadow: 0 4px #c7c7c7;
     }
 
-    .card button:hover {background-color: #ec2424}
+    .card button:hover {background-color: #f5d41a}
 
     .card button:active {
-        background-color: #ff0000;
         box-shadow: 0 1px #c7c7c7;
         transform: translateY(4px);
     }
 
+    .deletebutton{
+        background-color: rgb(255, 97, 97);
+    }
+
+    .pinjambutton{
+        padding: 3px 5px;
+        font-size: 14px;
+        text-align: center;
+        cursor: pointer;
+        outline: none;
+        color: #fff;
+        background-color: rgb(65, 194, 119);
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0 4px #c7c7c7;
+    }
+    
     .delete{
         display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .delete > * {
+        margin: 2px; /* Menambahkan jarak 10px di sekitar setiap elemen di dalam .delete */
     }
     .delete img{
         width: 20px;
@@ -175,7 +196,8 @@
 
                     <div class="delete">
                         <img src=https://www.iconsdb.com/icons/preview/red/delete-xxl.png>
-                        <button onclick="deleteItem(${item.pk})">Delete</button>
+                        <button class='deletebutton' onclick="deleteItem(${item.pk})">Delete</button>
+                        <button class='pinjambutton' onclick="pinjamItem(${item.pk})">Pinjam</button>
                     </div>
                 </div>
             
@@ -205,6 +227,11 @@
         } catch (error) {
             console.error('Error:', error);
         }
+    }
+
+    async function pinjamItem(id){
+        var pinjamBookmarkLink = `pinjam_buku/details/${id}`;
+        fetch(pinjamBookmarkLink)
     }
 
 
