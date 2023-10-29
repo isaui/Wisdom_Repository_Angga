@@ -15,7 +15,7 @@ from daftar_buku.forms import SearchForm
 from daftar_buku.views import daftar_genre
 from admin_buku.forms import BukuForm, RequestBuku
 from admin_buku.models import RequestBuku
-import pandas
+import pandas, os
 
 def delete_book(request, bookID):
     book = Buku.objects.get(pk=bookID)
@@ -185,7 +185,8 @@ def sort_books(request, query):
 
 def make_buku(request):
 
-    file_csv = open('daftar_buku\\book\\books.csv', 'r', encoding='utf-8')
+    file_path = os.path.join(os.path.dirname(__file__), 'static/books.csv')
+    file_csv = open(file_path, 'r', encoding='utf-8')
     data = pandas.read_csv(file_csv, encoding='utf-8')
 
     buku = {}

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from daftar_buku.models import Buku, Rating
 import pandas
+import os
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.urls import reverse
 from django.core.paginator import Paginator, Page
@@ -132,7 +133,8 @@ def book_details(request):
 
 def make_buku(request):
 
-    file_csv = open('daftar_buku\\book\\books.csv', 'r', encoding='utf-8')
+    file_path = os.path.join(os.path.dirname(__file__), 'static/books.csv')
+    file_csv = open(file_path, 'r', encoding='utf-8')
     data = pandas.read_csv(file_csv, encoding='utf-8')
 
     buku = {}
