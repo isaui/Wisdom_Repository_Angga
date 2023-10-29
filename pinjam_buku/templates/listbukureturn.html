@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <title>List Buku Dikembalikan</title>
+    {% include 'navbaruser.html' %}
+	<div class="container-fluid">
+        <div class="row">
+            <div class="bg-image top-section">
+                <p class="text-margin-first"><strong>Returned Books</strong></p>
+            </div>
+            <div>
+                <p class="margin-judul"><u>List of Books</u></p>
+            </div>
+            <div class="col-md-0 bottom-right-section">
+                {% if pengembalians %}
+                <div class="row">
+                    {% for pengembalian in pengembalians %}
+                    <div class="col-md-2 col-sm-3 col-4">
+                        <div class="card small-card">
+                            <img src="{{ pengembalian.buku.gambar }}" class="card-img" alt="{{ pengembalian.buku.judul }}"
+                                data-toggle="modal" data-target="#bookModal" data-id="{{ pengembalian.buku.idBuku }}">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title" id="judul-card"
+                                    style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px;"
+                                    title="{{ pengembalian.buku.judul }}"><strong>{{ pengembalian.buku.judul }}</strong></h5>
+                            </div>
+                            <a href="#">
+                                <button type="button" class="button-review"><strong>Review</strong></button>
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p>Belum ada buku yang dikembalikan dan belum direview</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <style>
+        body {
+            font-size: 16px;
+            font-family: "Book Antiqua";
+            background-color: #F5F2ED;
+            font-weight: bold;
+        }
+    
+        .top-section {
+            background-image: url('https://raw.githubusercontent.com/PBP-D-11-2023/Wisdom-Repository/anisha/assets/images/bookmark.png');
+            background-size: cover;
+            background-position: center;
+            width: 100vw;
+            height: 30vh;
+            color: #37465D;
+            position: relative;
+            z-index: 2;
+        }
+    
+        .bottom-left-section {
+            padding: 20px;
+            height: 70vh;
+            margin-left: 2vw;
+            max-width: 30vw;
+            z-index: 1;
+        }
+    
+        .bottom-right-section {
+            padding: 20px;
+            height: 70vh;
+            margin-left: 5vw;
+            max-width: 90vw;
+            z-index: 1;
+        }
+    
+        .border-image {
+            border: 1vh solid white;
+        }
+    
+        .text-margin-first {
+            margin-left: 38vw;
+            margin-top: 17vh;
+            font-size: 36px;
+            position: relative;
+        }
+    
+        .button-review {
+            background-color: #37465D;
+            color: white;
+            padding: 10px 20px;
+            border: 1px solid black;
+            cursor: pointer;
+            margin-left: auto;
+            margin-bottom: 5%;
+        }
+    
+        .small-card {
+            max-width: 10rem;
+            height: 16rem;
+            transition: transform 0.2s;
+            background-color: rgb(255, 255, 255);
+            color: black;
+            margin-top: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    
+        .small-card .card {
+            height: 100%;
+            margin-top: 0;
+            padding: 0;
+    
+        }
+    
+        .small-card .card-img {
+            margin-top: 15px;
+            max-width: 100px;
+            object-fit: contain;
+            height: 50%;
+            margin-right: auto;
+            margin-left: auto;
+        }
+    
+        .small-card .card-body {
+            height: 25%;
+        }
+    
+        .margin-judul {
+            font-size: 30px;
+            margin-left: 5vw;
+            margin-top: 2vh;
+        }
+    </style>
+{% endblock content %}
