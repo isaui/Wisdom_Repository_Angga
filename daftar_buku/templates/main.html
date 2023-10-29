@@ -264,11 +264,14 @@
             </div>
         </div>
     </div>
-    <div>
-        <button class="floating-button" data-bs-toggle="modal" data-bs-target="#requestBukuModal">
-            Request Buku
-        </button>
-    </div>
+    {% if tipe != 'guest' %}
+        <div>
+            <button class="floating-button" data-bs-toggle="modal" data-bs-target="#requestBukuModal">
+                Request Buku
+            </button>
+        </div>
+    {% endif %}
+    
 
 
 

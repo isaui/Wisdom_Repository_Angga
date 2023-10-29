@@ -89,13 +89,15 @@ def edit_book(request, bookID):
     
     return HttpResponseNotFound()
 
+@csrf_exempt
 def delete_request_book(request, bookID):
     book = RequestBuku.objects.get(pk=bookID)
 
     if request.method == 'DELETE':
         book.delete()
         return JsonResponse({'success': True,})
-    
+
+@csrf_exempt
 def acc_request_book(request, bookID):
     if request.method == 'POST':
         request_buku = RequestBuku.objects.get(pk=bookID)
