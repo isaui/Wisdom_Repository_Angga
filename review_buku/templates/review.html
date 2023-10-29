@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <title>Review Buku</title>
+{% include 'navbaruser.html' %}
+	<style>
+        body {
+            font-size: 16px;
+            font-family: "Book Antiqua";
+			background-color: #F5F2ED;
+        }
+        .top-section {
+            background-image: url('https://raw.githubusercontent.com/PBP-D-11-2023/Wisdom-Repository/anisha/assets/images/review.png');
+            background-size: cover;
+            background-position: center;
+            width: 100vw;
+			height: 60vh;
+            color: white;
+            position: relative;
+            z-index:2;
+        }
+        .centered-image {
+            width: 40vh;
+            height: 54vh;
+            position:relative;
+            margin-left:2vw;
+            margin-top:-15vh;
+            margin-bottom:-10vh;
+            z-index:3;
+        }
+        .border-image {
+            border: 1vh solid white;
+        }
+        .text-margin-first {
+            margin-left:55vh;
+            margin-top:20vh;
+            font-size: 28px;
+        }
+        .text-margin{
+            margin-left:55vh;
+            font-size: 20px;
+        }
+        .text-margin-bottom{
+            margin-left:50vh;
+            font-size: 18px;
+            position:relative;
+            margin-top:-30vh;
+        }
+        .button-pinjam {
+            background-color: #37465D;
+            color: white;
+            padding: 10px 20px;
+            border: 1px solid #37465D;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5vh auto; /* Membuat tombol berada di tengah secara vertikal */
+            display: block; /* Membuat tombol menjadi blok agar lebar otomatis menyesuaikan dengan konten */
+        }
+        .button-bookmark{
+            background-color: white;
+            color: #37465D;
+            padding: 10px 20px;
+            border: 1px solid #37465D;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left:1vw;
+        }
+
+        .textarea-review {
+            border: 1px solid #dcdcdc; /* Sama seperti textbox "Write a Review" tetapi dengan ukuran yang lebih besar */
+            border-radius: 10px;
+            border-color: black;
+            background-color: #F5F2ED;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 14px;
+            height: 200px; /* Tinggi textarea */
+            resize: none; /* Menghilangkan kemampuan untuk mengubah ukuran */
+        }   
+	</style>
+
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-0 top-section">
+                <p class="text-margin-first">{{ buku.judul }}</p>
+                <p class="text-margin"><i class="fas fa-user"></i> {{ buku.penulis }}</p>
+                <p class="text-margin"><i class="fas fa-star"></i> {{ buku.rating }} / 5</p>
+                <p class="text-margin"><i class="fas fa-calendar"></i> {{ buku.tahun }}</p>
+            </div>
+            <div class="col-md-0 centered-image">
+                <img src="{{ buku.gambar }}" class="centered-image border-image" alt="Gambar Buku">
+            </div>
+
+            <form method="post" action="{% url 'review_buku:post_review' %}">
+                <label for="review_text">Write your review:</label>
+                {% csrf_token %}
+                <textarea class="textarea-review" name="review_text"></textarea>
+                <input type="hidden" name="idBuku" value="{{ buku.id }}">
+                <input type="submit" value="Review" class="button-pinjam submit-review-btn">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Tangani tombol "Review" saat diklik
+        document.querySelector('.submit-review-btn').addEventListener('click', function (e) {
+            e.preventDefault();
+            // Dapatkan teks ulasan dari textarea
+            let reviewText = document.querySelector('.textarea-review').value;
+            let idBuku = document.querySelector('input[name="idBuku"]').value;
+            // Kirim permintaan Ajax
+            fetch("{% url 'review_buku:post_review' %}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'), // Dapatkan token CSRF
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ review_text: reviewText, idBuku: idBuku }), // Kirim data ulasan sebagai JSON
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Review submitted!");
+                    location.reload(); // Muat ulang halaman
+                } else {
+                    alert("There was an error submitting your review.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+        // Fungsi untuk mendapatkan token CSRF dari cookie
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === name + '=') {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+</body>
+{% endblock content %}

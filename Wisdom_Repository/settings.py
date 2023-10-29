@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'admin_buku',
     'authentication_bookmark',
     'pinjam_buku',
+    'review_buku'
 ]
 
 MIDDLEWARE = [
