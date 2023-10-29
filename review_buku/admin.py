@@ -2,5 +2,6 @@ from django.contrib import admin
 from .models import Review
 
 # Register your models here.
-
-admin.site.register(Review)
+@admin.register(Review)
+class Review(admin.ModelAdmin):
+    list_display = ('buku', 'review_text')
