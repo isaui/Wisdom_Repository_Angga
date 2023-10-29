@@ -164,7 +164,7 @@
                             <a id="book-details-link" href="#" data-url="{% url 'daftar_buku:book_details' %}">
                                 <button type="button" class="btn btn-primary">Pinjam</button>
                             </a>
-                            <button type="button" class="btn btn-primary">Bookmarks</button>
+                            <button type="button" class="btn btn-primary" id="bookmarkButton" onclick="addBookmark(event)">Bookmarks</button>
                             <button type="button" class="btn btn-primary">Lihat Review</button>
                         </div>
                         {% endif %}
@@ -296,8 +296,6 @@
             });
         });
 
-   
-
         $(document).on('click', '.clickable-card', function(event) {
             var clickedElement = $(event.target);
             if (!clickedElement.is(".show-details, .show-details *")) {
@@ -307,6 +305,7 @@
                     method: "GET",
                     data: { id: bookId },
                     success: function(data) {
+                        $('#bookmarkButton').attr("data-id", bookId);
                         $("#book-deskripsi").text(data.deskripsi);
                         $("#book-title").text(data.judul);
                         $("#book-author").text(data.penulis);
@@ -323,6 +322,44 @@
             }
         });
 
+        function addBookmark(event){
+            var bookId = $('#bookmarkButton').data("id");
+            var addBookmarkLink = "{% url 'authentication_bookmark:add_bookmark_ajax' %}?id_buku=" + bookId;
+            fetch(addBookmarkLink)
+                .then(response => response.json())
+                .then(data => alert(data.message))
+                .catch(error => console.error('Error:', error));
+        };
+
+        
+
+        async function getBooks() {
+            return fetch("{% url 'daftar_buku:get_books_json' %}").then((res) => res.json());
+        }
+
+        const carouselContainer = document.querySelector('#carousel');
+
+        async function refreshBooks() {
+            const books = await getBooks();
+            let index = 0;
+            let carouselHTML = '';
+            books.forEach((book) => {
+                const carouselItem = document.createElement('div');
+                carouselItem.classList.add('hidden', 'duration-700', 'ease-in-out');
+                carouselItem.setAttribute('data-carousel-item', '');
+
+                const img = document.createElement('img');
+                img.src = book.fields.gambar;
+                img.classList.add('absolute', 'block', 'w-full', '-translate-x-1/2', '-translate-y-1/2', 'top-1/2', 'left-1/2');
+                img.alt = book.fields.judul;
+
+                carouselItem.appendChild(img);
+                console.log(carouselItem);
+                carouselContainer.appendChild(carouselItem);
+            });
+        }
+
+        refreshBooks();
        
     </script>
 

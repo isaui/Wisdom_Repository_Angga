@@ -25,7 +25,10 @@
                                     style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px;"
                                     title="{{ pengembalian.buku.judul }}"><strong>{{ pengembalian.buku.judul }}</strong></h5>
                             </div>
-                            <a href="#">
+							<!-- <a href="{% url 'review_buku:review' pengembalian.idBuku %}">
+                                <button type="button" class="button-review"><strong>Review</strong></button>
+                            </a> -->
+                            <a href="{% url 'pinjam_buku:pinjam_buku' pengembalian.idBuku %}">
                                 <button type="button" class="button-review"><strong>Review</strong></button>
                             </a>
                         </div>

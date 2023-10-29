@@ -2,7 +2,7 @@
 <header data-bs-theme="light">
     <nav class="navbar navbar-expand-md fixed-top bg-light" id="navbar-1">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{% url 'daftar_buku:show_main' %}">
                 <img src="{% static 'pinjam_buku/img/logo.png' %}"
                     alt="Logo" width="156" height="52" class="d-inline-block align-text-top">
             </a>
@@ -24,11 +24,7 @@
                         <a class="nav-link active text-dark" href="{% url 'pinjam_buku:list_pinjam' %}">Borrowed</a>
                     </li>
                     <li class="nav-item me-2">
-                        <a class="nav-link active text-dark" href="{% url 'daftar_buku:show_main' %}">Profile</a>
-                    </li>
-                    <li class="nav-item me-2">
-                        <a class="nav-link active text-dark" href="{% url 'authentication_bookmark:logout' %}">Log
-                            Out</a>
+                        <a class="nav-link active text-dark" href="{% url 'authentication_bookmark:logout' %}">LogOut</a>
                     </li>
                 </ul>
             </div>
