@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <title>Pinjam Buku</title>
+    {% include 'navbaruser.html' %}
+	<div class="container-fluid">
+        <div class="row">
+            <div class="bg-image top-section">
+                <p class="text-margin-first">{{ buku.judul }}</p>
+                <p class="text-margin"><i class="fas fa-user"></i> {{ buku.penulis }}</p>
+                <p class="text-margin"><i class="fas fa-star"></i> {{ buku.rating.rating }} / 5</p>
+                <p class="text-margin"><i class="fas fa-calendar"></i> {{ buku.tahun }}</p>
+            </div>
+            <div class="col-md-0 centered-image">
+                <img src="{{ buku.gambar }}" class="centered-image border-image" alt="Gambar Buku">
+            </div>
+            <div class="col-md-0 bottom-section">
+                <a href="{% url 'daftar_buku:show_main' %}">
+                    <button type="button" class="button-back">Back</button>
+                </a>
+                <p class="text-margin-bottom">
+                    {{ buku.deskripsi }}
+                </p>
+                <button type="button" class="button-pinjam" data-bs-toggle="modal" data-bs-target="#modalPinjam">Pinjam</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalPinjam" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalLabel">Konfirmasi Peminjaman</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="form" method="POST">
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="username" class="col-form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" value="{{username}}" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tipe" class="col-form-label">Tipe Member:</label>
+                            <input type="text" class="form-control" id="tipe" name="tipe" value="{{member}}" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="book" class="col-form-label">Judul Buku:</label>
+                            <input type="text" class="form-control" id="book" name="book" value="{{buku.judul}}" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="return" class="col-form-label">Tanggal Pengembalian:</label>
+                            <input type="text" class="form-control" id="return" name="return" value="{{return}}" readonly>
+                        </div>
+                        {{ form.non_field_errors }}
+                        <div class="mb-3" style="display: none;">
+                            {{ form.idBuku.errors }}
+                            <label for="{{ form.sender.id_for_label }}">ID Buku:</label>
+                            {{ form.idBuku }}
+                        </div>
+                        {% if form.errors %}
+                        <ul class="errorlist" style="display: none;">
+                            {% for field in form %}
+                            {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <input type="submit" class="btn btn-primary" id="button_add" data-bs-dismiss="modal" value="Konfirmasi">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <style>
+        body {
+            font-size: 16px;
+            font-family: "Book Antiqua";
+            background-color: #F5F2ED;
+            display: flex;
+            font-weight: bold;
+        }
+    
+        .top-section {
+            background-image: url('https://raw.githubusercontent.com/PBP-D-11-2023/Wisdom-Repository/anisha/assets/images/review.png');
+            background-size: cover;
+            background-position: center;
+            width: 100vw;
+            height: 60vh;
+            color: white;
+            position: relative;
+            z-index: 2;
+        }
+    
+        .bottom-section {
+            padding: 20px;
+            height: 50vh;
+            z-index: 1;
+        }
+    
+        .centered-image {
+            width: 40vh;
+            height: 54vh;
+            position: relative;
+            margin-left: 2vw;
+            margin-top: -15vh;
+            margin-bottom: -10vh;
+            z-index: 3;
+        }
+    
+        .border-image {
+            border: 1vh solid white;
+        }
+    
+        .text-margin-first {
+            margin-left: 55vh;
+            margin-top: 20vh;
+            font-size: 28px;
+        }
+    
+        .text-margin {
+            margin-left: 55vh;
+            font-size: 20px;
+        }
+    
+        .text-margin-bottom {
+            margin-left: 50vh;
+            font-size: 18px;
+            position: relative;
+            margin-top: -100vh;
+        }
+    
+        .button-pinjam {
+            background-color: white;
+            color: #37465D;
+            padding: 10px 20px;
+            border: 1px solid #37465D;
+            cursor: pointer;
+            margin-top: 5vh;
+            margin-left: 70vw;
+        }
+    
+        .button-back {
+            background-color: #37465D;
+            color: white;
+            padding: 10px 20px;
+            border: 1px solid black;
+            cursor: pointer;
+            margin-left: 5vw;
+            margin-top: 70vh;
+        }
+    </style>
+{% endblock content %}
