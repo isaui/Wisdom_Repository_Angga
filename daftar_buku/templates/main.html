@@ -1,8 +1,16 @@
+
 {% extends 'base.html' %}
 
 {% block content %}
 
-    {% include 'navbar.html' %}
+    {% if tipe == 'guest' %}
+        {% include 'navbar.html' %}
+    {% else %}
+        {% include 'navbaruser.html' %}
+        <br>
+        <br>
+        <br>
+    {% endif %}
     {% load static %}
     <img src="{% static 'daftar_buku/img/homee.png' %}" style="width:100%">
     <br>
@@ -16,6 +24,21 @@
 
 
     <div class="container"> 
+        {% if tipe != 'guest' %}
+            <div>
+                <form method="post" action="{% url 'daftar_buku:search'%}" class="form-inline">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="search" name="query" placeholder="Cari..." aria-describedby="button-addon">
+                        <div class="input-group-append">
+                            <button id="cariUtama" type="submit" class="btn btn-primary" id="button-addon">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        {% endif %}
         <h5>Category</h5>                     
         <div class="genre-buttons">
             {% for selected_genre in genre %}
@@ -729,6 +752,5 @@
 
 
     </style>
-
-
+    
 {% endblock content %}
