@@ -165,7 +165,9 @@
                                 <button type="button" class="btn btn-primary">Pinjam</button>
                             </a>
                             <button type="button" class="btn btn-primary" id="bookmarkButton" onclick="addBookmark(event)">Bookmarks</button>
-                            <button type="button" class="btn btn-primary">Lihat Review</button>
+                            <a id="book-review-link" href="#" data-url="{% url 'daftar_buku:book_details' %}">
+                                <button type="button" class="btn btn-primary">Lihat Review</button>
+                            </a>
                         </div>
                         {% endif %}
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -318,7 +320,7 @@
                         pinjamButton.href = newUrl;
                         const reviewButton = document.getElementById('book-review-link');
                         const newUrl2 = "{% url 'review_buku:show' 0 %}".replace('0', bookId);
-                        pinjamButton.href = newUrl;
+                        reviewButton.href = newUrl2;
                         
                     },
                 });
