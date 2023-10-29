@@ -1,974 +1,969 @@
-{% load static %}
+{% extends 'base.html' %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-</head>
-<body data-csrf-token="{{ csrf_token }}">
-    
- 
-    <img src="{% static 'images/home.png' %}" style="width:100%">
-    <br>
-    <br>
-    <br>
+{% block content %}
+{% include 'navbaruser.html' %}
+<br>
+<br>
+<br>
+{% load static %} 
 
-    <div class="container">
-    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" data-bs-interval="1000">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        </div>
+<img src="{% static 'images/home.png' %}" style="width:100%">
+<br>
+<br>
+<br>
+
+<div class="container">
+<div id="carouselExample" class="carousel slide" data-bs-ride="carousel" data-bs-interval="1000">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
         <div class="carousel-inner">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="row">
-                        <div class="col-md-6" style="display: flex; justify-content: end;">
-                            <img class="" src="http://books.google.com/books/content?id=YtjxFRb39Z4C&amp;printsec=frontcover&amp;img=1&amp;zoom=1&amp;source=gbs_api" alt="Gambar Buku 1">
-                        </div>
-                        <div class="col-md-6">
-                            <h2>Judul Buku 1</h2>
-                            <p>Nama Pengarang: Penulis Buku 1</p>
-                            <p>Tahun Terbit: 2022</p>
-                            <p>Peringkat: 4.5/5</p>
-                            <p>Deskripsi Buku 1 yang panjang dan informatif.</p>
-                        </div>
+            <div class="carousel-item active">
+                <div class="row">
+                    <div class="col-md-6" style="display: flex; justify-content: end;">
+                        <img class="" src="http://books.google.com/books/content?id=YtjxFRb39Z4C&amp;printsec=frontcover&amp;img=1&amp;zoom=1&amp;source=gbs_api" alt="Gambar Buku 1">
+                    </div>
+                    <div class="col-md-6">
+                        <h2>Judul Buku 1</h2>
+                        <p>Nama Pengarang: Penulis Buku 1</p>
+                        <p>Tahun Terbit: 2022</p>
+                        <p>Peringkat: 4.5/5</p>
+                        <p>Deskripsi Buku 1 yang panjang dan informatif.</p>
                     </div>
                 </div>
-                <div class="carousel-item">
-                    <div class="row">
-                        <div class="col-md-6" style="display: flex; justify-content: end;">
-                            <img src="http://books.google.com/books/content?id=YtjxFRb39Z4C&amp;printsec=frontcover&amp;img=1&amp;zoom=1&amp;source=gbs_api" alt="Gambar Buku 2">
-                        </div>
-                        <div class="col-md-6">
-                            <h2>Judul Buku 2</h2>
-                            <p>Nama Pengarang: Penulis Buku 2</p>
-                            <p>Tahun Terbit: 2021</p>
-                            <p>Peringkat: 4.0/5</p>
-                            <p>Deskripsi Buku 2 yang panjang dan informatif.</p>
-                        </div>
+            </div>
+            <div class="carousel-item">
+                <div class="row">
+                    <div class="col-md-6" style="display: flex; justify-content: end;">
+                        <img src="http://books.google.com/books/content?id=YtjxFRb39Z4C&amp;printsec=frontcover&amp;img=1&amp;zoom=1&amp;source=gbs_api" alt="Gambar Buku 2">
+                    </div>
+                    <div class="col-md-6">
+                        <h2>Judul Buku 2</h2>
+                        <p>Nama Pengarang: Penulis Buku 2</p>
+                        <p>Tahun Terbit: 2021</p>
+                        <p>Peringkat: 4.0/5</p>
+                        <p>Deskripsi Buku 2 yang panjang dan informatif.</p>
                     </div>
                 </div>
-                <div class="carousel-item">
-                    <div class="row">
-                        <div class="col-md-6" style="display: flex; justify-content: end;">
-                            <img src="http://books.google.com/books/content?id=YtjxFRb39Z4C&amp;printsec=frontcover&amp;img=1&amp;zoom=1&amp;source=gbs_api" alt="Gambar Buku 3">
-                        </div>
-                        <div class="col-md-6">
-                            <h2>Judul Buku 3</h2>
-                            <p>Nama Pengarang: Penulis Buku 3</p>
-                            <p>Tahun Terbit: 2020</p>
-                            <p>Peringkat: 4.2/5</p>
-                            <p>Deskripsi Buku 3 yang panjang dan informatif.</p>
-                        </div>
+            </div>
+            <div class="carousel-item">
+                <div class="row">
+                    <div class="col-md-6" style="display: flex; justify-content: end;">
+                        <img src="http://books.google.com/books/content?id=YtjxFRb39Z4C&amp;printsec=frontcover&amp;img=1&amp;zoom=1&amp;source=gbs_api" alt="Gambar Buku 3">
+                    </div>
+                    <div class="col-md-6">
+                        <h2>Judul Buku 3</h2>
+                        <p>Nama Pengarang: Penulis Buku 3</p>
+                        <p>Tahun Terbit: 2020</p>
+                        <p>Peringkat: 4.2/5</p>
+                        <p>Deskripsi Buku 3 yang panjang dan informatif.</p>
                     </div>
                 </div>
-            </div> 
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div>
+            </div>
+        </div> 
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+    </div>
+</div>
+
+    <br>
+    <br>
+    <br>
+
+<center>
+    <h1 style= "color: #37465D; font-size: 50px;" ><u>List of Books</u></h1>
+</center>
+
+<div class="container"> 
+    <h5>Category</h5>                     
+    <div class="genre-buttons">
+        {% for selected_genre in genre %}
+        <form method="post" action="{% url 'admin_buku:search' %}" class="form-tombol">
+            {% csrf_token %}
+            <input type="hidden" name="query" value="{{ selected_genre }}">
+            <button type="submit" class="btn btn-primary" id="button-category" >
+                <div class="icon-container-genre" style>
+                    <i class="fas fa-book" style="color:#37465D;"></i>
+                </div>
+                {{ selected_genre }}
+            </button>   
+        </form>
+        {% endfor %}
     </div>
 
-      <br>
-      <br>
-      <br>
+    <i class="fas fa-sort-down">Sort By</i>
 
-    <center>
-        <h1 style= "color: #37465D; font-size: 50px;" ><u>List of Books</u></h1>
-    </center>
-
-    <div class="container"> 
-        <h5>Category</h5>                     
-        <div class="genre-buttons">
-            {% for selected_genre in genre %}
-            <form method="post" action="{% url 'admin_buku:search' %}" class="form-tombol">
-                {% csrf_token %}
-                <input type="hidden" name="query" value="{{ selected_genre }}">
-                <button type="submit" class="btn btn-primary" id="button-category" >
-                    <div class="icon-container-genre" style>
-                        <i class="fas fa-book" style="color:#37465D;"></i>
+    <div id="sort-form">
+        <form action="sort/judul">
+        <button type="submit" class="btn btn-primary" id="button-sort" style="background-color: white; color: black;">
+            <i class="fas fa-sort-alpha-down"></i>
+            Judul</button>
+        </form>
+        <form action="sort/tahun">
+        <button type="submit" class="btn btn-primary" id="button-sort" style="background-color: white; color: black;">
+            <i class="fas fa-calendar"></i>
+            Tahun</button>
+        </form>
+        <form action="sort/rating">
+        <button type="submit" class="btn btn-primary" id="button-sort" style="background-color: white; color: black;">
+            <i class="fas fa-star"></i>
+            Rating</button>
+        </form>
+    </div>
+    
+    {% if buku %}
+        <div class="row" id="bookRow">
+            {% for bukus in buku %}
+                <div class="col-md-2 col-sm-3 col-4">
+                    <div class="card small-card clickable-card" id="{{bukus.id}}">
+                        <img src="{{ bukus.gambar }}" class="card-img" alt="{{ bukus.judul }}" data-toggle="modal" data-target="#bookModal" data-id="{{ bukus.id }}">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title" id="judul-card" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px;" title="{{ bukus.judul }}">{{ bukus.judul }}</h5>
+                        </div>
                     </div>
-                    {{ selected_genre }}
-                </button>   
-            </form>
+                </div>
             {% endfor %}
         </div>
-
-        <i class="fas fa-sort-down">Sort By</i>
-
-        <div id="sort-form">
-            <form action="sort/judul">
-            <button type="submit" class="btn btn-primary" id="button-sort" style="background-color: white; color: black;">
-                <i class="fas fa-sort-alpha-down"></i>
-                Judul</button>
-            </form>
-            <form action="sort/tahun">
-            <button type="submit" class="btn btn-primary" id="button-sort" style="background-color: white; color: black;">
-                <i class="fas fa-calendar"></i>
-                Tahun</button>
-            </form>
-            <form action="sort/rating">
-            <button type="submit" class="btn btn-primary" id="button-sort" style="background-color: white; color: black;">
-                <i class="fas fa-star"></i>
-                Rating</button>
-            </form>
-        </div>
-        
-        {% if buku %}
-            <div class="row" id="bookRow">
-                {% for bukus in buku %}
-                    <div class="col-md-2 col-sm-3 col-4">
-                        <div class="card small-card clickable-card" id="{{bukus.id}}">
-                            <img src="{{ bukus.gambar }}" class="card-img" alt="{{ bukus.judul }}" data-toggle="modal" data-target="#bookModal" data-id="{{ bukus.id }}">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title" id="judul-card" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px;" title="{{ bukus.judul }}">{{ bukus.judul }}</h5>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p>Belum ada buku</p>
+    {% else %}
+        <p>Belum ada buku</p>
+    {% endif %}
+    <div class="pagination">
+        <span class="step-links">
+        {% if buku.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ buku.previous_page_number }}">previous</a>
         {% endif %}
-        <div class="pagination">
-            <span class="step-links">
-            {% if buku.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ buku.previous_page_number }}">previous</a>
-            {% endif %}
-    
-            <span class="current-page">
-                Page {{ buku.number }} of {{ buku.paginator.num_pages }}.
-            </span>
-    
-            {% if buku.has_next %}
-                <a href="?page={{ buku.next_page_number }}">next</a>
-                <a href="?page={{ buku.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
-            </span>
-        </div>
+
+        <span class="current-page">
+            Page {{ buku.number }} of {{ buku.paginator.num_pages }}.
+        </span>
+
+        {% if buku.has_next %}
+            <a href="?page={{ buku.next_page_number }}">next</a>
+            <a href="?page={{ buku.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+        </span>
+    </div>
 
 
-        <div class="modal fade custom-modal" id="bookModal" tabindex="-1" aria-labelledby="bookModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="bookModalLabel">Detail Buku</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="background-image-1"></div>
-                        <div class="background-image-2"></div>
-                        <div class="book-info">
-                            <div class="book-image">
-                                <div class="image-wrapper">
-                                    <img src="" alt="Book Cover" id="modalImage">
-                                </div>
+    <div class="modal fade custom-modal" id="bookModal" tabindex="-1" aria-labelledby="bookModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bookModalLabel">Detail Buku</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="background-image-1"></div>
+                    <div class="background-image-2"></div>
+                    <div class="book-info">
+                        <div class="book-image">
+                            <div class="image-wrapper">
+                                <img src="" alt="Book Cover" id="modalImage">
                             </div>
-                            <div class="text-info">
-                                <div class="title-info">
-                                    <p id="book-title">Author Name</p>
-                                </div>
-                                <div class="author-info">
-                                    <i class="fas fa-user author-icon"></i>
-                                    <p id="book-author">Author Name</p>
-                                </div>
-                                <div class="release-info">
-                                    <i class="far fa-calendar-alt release-icon"></i>
-                                    <p id="book-release">Release Date</p>
-                                </div>
-                                <div class="deskripsi-info">
-                                    <p id="book-deskripsi">Deskripsi</p>
-                                </div>
+                        </div>
+                        <div class="text-info">
+                            <div class="title-info">
+                                <p id="book-title">Author Name</p>
+                            </div>
+                            <div class="author-info">
+                                <i class="fas fa-user author-icon"></i>
+                                <p id="book-author">Author Name</p>
+                            </div>
+                            <div class="release-info">
+                                <i class="far fa-calendar-alt release-icon"></i>
+                                <p id="book-release">Release Date</p>
+                            </div>
+                            <div class="deskripsi-info">
+                                <p id="book-deskripsi">Deskripsi</p>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer d-flex justify-content-between">
-                        <button type="button" id="confirmHapusButton" class="btn btn-danger" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">Hapus</button>
-                        <div class="d-flex">
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#editBukuModal">Edit</button>
-                        </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" id="confirmHapusButton" class="btn btn-danger" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">Hapus</button>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#editBukuModal">Edit</button>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="confirmDeleteModalLabel">Konfirmasi Hapus</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        Apakah Anda yakin ingin menghapus buku berjudul "<span id="deleteBookTitle"></span>"?
-                    </div>
-                    <div class="modal-footer d-flex justify-content-between">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <div class="d-flex">
-                            <button type="button" class="btn btn-danger" id="confirmDeleteButton" data-bs-dismiss="modal">Konfirmasi</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="editBukuModal">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <!-- Bagian Header Modal -->
-                    <div class="modal-header">
-                        <h4 class="modal-title">Edit Buku</h4>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    
-                    <!-- Bagian Body Modal -->
-                    <div class="modal-body">
-                        <form id="editBookForm">
-                            {% csrf_token %}
-                            <div class="col-12">
-                                <div class="mb-3">
-                                    <label for="isbn">ISBN:</label>
-                                    <input type="text" class="form-control" id="isbnEdit" name="isbn" placeholder="Masukkan ISBN">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="judul">Judul:</label>
-                                    <input type="text" class="form-control" id="judulEdit" name="judul" placeholder="Masukkan Judul Buku">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="penulis">Penulis:</label>
-                                    <input type="text" class="form-control" id="penulisEdit" name="penulis" placeholder="Masukkan Nama Penulis">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="tahun">Tahun:</label>
-                                    <input type="number" class="form-control" id="tahunEdit" name="tahun" placeholder="Masukkan Tahun Terbit">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="kategori">Kategori:</label>
-                                    <input type="text" class="form-control" id="kategoriEdit" name="kategori" placeholder="Masukkan Kategori Buku">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="gambar">Gambar:</label>
-                                    <input type="text" class="form-control" id="gambarEdit" name="gambar" placeholder="Masukkan URL Gambar">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="deskripsi">Deskripsi:</label>
-                                    <textarea class="form-control" id="deskripsiEdit" name="deskripsi" rows="4" placeholder="Masukkan Deskripsi Buku"></textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="rating">Rating:</label>
-                                    <input type="number" step="0.1" class="form-control" id="ratingEdit" name="rating" placeholder="Masukkan Rating Buku">
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    
-                    <!-- Bagian Footer Modal -->
-                    <div class="modal-footer d-flex justify-content-between">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                        <div class="d-flex">
-                            <button type="submit" class="btn btn-success" data-bs-dismiss="modal" id="confirmEditButton">Simpan</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="tambahBukuModal">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <!-- Bagian Header Modal -->
-                    <div class="modal-header">
-                        <h4 class="modal-title">Tambah Buku</h4>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    
-                    <!-- Bagian Body Modal -->
-                    <div class="modal-body">
-                        <form id="bookForm">
-                            {% csrf_token %}
-                            <div class="col-12">
-                                <div class="mb-3">
-                                    <label for="isbn">ISBN:</label>
-                                    <input type="text" class="form-control" id="isbn" name="isbn" placeholder="Masukkan ISBN">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="judul">Judul:</label>
-                                    <input type="text" class="form-control" id="judul" name="judul" placeholder="Masukkan Judul Buku">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="penulis">Penulis:</label>
-                                    <input type="text" class="form-control" id="penulis" name="penulis" placeholder="Masukkan Nama Penulis">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="tahun">Tahun:</label>
-                                    <input type="number" class="form-control" id="tahun" name="tahun" placeholder="Masukkan Tahun Terbit">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="kategori">Kategori:</label>
-                                    <input type="text" class="form-control" id="kategori" name="kategori" placeholder="Masukkan Kategori Buku">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="gambar">Gambar:</label>
-                                    <input type="text" class="form-control" id="gambar" name="gambar" placeholder="Masukkan URL Gambar">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="deskripsi">Deskripsi:</label>
-                                    <textarea class="form-control" id="deskripsi" name="deskripsi" rows="4" placeholder="Masukkan Deskripsi Buku"></textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="rating">Rating:</label>
-                                    <input type="number" step="0.1" class="form-control" id="rating" name="rating" placeholder="Masukkan Rating Buku">
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    
-                    <!-- Bagian Footer Modal -->
-                    <div class="modal-footer d-flex justify-content-between">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                        <div class="d-flex">
-                            <button type="submit" class="btn btn-success" data-bs-dismiss="modal" onclick="addBook()">Simpan</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div>
-            <button class="floating-button" data-bs-toggle="modal" data-bs-target="#tambahBukuModal">
-                Tambah Buku
-            </button>
         </div>
     </div>
 
-    <footer >
-        <div style="float: left;">D11 Fasilkom</div>
-        <div style="display: inline-block;">Wisdom Repo</div>
-        <div style="float: right;">2023</div>
-    </footer>
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Konfirmasi Hapus</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Apakah Anda yakin ingin menghapus buku berjudul "<span id="deleteBookTitle"></span>"?
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-danger" id="confirmDeleteButton" data-bs-dismiss="modal">Konfirmasi</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editBukuModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <!-- Bagian Header Modal -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Buku</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <!-- Bagian Body Modal -->
+                <div class="modal-body">
+                    <form id="editBookForm">
+                        {% csrf_token %}
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="isbn">ISBN:</label>
+                                <input type="text" class="form-control" id="isbnEdit" name="isbn" placeholder="Masukkan ISBN">
+                            </div>
+                            <div class="mb-3">
+                                <label for="judul">Judul:</label>
+                                <input type="text" class="form-control" id="judulEdit" name="judul" placeholder="Masukkan Judul Buku">
+                            </div>
+                            <div class="mb-3">
+                                <label for="penulis">Penulis:</label>
+                                <input type="text" class="form-control" id="penulisEdit" name="penulis" placeholder="Masukkan Nama Penulis">
+                            </div>
+                            <div class="mb-3">
+                                <label for="tahun">Tahun:</label>
+                                <input type="number" class="form-control" id="tahunEdit" name="tahun" placeholder="Masukkan Tahun Terbit">
+                            </div>
+                            <div class="mb-3">
+                                <label for="kategori">Kategori:</label>
+                                <input type="text" class="form-control" id="kategoriEdit" name="kategori" placeholder="Masukkan Kategori Buku">
+                            </div>
+                            <div class="mb-3">
+                                <label for="gambar">Gambar:</label>
+                                <input type="text" class="form-control" id="gambarEdit" name="gambar" placeholder="Masukkan URL Gambar">
+                            </div>
+                            <div class="mb-3">
+                                <label for="deskripsi">Deskripsi:</label>
+                                <textarea class="form-control" id="deskripsiEdit" name="deskripsi" rows="4" placeholder="Masukkan Deskripsi Buku"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rating">Rating:</label>
+                                <input type="number" step="0.1" class="form-control" id="ratingEdit" name="rating" placeholder="Masukkan Rating Buku">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Bagian Footer Modal -->
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                    <div class="d-flex">
+                        <button type="submit" class="btn btn-success" data-bs-dismiss="modal" id="confirmEditButton">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="tambahBukuModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <!-- Bagian Header Modal -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Tambah Buku</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <!-- Bagian Body Modal -->
+                <div class="modal-body">
+                    <form id="bookForm">
+                        {% csrf_token %}
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="isbn">ISBN:</label>
+                                <input type="text" class="form-control" id="isbn" name="isbn" placeholder="Masukkan ISBN">
+                            </div>
+                            <div class="mb-3">
+                                <label for="judul">Judul:</label>
+                                <input type="text" class="form-control" id="judul" name="judul" placeholder="Masukkan Judul Buku">
+                            </div>
+                            <div class="mb-3">
+                                <label for="penulis">Penulis:</label>
+                                <input type="text" class="form-control" id="penulis" name="penulis" placeholder="Masukkan Nama Penulis">
+                            </div>
+                            <div class="mb-3">
+                                <label for="tahun">Tahun:</label>
+                                <input type="number" class="form-control" id="tahun" name="tahun" placeholder="Masukkan Tahun Terbit">
+                            </div>
+                            <div class="mb-3">
+                                <label for="kategori">Kategori:</label>
+                                <input type="text" class="form-control" id="kategori" name="kategori" placeholder="Masukkan Kategori Buku">
+                            </div>
+                            <div class="mb-3">
+                                <label for="gambar">Gambar:</label>
+                                <input type="text" class="form-control" id="gambar" name="gambar" placeholder="Masukkan URL Gambar">
+                            </div>
+                            <div class="mb-3">
+                                <label for="deskripsi">Deskripsi:</label>
+                                <textarea class="form-control" id="deskripsi" name="deskripsi" rows="4" placeholder="Masukkan Deskripsi Buku"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rating">Rating:</label>
+                                <input type="number" step="0.1" class="form-control" id="rating" name="rating" placeholder="Masukkan Rating Buku">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Bagian Footer Modal -->
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                    <div class="d-flex">
+                        <button type="submit" class="btn btn-success" data-bs-dismiss="modal" onclick="addBook()">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <button class="floating-button" data-bs-toggle="modal" data-bs-target="#tambahBukuModal">
+            Tambah Buku
+        </button>
+    </div>
+</div>
+
+<footer >
+    <div style="float: left;">D11 Fasilkom</div>
+    <div style="display: inline-block;">Wisdom Repo</div>
+    <div style="float: right;">2023</div>
+</footer>
 
 
 
-    <script>
+<script>
+    
+    const csrf_token = document.body.getAttribute("data-csrf-token");
+
+    async function getBooks() {
+        return fetch(`get-books/`).then((res) => res.json());
+    }
+
+    $("#search-button").click(function() {
+        var query = $("#search-input").val();
+        $.ajax({
+            url: "{% url 'daftar_buku:search' %}",
+            method: "POST",
+            data: { query: query }
+        });
+    });
+
+    $(document).on('click', '.clickable-card', function(event) {
+        var clickedElement = $(event.target);
         
-        const csrf_token = document.body.getAttribute("data-csrf-token");
-
-        async function getBooks() {
-            return fetch(`get-books/`).then((res) => res.json());
-        }
-
-        $("#search-button").click(function() {
-            var query = $("#search-input").val();
+        if (!clickedElement.is(".show-details, .show-details *")) {
+            var bookID = $(this).find('.card-img').data("id");
             $.ajax({
-                url: "{% url 'daftar_buku:search' %}",
-                method: "POST",
-                data: { query: query }
-            });
-        });
+                url: "{% url 'admin_buku:book_details' %}",
+                method: "GET",
+                data: { id: bookID },
+                success: function(data) {
+                    $("#book-deskripsi").text(data.deskripsi);
+                    $("#book-title").text(data.judul);
+                    $("#book-author").text(data.penulis);
+                    document.getElementById('modalImage').src=data.gambar;
+                    $("#book-release").text(data.tahun);
+                    $("#bookModal").modal("show");
 
-        $(document).on('click', '.clickable-card', function(event) {
-            var clickedElement = $(event.target);
-            
-            if (!clickedElement.is(".show-details, .show-details *")) {
-                var bookID = $(this).find('.card-img').data("id");
-                $.ajax({
-                    url: "{% url 'admin_buku:book_details' %}",
-                    method: "GET",
-                    data: { id: bookID },
-                    success: function(data) {
-                        $("#book-deskripsi").text(data.deskripsi);
-                        $("#book-title").text(data.judul);
-                        $("#book-author").text(data.penulis);
-                        document.getElementById('modalImage').src=data.gambar;
-                        $("#book-release").text(data.tahun);
-                        $("#bookModal").modal("show");
+                    // Memanggil fungsi untuk mengisi data modal konfirmasi penghapusan
+                    fillDeleteConfirmationModal(data.judul, bookID);
 
-                        // Memanggil fungsi untuk mengisi data modal konfirmasi penghapusan
-                        fillDeleteConfirmationModal(data.judul, bookID);
-
-                        // Memanggil fungsi untuk mengisi data modal konfirmasi pengeditan
-                        fillEditConfirmationModal(data, bookID);
-                    },
-                });
-            }
-        });
-
-        function fillEditConfirmationModal(data, bookID) {
-            // Set input dengan data sekarang
-            $("#isbnEdit").val(data.isbn);
-            $("#judulEdit").val(data.judul);
-            $("#penulisEdit").val(data.penulis);
-            $("#tahunEdit").val(data.tahun);
-            $("#kategoriEdit").val(data.kategori);
-            $("#gambarEdit").val(data.gambar);
-            $("#deskripsiEdit").val(data.deskripsi);
-            $("#ratingEdit").val(data.rating);
-
-             // Simpan ID buku yang akan dihapus 
-            $("#confirmEditButton").data("book-id", bookID);
-        }
-
-        // Tangani klik tombol "Simpan" pada modal konfirmasi pengeditan
-        $("#confirmEditButton").on('click', function() {
-            // Ambil ID buku yang akan diedit dari atribut data
-            var bookID = $(this).data("book-id");
-
-            // Panggil fungsi editBook dengan bookID sebagai argumen
-            editBook(bookID);
-        });
-
-        // Fungsi untuk mengedit buku
-        async function editBook(bookID) {
-            fetch(`edit-book/${bookID}/`, {
-                method: "POST",
-                headers: {
-                    "X-CSRFToken": csrf_token,
+                    // Memanggil fungsi untuk mengisi data modal konfirmasi pengeditan
+                    fillEditConfirmationModal(data, bookID);
                 },
-                body: new FormData(document.querySelector("#editBookForm")),
-            }).then(refreshBooks);
-
-            document.getElementById("editBookForm").reset();
+            });
         }
+    });
 
-        // Fungsi untuk mengisi data modal konfirmasi penghapusan
-        function fillDeleteConfirmationModal(bookTitle, bookID) {
-            // Set judul buku yang akan dihapus di modal konfirmasi
-            $("#deleteBookTitle").text(bookTitle);
+    function fillEditConfirmationModal(data, bookID) {
+        // Set input dengan data sekarang
+        $("#isbnEdit").val(data.isbn);
+        $("#judulEdit").val(data.judul);
+        $("#penulisEdit").val(data.penulis);
+        $("#tahunEdit").val(data.tahun);
+        $("#kategoriEdit").val(data.kategori);
+        $("#gambarEdit").val(data.gambar);
+        $("#deskripsiEdit").val(data.deskripsi);
+        $("#ratingEdit").val(data.rating);
 
             // Simpan ID buku yang akan dihapus 
-            $("#confirmDeleteButton").data("book-id", bookID);
-        }
+        $("#confirmEditButton").data("book-id", bookID);
+    }
 
-        // Tangani klik tombol "Hapus" pada modal konfirmasi penghapusan
-        $("#confirmDeleteButton").on('click', function() {
-            // Ambil ID buku yang akan dihapus dari atribut data
-            var bookID = $(this).data("book-id");
+    // Tangani klik tombol "Simpan" pada modal konfirmasi pengeditan
+    $("#confirmEditButton").on('click', function() {
+        // Ambil ID buku yang akan diedit dari atribut data
+        var bookID = $(this).data("book-id");
 
-            // Panggil fungsi deleteBook dengan bookID sebagai argumen
-            deleteBook(bookID);
+        // Panggil fungsi editBook dengan bookID sebagai argumen
+        editBook(bookID);
+    });
+
+    // Fungsi untuk mengedit buku
+    async function editBook(bookID) {
+        fetch(`edit-book/${bookID}/`, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": csrf_token,
+            },
+            body: new FormData(document.querySelector("#editBookForm")),
+        }).then(refreshBooks);
+
+        document.getElementById("editBookForm").reset();
+    }
+
+    // Fungsi untuk mengisi data modal konfirmasi penghapusan
+    function fillDeleteConfirmationModal(bookTitle, bookID) {
+        // Set judul buku yang akan dihapus di modal konfirmasi
+        $("#deleteBookTitle").text(bookTitle);
+
+        // Simpan ID buku yang akan dihapus 
+        $("#confirmDeleteButton").data("book-id", bookID);
+    }
+
+    // Tangani klik tombol "Hapus" pada modal konfirmasi penghapusan
+    $("#confirmDeleteButton").on('click', function() {
+        // Ambil ID buku yang akan dihapus dari atribut data
+        var bookID = $(this).data("book-id");
+
+        // Panggil fungsi deleteBook dengan bookID sebagai argumen
+        deleteBook(bookID);
+    });
+
+    async function deleteBook(bookID) {
+        const response = await fetch(`delete-book/${bookID}/`, {
+            method: "DELETE",
+            headers: {
+                "X-CSRFToken": csrf_token,
+                "Content-Type": "application/json",
+            },
         });
 
-        async function deleteBook(bookID) {
-            const response = await fetch(`delete-book/${bookID}/`, {
-                method: "DELETE",
-                headers: {
-                    "X-CSRFToken": csrf_token,
-                    "Content-Type": "application/json",
-                },
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                if (data.success) {
-                    const bookToDelete = document.getElementById(bookID);
-                    bookToDelete.remove();
-                    refreshBooks();    
-                } else {
-                    console.error("Gagal menghapus buku.");
-                }
+        if (response.ok) {
+            const data = await response.json();
+            if (data.success) {
+                const bookToDelete = document.getElementById(bookID);
+                bookToDelete.remove();
+                refreshBooks();    
             } else {
-                console.error("Terjadi kesalahan saat mengirim permintaan.");
+                console.error("Gagal menghapus buku.");
             }
+        } else {
+            console.error("Terjadi kesalahan saat mengirim permintaan.");
         }
+    }
 
-        // Fungsi untuk menambahkan buku
-        async function addBook() {
-            fetch(`create-book/`, {
-                method: "POST",
-                headers: {
-                    "X-CSRFToken": csrf_token,
-                },
-                body: new FormData(document.querySelector("#bookForm")),
-            }).then(refreshBooks);
+    // Fungsi untuk menambahkan buku
+    async function addBook() {
+        fetch(`create-book/`, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": csrf_token,
+            },
+            body: new FormData(document.querySelector("#bookForm")),
+        }).then(refreshBooks);
 
-            document.getElementById("bookForm").reset();
-        }
+        document.getElementById("bookForm").reset();
+    }
 
-        async function getCarouselBooks() {
-            return fetch("{% url 'daftar_buku:get_books_json' %}").then((res) => res.json());
-        }
+    async function getCarouselBooks() {
+        return fetch("{% url 'daftar_buku:get_books_json' %}").then((res) => res.json());
+    }
 
-        const carouselContainer = document.querySelector('#carousel');
+    const carouselContainer = document.querySelector('#carousel');
 
-        async function refreshBooks() {
-            document.getElementById("bookRow").innerHTML = "";
+    async function refreshBooks() {
+        document.getElementById("bookRow").innerHTML = "";
 
-            const books = await getBooks();
+        const books = await getBooks();
 
-            books.forEach((book, index) => {
-                const card = document.createElement("div");
-                card.className = "col-md-2 col-sm-3 col-4";
+        books.forEach((book, index) => {
+            const card = document.createElement("div");
+            card.className = "col-md-2 col-sm-3 col-4";
 
-                card.innerHTML = `
-                    <div class="card small-card clickable-card" id="${book.pk}">
-                        <img src="${ book.fields.gambar }" class="card-img" alt="${ book.fields.judul }" data-toggle="modal" data-target="#bookModal" data-id="${ book.pk }">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title" id="judul-card" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px;" title="${ book.fields.judul }">${ book.fields.judul }</h5>
-                        </div>
+            card.innerHTML = `
+                <div class="card small-card clickable-card" id="${book.pk}">
+                    <img src="${ book.fields.gambar }" class="card-img" alt="${ book.fields.judul }" data-toggle="modal" data-target="#bookModal" data-id="${ book.pk }">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title" id="judul-card" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px;" title="${ book.fields.judul }">${ book.fields.judul }</h5>
                     </div>
-                     `;
+                </div>
+                    `;
 
-                document.getElementById("bookRow").appendChild(card)
-            })
+            document.getElementById("bookRow").appendChild(card)
+        })
 
-        }
+    }
 
-        async function refreshCarouselBooks() {
-            const books = await getCarouselBooks();
-            let index = 0;
-            let carouselHTML = '';
-            books.forEach((book) => {
-                const carouselItem = document.createElement('div');
-                carouselItem.classList.add('hidden', 'duration-700', 'ease-in-out');
-                carouselItem.setAttribute('data-carousel-item', '');
+    async function refreshCarouselBooks() {
+        const books = await getCarouselBooks();
+        let index = 0;
+        let carouselHTML = '';
+        books.forEach((book) => {
+            const carouselItem = document.createElement('div');
+            carouselItem.classList.add('hidden', 'duration-700', 'ease-in-out');
+            carouselItem.setAttribute('data-carousel-item', '');
 
-                const img = document.createElement('img');
-                img.src = book.fields.gambar;
-                img.classList.add('absolute', 'block', 'w-full', '-translate-x-1/2', '-translate-y-1/2', 'top-1/2', 'left-1/2');
-                img.alt = book.fields.judul;
+            const img = document.createElement('img');
+            img.src = book.fields.gambar;
+            img.classList.add('absolute', 'block', 'w-full', '-translate-x-1/2', '-translate-y-1/2', 'top-1/2', 'left-1/2');
+            img.alt = book.fields.judul;
 
-                carouselItem.appendChild(img);
-                console.log(carouselItem);
-                carouselContainer.appendChild(carouselItem);
-            });
-        }
+            carouselItem.appendChild(img);
+            console.log(carouselItem);
+            carouselContainer.appendChild(carouselItem);
+        });
+    }
 
-        refreshCarouselBooks();
-       
-    </script>
-
-    <style>
-
-        body{
-            font-family: "Book Antiqua";
-            background-color: #F5F2ED;
-        }
-
-        #carousel{
-            z-index: -1;
-        }
-
-        .carousel-control-prev-icon {
-            background-color: #37465D;
-        }
-
-        /* Selector untuk tombol Carousel Next */
-        .carousel-control-next-icon {
-            background-color: #37465D;
-        }
-
-        .carousel-item {
-            height: 500px;
-            object-fit: cover;
-            object-position: center;
-            width: 100%;
-        }
-
-        .floating-button {
-            position: fixed;
-            bottom: 30px; /* Atur jarak dari bawah halaman sesuai preferensi Anda */
-            right: 30px; /* Atur jarak dari kanan halaman sesuai preferensi Anda */
-            background-color: #C4E2BF;
-            color: #37465D; /* Warna teks hijau tua */
-            border: none; /* Tidak ada border */
-            border-radius: 10px; /* Membuat sudut halus */
-            padding: 10px 20px; /* Atur ukuran tombol sesuai kebutuhan Anda */
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Efek bayangan */
-            transition: background-color 0.3s; /* Animasi warna latar belakang saat hover */
-
-        }
-
-        .floating-button:hover {
-            background-color:#45A049; /* Warna latar belakang yang sedikit lebih gelap saat hover */
-            color: #fff;
-        }
-
-        .form-control {
-            background-color:  #e1e1e1; 
-            color: #000; 
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        footer {
-            background-color: #13294B;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 80px; 
-            width: 100%;
-        }
-
-        #button-sort:hover{
-            transform: scale(1.05);
-            transition: all .2s ease-in-out;
-        }
-
-        #button-sort{
-            margin: 5px 5px; 
-            border-radius: 5px; 
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border: solid 1px black;
-        }
-
-        .icon-container-genre {
-            text-align: center;
-            margin-bottom: 5px; 
-        }
-
-        .icon-container-genre i {
-            font-size: 20px;
-            color: #37465D;
-        }
-
-        .custom-modal {
-            max-width: 300%;
-        }
-
-        .card-img {
-            max-width: 100px;
-            object-fit: contain;
-        }
-
-        .small-card {
-            max-width: 10rem;
-            height: 14rem; 
-            transition: transform 0.2s;
-            background-color: rgb(255, 255, 255);
-            color: black;
-            margin-top: 15px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            width: 100%;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .small-card .card {
-            height: 100%;
-            margin-top: 0;
-            padding: 0;
-        }
-
-        .small-card .card-img {
-            margin-top: 15px;
-            max-width: 100px;
-            object-fit: contain;
-            height: 60%;
-            margin-right: auto;
-            margin-left: auto;
-        }
-
-        .small-card .card-body {
-            height: 25%; 
-        }
-
-        .small-card.clickable-card {
-            transition: background-color 0.3s;
-            cursor: pointer;
-        }
-
-        .small-card:hover {
-            transform: scale(1.05);
-            color: #9b51e0;
-        } 
-
-        body.dark .small-card:hover {
-            transform: scale(1.05);
-            color: #9b51e0;
-        }   
-
-        body.light .small-card:hover {
-            transform: scale(1.05); 
-            color: #9b51e0;
-        } 
-
-        .checkbox-label {
-            color: red; 
-        }
-
-        #id_Sort label {
-            color: red; 
-        }
-
-        #button-category{
-            background-color: #fffeff;
-            color: black;
-            width: 8rem; 
-            height: 8rem;
-            border: 2px solid #010101;
-        }
-
-        #button-category:hover{
-            transform: scale(1.05)
-        }
-
-        .form-tombol {
-            background-color: transparent;
-            color: black;
-            border: none;  
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .form-tombol i {
-            font-size: 20px;
-            color: black;
-            flex: 0 0 auto;
-        }
-
-        .genre-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px; 
-            align-items: flex-start; 
-        }
-
-        .book-info {
-            display: flex;
-            align-items: flex-start;
-            position: relative;
-            z-index: 1;
-
-        }
-
-        .book-image {
-            margin-right: 30px;     
-        }
-
-        .book-image img {
-            max-width: 100px;   
-        }
-
-        .image-wrapper {
-            background-color: white;
-            border: 1px solid #ddd;     
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);   
-            width: 135px;   
-            height: 195px;     
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .author-info, .release-info {
-            display: flex;
-            align-items: center;
-            margin-right: 10px;
-            align-self: flex-start;
-        }
-
-        .author-icon, .release-icon{
-            margin-right: 10px;
-            margin-top: 5px;
-            color:#fff;
-        }
-
-        #book-title{
-            margin-right: 10px;
-            margin-top: 0;
-            margin-bottom: 5px;
-            color:#fff;
-            font-size: 20px;
-        }
-
-        #book-deskripsi{
-            margin-right: 10px;
-            margin-top: 50px;
-            margin-bottom: 5px;
-            color:#000;
-            font-size: px;
-        }
-
-        #book-author, #book-release {
-            line-height: 1;
-            margin: 0;
-            margin-top: 5px;
-            color: #fff;
-        }
-
-        body.light {
-            background-color: #fff;
-            color: #333;
-        }
-
-        body.dark {
-            background-color: #333;
-            color: #333;
-        }
-
-        body.dark .small-card {
-            max-width: 10rem; 
-            height: 22rem; 
-            transition: transform 0.2s;
-            background-color: rgba(255, 255, 255, 0);
-            color: white;
-        }
-        
-        body.light .small-card {
-            max-width: 10rem;
-            height: 22rem;
-            transition: transform 0.2s;
-            background-color: rgba(255, 255, 255, 0);
-            color: #333;
+    refreshCarouselBooks();
     
-        }
+</script>
 
-        .theme-toggle {
-            display: inline-flex;
-            align-items: center;
-            transition: transform 0.3s;
-        }
+<style>
 
-        .theme-toggle i {
-            margin-right: 5px;
-            transition: transform 0.3s;
-        }
+    body{
+        font-family: "Book Antiqua";
+        background-color: #F5F2ED;
+    }
 
-        body.dark .pagination {
-            color:aliceblue
-        }
+    #carousel{
+        z-index: -1;
+    }
 
-        .pagination {
-            width: 620px; 
-            margin: 20px auto;
-            align-items: center;
-            justify-content: center;
+    .carousel-control-prev-icon {
+        background-color: #37465D;
+    }
 
-        }
+    /* Selector untuk tombol Carousel Next */
+    .carousel-control-next-icon {
+        background-color: #37465D;
+    }
 
-        .step-links a {
-            padding: 8px 16px;
-            text-decoration: none;
-            background-color: transparent;
-            color: #000000;
-            border-radius: 5px;
-            margin: 0 5px;
-            transition: background-color 0.3s;
-            align-items: center;
-            justify-content: center;
-        }
+    .carousel-item {
+        height: 500px;
+        object-fit: cover;
+        object-position: center;
+        width: 100%;
+    }
 
-        .step-links a:hover {
-            background-color: #9b51e0;
-        }
+    .floating-button {
+        position: fixed;
+        bottom: 30px; /* Atur jarak dari bawah halaman sesuai preferensi Anda */
+        right: 30px; /* Atur jarak dari kanan halaman sesuai preferensi Anda */
+        background-color: #C4E2BF;
+        color: #37465D; /* Warna teks hijau tua */
+        border: none; /* Tidak ada border */
+        border-radius: 10px; /* Membuat sudut halus */
+        padding: 10px 20px; /* Atur ukuran tombol sesuai kebutuhan Anda */
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Efek bayangan */
+        transition: background-color 0.3s; /* Animasi warna latar belakang saat hover */
 
-        .current-page {
-            font-size: 18px;
-            margin: 0 20px;
-        }
+    }
 
-        .step-links .current-page {
-            display: inline-block;
-            background-color: #333;
-            color: #fff;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-weight: bold;
-            font-size: 18px;
-        }
+    .floating-button:hover {
+        background-color:#45A049; /* Warna latar belakang yang sedikit lebih gelap saat hover */
+        color: #fff;
+    }
 
-        .step-links a:last-child {
-            margin-right: 0;
-        }
+    .form-control {
+        background-color:  #e1e1e1; 
+        color: #000; 
+        margin-left: auto;
+        margin-right: auto;
+    }
 
-        .step-links a.page-number {
-            background-color: #f0f0f0;
-            color: #000;
-        }
+    footer {
+        background-color: #13294B;
+        color: white;
+        text-align: center;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 80px; 
+        width: 100%;
+    }
 
-        .step-links a.page-number.next {
-            background-color: #007bff;
-            color: #fff;
-        }
+    #button-sort:hover{
+        transform: scale(1.05);
+        transition: all .2s ease-in-out;
+    }
 
-        .step-links a.page-number.previous {
-            background-color: #007bff;
-            color: #fff;
-        }
+    #button-sort{
+        margin: 5px 5px; 
+        border-radius: 5px; 
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: solid 1px black;
+    }
 
-        .modal-body {
-            position: relative;
-        }
+    .icon-container-genre {
+        text-align: center;
+        margin-bottom: 5px; 
+    }
 
-        .background-image-1 {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-size: contain;
-            background-position: center;
-            opacity: 0.7; 
-        }
+    .icon-container-genre i {
+        font-size: 20px;
+        color: #37465D;
+    }
 
-        .background-image-2{
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-size: contain;
-            background-position: center;
-            opacity: 0.9;
-        }
+    .custom-modal {
+        max-width: 300%;
+    }
 
-        .background-image-1 {
-            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSe9obl4JUEAHL-vWTOGbffyKVok13HZMr-Dw&usqp=CAU');
-            max-height: 120px;
-        }
+    .card-img {
+        max-width: 100px;
+        object-fit: contain;
+    }
 
-        .background-image-2 {
-            background-color: #555;
-            max-height: 120px;
-        }
+    .small-card {
+        max-width: 10rem;
+        height: 14rem; 
+        transition: transform 0.2s;
+        background-color: rgb(255, 255, 255);
+        color: black;
+        margin-top: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
-        .background-image-11 {
-            position: relative;
-            z-index: 2;
-            width: 2000px;
-            height: 300px;
-            background-size: contain;
-            background-position: center;
-            opacity: 0.7;
-            left: 0;
-            right: 0;
-            bottom: 20px;
-        }
+    .small-card .card {
+        height: 100%;
+        margin-top: 0;
+        padding: 0;
+    }
 
-        .background-image-12 {
-            position: relative;
-            z-index: 2;
-            background-color: #555;
-            max-height: 190px;
-            background-size: contain;
-            background-position: center;
-            opacity: 0.9;
-            top: 100px;
-            left: 0;
-            right: 0;
-            bottom: 20px;
-        }
+    .small-card .card-img {
+        margin-top: 15px;
+        max-width: 100px;
+        object-fit: contain;
+        height: 60%;
+        margin-right: auto;
+        margin-left: auto;
+    }
 
-    </style>
+    .small-card .card-body {
+        height: 25%; 
+    }
+
+    .small-card.clickable-card {
+        transition: background-color 0.3s;
+        cursor: pointer;
+    }
+
+    .small-card:hover {
+        transform: scale(1.05);
+        color: #9b51e0;
+    } 
+
+    body.dark .small-card:hover {
+        transform: scale(1.05);
+        color: #9b51e0;
+    }   
+
+    body.light .small-card:hover {
+        transform: scale(1.05); 
+        color: #9b51e0;
+    } 
+
+    .checkbox-label {
+        color: red; 
+    }
+
+    #id_Sort label {
+        color: red; 
+    }
+
+    #button-category{
+        background-color: #fffeff;
+        color: black;
+        width: 8rem; 
+        height: 8rem;
+        border: 2px solid #010101;
+    }
+
+    #button-category:hover{
+        transform: scale(1.05)
+    }
+
+    .form-tombol {
+        background-color: transparent;
+        color: black;
+        border: none;  
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
     
-</body>
-</html>
+    .form-tombol i {
+        font-size: 20px;
+        color: black;
+        flex: 0 0 auto;
+    }
+
+    .genre-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px; 
+        align-items: flex-start; 
+    }
+
+    .book-info {
+        display: flex;
+        align-items: flex-start;
+        position: relative;
+        z-index: 1;
+
+    }
+
+    .book-image {
+        margin-right: 30px;     
+    }
+
+    .book-image img {
+        max-width: 100px;   
+    }
+
+    .image-wrapper {
+        background-color: white;
+        border: 1px solid #ddd;     
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);   
+        width: 135px;   
+        height: 195px;     
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .author-info, .release-info {
+        display: flex;
+        align-items: center;
+        margin-right: 10px;
+        align-self: flex-start;
+    }
+
+    .author-icon, .release-icon{
+        margin-right: 10px;
+        margin-top: 5px;
+        color:#fff;
+    }
+
+    #book-title{
+        margin-right: 10px;
+        margin-top: 0;
+        margin-bottom: 5px;
+        color:#fff;
+        font-size: 20px;
+    }
+
+    #book-deskripsi{
+        margin-right: 10px;
+        margin-top: 50px;
+        margin-bottom: 5px;
+        color:#000;
+        font-size: px;
+    }
+
+    #book-author, #book-release {
+        line-height: 1;
+        margin: 0;
+        margin-top: 5px;
+        color: #fff;
+    }
+
+    body.light {
+        background-color: #fff;
+        color: #333;
+    }
+
+    body.dark {
+        background-color: #333;
+        color: #333;
+    }
+
+    body.dark .small-card {
+        max-width: 10rem; 
+        height: 22rem; 
+        transition: transform 0.2s;
+        background-color: rgba(255, 255, 255, 0);
+        color: white;
+    }
+    
+    body.light .small-card {
+        max-width: 10rem;
+        height: 22rem;
+        transition: transform 0.2s;
+        background-color: rgba(255, 255, 255, 0);
+        color: #333;
+
+    }
+
+    .theme-toggle {
+        display: inline-flex;
+        align-items: center;
+        transition: transform 0.3s;
+    }
+
+    .theme-toggle i {
+        margin-right: 5px;
+        transition: transform 0.3s;
+    }
+
+    body.dark .pagination {
+        color:aliceblue
+    }
+
+    .pagination {
+        width: 620px; 
+        margin: 20px auto;
+        align-items: center;
+        justify-content: center;
+
+    }
+
+    .step-links a {
+        padding: 8px 16px;
+        text-decoration: none;
+        background-color: transparent;
+        color: #000000;
+        border-radius: 5px;
+        margin: 0 5px;
+        transition: background-color 0.3s;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .step-links a:hover {
+        background-color: #9b51e0;
+    }
+
+    .current-page {
+        font-size: 18px;
+        margin: 0 20px;
+    }
+
+    .step-links .current-page {
+        display: inline-block;
+        background-color: #333;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .step-links a:last-child {
+        margin-right: 0;
+    }
+
+    .step-links a.page-number {
+        background-color: #f0f0f0;
+        color: #000;
+    }
+
+    .step-links a.page-number.next {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .step-links a.page-number.previous {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .modal-body {
+        position: relative;
+    }
+
+    .background-image-1 {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-size: contain;
+        background-position: center;
+        opacity: 0.7; 
+    }
+
+    .background-image-2{
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-size: contain;
+        background-position: center;
+        opacity: 0.9;
+    }
+
+    .background-image-1 {
+        background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSe9obl4JUEAHL-vWTOGbffyKVok13HZMr-Dw&usqp=CAU');
+        max-height: 120px;
+    }
+
+    .background-image-2 {
+        background-color: #555;
+        max-height: 120px;
+    }
+
+    .background-image-11 {
+        position: relative;
+        z-index: 2;
+        width: 2000px;
+        height: 300px;
+        background-size: contain;
+        background-position: center;
+        opacity: 0.7;
+        left: 0;
+        right: 0;
+        bottom: 20px;
+    }
+
+    .background-image-12 {
+        position: relative;
+        z-index: 2;
+        background-color: #555;
+        max-height: 190px;
+        background-size: contain;
+        background-position: center;
+        opacity: 0.9;
+        top: 100px;
+        left: 0;
+        right: 0;
+        bottom: 20px;
+    }
+
+</style>
+
+{% endblock content %}
