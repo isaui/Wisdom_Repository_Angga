@@ -29,14 +29,14 @@ def show_reviews(request, id):
 @login_required(login_url='/login')  # Perlu login untuk mengakses view ini
 def post_review(request):
     if request.method == "POST":
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            print("sukses")
-            review = form.save(commit=False)
-            review.buku_id = request.POST.get('idBuku')  # Sesuaikan dengan model Anda
-            review.save()
-            return JsonResponse({"success": True})
-        else:
-            return JsonResponse({"success": False, "errors": form.errors})
+        
+        text = request.POST.get('review_text')
+        print(request.POST.get('idBuku'))
+        print(request.POST.get('review_text'))
+        buku = Buku.objects.get(pk= int(request.POST.get('idBuku')))
+        review = Review(review_text=text, buku=buku)
+        review.save()
+        return JsonResponse({"success": True})
+    
 
     return JsonResponse({"message": "Invalid method"})

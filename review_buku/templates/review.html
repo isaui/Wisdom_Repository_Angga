@@ -3,18 +3,18 @@
 {% block content %}
     <title>Review Buku</title>
 {% include 'navbaruser.html' %}
-	<style>
+ <style>
         body {
             font-size: 16px;
             font-family: "Book Antiqua";
-			background-color: #F5F2ED;
+   background-color: #F5F2ED;
         }
         .top-section {
             background-image: url('https://raw.githubusercontent.com/PBP-D-11-2023/Wisdom-Repository/anisha/assets/images/review.png');
             background-size: cover;
             background-position: center;
             width: 100vw;
-			height: 60vh;
+   height: 60vh;
             color: white;
             position: relative;
             z-index:2;
@@ -78,7 +78,7 @@
             height: 200px; /* Tinggi textarea */
             resize: none; /* Menghilangkan kemampuan untuk mengubah ukuran */
         }   
-	</style>
+ </style>
 
 
 <body>
@@ -94,7 +94,7 @@
                 <img src="{{ buku.gambar }}" class="centered-image border-image" alt="Gambar Buku">
             </div>
 
-            <form method="post" action="{% url 'review_buku:post_review' %}">
+            <form id = "review" method="post">
                 <label for="review_text">Write your review:</label>
                 {% csrf_token %}
                 <textarea class="textarea-review" name="review_text"></textarea>
@@ -108,17 +108,15 @@
         // Tangani tombol "Review" saat diklik
         document.querySelector('.submit-review-btn').addEventListener('click', function (e) {
             e.preventDefault();
+            let form = document.querySelector('#review');
+            let formData = new FormData(form);
             // Dapatkan teks ulasan dari textarea
             let reviewText = document.querySelector('.textarea-review').value;
             let idBuku = document.querySelector('input[name="idBuku"]').value;
             // Kirim permintaan Ajax
             fetch("{% url 'review_buku:post_review' %}", {
                 method: 'POST',
-                headers: {
-                    'X-CSRFToken': getCookie('csrftoken'), // Dapatkan token CSRF
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ review_text: reviewText, idBuku: idBuku }), // Kirim data ulasan sebagai JSON
+                body: formData,
             })
             .then(response => response.json())
             .then(data => {
