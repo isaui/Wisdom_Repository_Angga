@@ -6,24 +6,24 @@ from .forms import ReviewForm
 from django.contrib.auth.decorators import login_required
 
 # @login_required(login_url='/login')  # Tambahkan decorator ini
-def review(request):
-    try:
-        buku = Buku.objects.filter(user=request.user)
-    except Buku.DoesNotExist:
-        # Jika buku untuk pengguna tersebut tidak ditemukan, Anda dapat mengembalikan pesan atau halaman error
-        return redirect('some_other_view_or_url_name')  # Ganti dengan view atau url yang sesuai
+# def review(request):
+#     try:
+#         buku = Buku.objects.filter(user=request.user)
+#     except Buku.DoesNotExist:
+#         # Jika buku untuk pengguna tersebut tidak ditemukan, Anda dapat mengembalikan pesan atau halaman error
+#         return redirect('some_other_view_or_url_name')  # Ganti dengan view atau url yang sesuai
 
-    if request.method == 'POST':
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            review = form.save(commit=False)
-            review.buku = buku
-            review.save()
-    else:
-        form = ReviewForm()
+#     if request.method == 'POST':
+#         form = ReviewForm(request.POST)
+#         if form.is_valid():
+#             review = form.save(commit=False)
+#             review.buku = buku
+#             review.save()
+#     else:
+#         form = ReviewForm()
 
-    reviews = buku.review_set.all() if buku else []
-    return render(request, 'reviews.html', {'buku': buku, 'form': form, 'reviews': reviews})
+#     reviews = buku.review_set.all() if buku else []
+#     return render(request, 'reviews.html', {'buku': buku, 'form': form, 'reviews': reviews})
 
 def show_main(request):
     reviews= Reviews.objects.filter(user=request.user)
@@ -74,8 +74,8 @@ def post_review(request):
 #     form = ReviewForm()
 # return render(request, 'reviews.html', {'buku': buku, 'form': form})
 
-# def review(request):
-#     buku = Buku.objects.last()  # Ambil buku terakhir yang ditambahkan
-#     form = ReviewForm()
+def review(request):
+    buku = Buku.objects.last()  # Ambil buku terakhir yang ditambahkan
+    form = ReviewForm()
     
-#     return render(request, 'reviews.html', {'buku': buku, 'form': form})
+    return render(request, 'reviews.html', {'buku': buku, 'form': form})

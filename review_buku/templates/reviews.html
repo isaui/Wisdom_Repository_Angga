@@ -1,19 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-        crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
-    <title>Pinjam Buku</title>
+{% block content %}
+    <title>Review Buku</title>
+{% include 'navbaruser.html' %}
 	<style>
         body {
             font-size: 16px;
@@ -29,11 +18,6 @@
             color: white;
             position: relative;
             z-index:2;
-        }
-        .bottom-section {
-            padding: 20px;
-			height: 50vh;
-            z-index:1;
         }
         .centered-image {
             width: 40vh;
@@ -102,43 +86,11 @@
             font-size: 14px;
             height: 200px; /* Tinggi textarea */
             resize: none; /* Menghilangkan kemampuan untuk mengubah ukuran */
-        }
+        }   
 	</style>
-</head>
+
 
 <body>
-    <header data-bs-theme="light">
-        <nav class="navbar navbar-expand-md fixed-top bg-light" id="navbar-1">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">
-                    <img src="https://raw.githubusercontent.com/PBP-D-11-2023/Wisdom-Repository/anisha/assets/images/wr%20logo.png" alt="Logo" width="156" height="52" class="d-inline-block align-text-top">
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
-                    <ul class="nav justify-content-end me-3">
-                        <li class="nav-item me-2">
-                            <a class="nav-link active text-dark" href="#">Bookmark</a>
-                        </li>
-                        <li class="nav-item me-2">
-                            <a class="nav-link active text-dark" href="#">Returned</a>
-                        </li>
-                        <li class="nav-item me-2">
-                            <a class="nav-link active text-dark" href="#">Borrowed</a>
-                        </li>
-                        <li class="nav-item me-2">
-                            <a class="nav-link active text-dark" href="#">Profile</a>
-                        </li>
-                        <li class="nav-item me-2">
-                            <a class="nav-link active text-dark" href="#">Log Out</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
 	<div class="container-fluid">
         <div class="row">
             <div class="col-md-0 top-section">
@@ -250,3 +202,4 @@
 </body>
 
 </html>
+{% endblock content %}
