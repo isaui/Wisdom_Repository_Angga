@@ -22,4 +22,6 @@ urlpatterns = [
     path('main/', include('daftar_buku.urls')),
     path('', include('authentication_bookmark.urls')),
     path('borrow/', include('pinjam_buku.urls')),
+    path('review/', include('review_buku.urls')),
+    path('lihat_review/', include('review_buku.urls')),
 ]
