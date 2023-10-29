@@ -190,6 +190,7 @@
         const products = await getProducts();
 
         products.forEach((item) => {
+            const pinjamLink = "{% url 'pinjam_buku:pinjam_buku' 0 %}".replace('0', item.fields.buku);
             const card = `
                 <div class="card" data-product-id="${item.pk}">
                     <img class= 'mark' src="https://www.iconsdb.com/icons/preview/color/37465D/bookmark-5-xxl.png">
@@ -199,7 +200,7 @@
                     <div class="delete">
                         <img src=https://www.iconsdb.com/icons/preview/red/delete-xxl.png>
                         <button class='deletebutton' onclick="deleteItem(${item.pk})">Delete</button>
-                        <button class = 'pinjambutton' onclick='pinjamItem(${item.fields.buku})'>Pinjam</button>
+                        <a class='pinjambutton' href="${pinjamLink}">Pinjam</a>
                     </div>
                 </div>
             
@@ -231,10 +232,10 @@
         }
     }
 
-    async function pinjamItem(id) {
+    function pinjamItem(id) {
         const pinjamBookmarkLink = "{% url 'pinjam_buku:pinjam_buku' 0 %}".replace('0', id);
         try {
-            const response = await fetch(pinjamBookmarkLink, {
+            const response = fetch(pinjamBookmarkLink, {
                 method: 'GET' // Sesuaikan dengan metode yang diharapkan oleh view Django
             });
 
