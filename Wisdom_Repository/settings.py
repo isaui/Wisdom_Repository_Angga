@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'daftar_buku',
     'authentication_bookmark',
     'pinjam_buku',
-    'review_buku'
 ]
 
 MIDDLEWARE = [

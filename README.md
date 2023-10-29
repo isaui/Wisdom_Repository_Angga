@@ -20,7 +20,7 @@ Data menunjukkan bahwa minat membaca masyarakat Indonesia masih rendah. Banyak f
 3. Peminjaman dan Pengembalian Buku (Alwin Djuliansah)  
   Halaman dimana member dapat meminjam buku yang diinginkan dan mengembalikan buku yang dipinjam. Setelah konfirmasi pengembalian, member akan ditawarkan untuk me-review buku yang dipinjam.
 4. Review Buku (Rafah Azizah)  
-  Halaman ini akan berisi buku yang sebelumnya telah dipinjam oleh member, kemudian pada halaman ini, member bisa memberikan review terhadap buku yang sudah dipinjam.
+  Halaman ini akan berisi buku yang sebelumnya telah dipinjam oleh member. Pada halaman ini, member bisa memberikan review terhadap buku yang sudah dipinjam.
 5. Menambah, Mengedit, dan Menghapus Buku (Robert Benyamin)  
   Pada halaman ini, Admin dapat menambahkan atau menghapus buku dari daftar buku yang tersedia. Admin juga dapat mengedit informasi dari buku yang terdapat di daftar buku.
 
