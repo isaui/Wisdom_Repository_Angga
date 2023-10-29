@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('main/', include('daftar_buku.urls')),
     path('', include('authentication_bookmark.urls')),
+    path('borrow/', include('pinjam_buku.urls')),
 ]
