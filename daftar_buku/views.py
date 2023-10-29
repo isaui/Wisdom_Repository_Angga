@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from daftar_buku.models import Buku, Rating
 import pandas
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.urls import reverse
 from django.core.paginator import Paginator, Page
 from django.http import JsonResponse
@@ -15,6 +15,7 @@ from django.http import HttpResponse
 from django.contrib.sessions.models import Session
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
+from admin_buku.models import RequestBuku
 
 daftar_genre = [
         "Fiction",
@@ -217,6 +218,36 @@ def get_user(request):
     else:
         return JsonResponse({'username': 'Anonymous'})
 
+@csrf_exempt
+def create_request_book(request):
+    if request.method == 'POST':
+        isbn = request.POST.get('isbn', '')
+        judul = request.POST.get('judul', '')
+        penulis = request.POST.get('penulis', '')
+        tahun = request.POST.get('tahun', 0)  
+        kategori = request.POST.get('kategori', '')
+        gambar = request.POST.get('gambar', '')
+        deskripsi = request.POST.get('deskripsi', '')
+        rating_obj = Rating(rating=request.POST.get('rating', 0.0))
+        rating_obj.save()
 
+        rating = Rating.objects.get(pk=rating_obj.pk)
 
+        buku = RequestBuku(
+            isbn=isbn,
+            judul=judul,
+            penulis=penulis,
+            tahun=tahun,
+            kategori=kategori,
+            gambar=gambar,
+            deskripsi=deskripsi,
+            rating=rating,
+            user=request.user,
+        )
+
+        buku.save()
+
+        return HttpResponse(b"CREATED", status=201)
+    
+    return HttpResponseNotFound()
 

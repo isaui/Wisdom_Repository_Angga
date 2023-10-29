@@ -13,7 +13,7 @@
 <br>
 
 <center>
-    <h1 style= "color: #37465D; font-size: 50px;" ><u>List of Books</u></h1>
+    <h1 style= "color: #37465D; font-size: 50px;" ><u>List of Requested Books</u></h1>
 </center>
 
 <div class="container"> 
@@ -136,9 +136,9 @@
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
-                    <button type="button" id="confirmHapusButton" class="btn btn-danger" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">Hapus</button>
+                    <button type="button" id="confirmHapusButton" class="btn btn-danger" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">Tolak</button>
                     <div class="d-flex">
-                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#editBukuModal">Edit</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="confirmAccButton">Setujui</button>
                     </div>
                 </div>
             </div>
@@ -153,7 +153,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Apakah Anda yakin ingin menghapus buku berjudul "<span id="deleteBookTitle"></span>"?
+                    Apakah Anda yakin ingin menolak request buku berjudul "<span id="deleteRequestBookTitle"></span>"?
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -165,131 +165,6 @@
         </div>
     </div>
 
-    <div class="modal fade" id="editBukuModal">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <!-- Bagian Header Modal -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Edit Buku</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                
-                <!-- Bagian Body Modal -->
-                <div class="modal-body">
-                    <form id="editBookForm">
-                        {% csrf_token %}
-                        <div class="col-12">
-                            <div class="mb-3">
-                                <label for="isbn">ISBN:</label>
-                                <input type="text" class="form-control" id="isbnEdit" name="isbn" placeholder="Masukkan ISBN">
-                            </div>
-                            <div class="mb-3">
-                                <label for="judul">Judul:</label>
-                                <input type="text" class="form-control" id="judulEdit" name="judul" placeholder="Masukkan Judul Buku">
-                            </div>
-                            <div class="mb-3">
-                                <label for="penulis">Penulis:</label>
-                                <input type="text" class="form-control" id="penulisEdit" name="penulis" placeholder="Masukkan Nama Penulis">
-                            </div>
-                            <div class="mb-3">
-                                <label for="tahun">Tahun:</label>
-                                <input type="number" class="form-control" id="tahunEdit" name="tahun" placeholder="Masukkan Tahun Terbit">
-                            </div>
-                            <div class="mb-3">
-                                <label for="kategori">Kategori:</label>
-                                <input type="text" class="form-control" id="kategoriEdit" name="kategori" placeholder="Masukkan Kategori Buku">
-                            </div>
-                            <div class="mb-3">
-                                <label for="gambar">Gambar:</label>
-                                <input type="text" class="form-control" id="gambarEdit" name="gambar" placeholder="Masukkan URL Gambar">
-                            </div>
-                            <div class="mb-3">
-                                <label for="deskripsi">Deskripsi:</label>
-                                <textarea class="form-control" id="deskripsiEdit" name="deskripsi" rows="4" placeholder="Masukkan Deskripsi Buku"></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="rating">Rating:</label>
-                                <input type="number" step="0.1" class="form-control" id="ratingEdit" name="rating" placeholder="Masukkan Rating Buku">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                
-                <!-- Bagian Footer Modal -->
-                <div class="modal-footer d-flex justify-content-between">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                    <div class="d-flex">
-                        <button type="submit" class="btn btn-success" data-bs-dismiss="modal" id="confirmEditButton">Simpan</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="tambahBukuModal">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <!-- Bagian Header Modal -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Tambah Buku</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                
-                <!-- Bagian Body Modal -->
-                <div class="modal-body">
-                    <form id="bookForm">
-                        {% csrf_token %}
-                        <div class="col-12">
-                            <div class="mb-3">
-                                <label for="isbn">ISBN:</label>
-                                <input type="text" class="form-control" id="isbn" name="isbn" placeholder="Masukkan ISBN">
-                            </div>
-                            <div class="mb-3">
-                                <label for="judul">Judul:</label>
-                                <input type="text" class="form-control" id="judul" name="judul" placeholder="Masukkan Judul Buku">
-                            </div>
-                            <div class="mb-3">
-                                <label for="penulis">Penulis:</label>
-                                <input type="text" class="form-control" id="penulis" name="penulis" placeholder="Masukkan Nama Penulis">
-                            </div>
-                            <div class="mb-3">
-                                <label for="tahun">Tahun:</label>
-                                <input type="number" class="form-control" id="tahun" name="tahun" placeholder="Masukkan Tahun Terbit">
-                            </div>
-                            <div class="mb-3">
-                                <label for="kategori">Kategori:</label>
-                                <input type="text" class="form-control" id="kategori" name="kategori" placeholder="Masukkan Kategori Buku">
-                            </div>
-                            <div class="mb-3">
-                                <label for="gambar">Gambar:</label>
-                                <input type="text" class="form-control" id="gambar" name="gambar" placeholder="Masukkan URL Gambar">
-                            </div>
-                            <div class="mb-3">
-                                <label for="deskripsi">Deskripsi:</label>
-                                <textarea class="form-control" id="deskripsi" name="deskripsi" rows="4" placeholder="Masukkan Deskripsi Buku"></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="rating">Rating:</label>
-                                <input type="number" step="0.1" class="form-control" id="rating" name="rating" placeholder="Masukkan Rating Buku">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                
-                <!-- Bagian Footer Modal -->
-                <div class="modal-footer d-flex justify-content-between">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                    <div class="d-flex">
-                        <button type="submit" class="btn btn-success" data-bs-dismiss="modal" onclick="addBook()">Simpan</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div>
-        <button class="floating-button" data-bs-toggle="modal" data-bs-target="#tambahBukuModal">
-            Tambah Buku
-        </button>
-    </div>
 </div>
 
 <footer >
@@ -304,8 +179,8 @@
     
     const csrf_token = document.body.getAttribute("data-csrf-token");
 
-    async function getBooks() {
-        const url = `{% url 'admin_buku:get_books_json' %}`;
+    async function getRequestBooks() {
+        const url = `{% url 'admin_buku:get_request_books_json' %}`;
         return fetch(url).then((res) => res.json());
     }
 
@@ -324,7 +199,7 @@
         if (!clickedElement.is(".show-details, .show-details *")) {
             var bookID = $(this).find('.card-img').data("id");
             $.ajax({
-                url: "{% url 'admin_buku:book_details' %}",
+                url: "{% url 'admin_buku:request_book_details' %}",
                 method: "GET",
                 data: { id: bookID },
                 success: function(data) {
@@ -334,60 +209,48 @@
                     document.getElementById('modalImage').src=data.gambar;
                     $("#book-release").text(data.tahun);
                     $("#bookModal").modal("show");
-
+                    console.log("ini data book id ketika diklik " + bookID)
                     // Memanggil fungsi untuk mengisi data modal konfirmasi penghapusan
                     fillDeleteConfirmationModal(data.judul, bookID);
 
                     // Memanggil fungsi untuk mengisi data modal konfirmasi pengeditan
-                    fillEditConfirmationModal(data, bookID);
+                    fillAccConfirmationModal(data, bookID);
                 },
             });
         }
     });
 
-    function fillEditConfirmationModal(data, bookID) {
-        // Set input dengan data sekarang
-        $("#isbnEdit").val(data.isbn);
-        $("#judulEdit").val(data.judul);
-        $("#penulisEdit").val(data.penulis);
-        $("#tahunEdit").val(data.tahun);
-        $("#kategoriEdit").val(data.kategori);
-        $("#gambarEdit").val(data.gambar);
-        $("#deskripsiEdit").val(data.deskripsi);
-        $("#ratingEdit").val(data.rating);
-
-            // Simpan ID buku yang akan dihapus 
-        $("#confirmEditButton").data("book-id", bookID);
+    function fillAccConfirmationModal(data, bookID) {
+        // Simpan ID buku yang akan disetujui
+        $("#confirmAccButton").data("book-id", bookID);
     }
 
     // Tangani klik tombol "Simpan" pada modal konfirmasi pengeditan
-    $("#confirmEditButton").on('click', function() {
+    $("#confirmAccButton").on('click', function() {
         // Ambil ID buku yang akan diedit dari atribut data
         var bookID = $(this).data("book-id");
 
-        // Panggil fungsi editBook dengan bookID sebagai argumen
-        editBook(bookID);
+        // Panggil fungsi accBook dengan bookID sebagai argumen
+        accBook(bookID);
     });
 
     // Fungsi untuk mengedit buku
-    async function editBook(bookID) {
-        const url = `{% url 'admin_buku:edit_book' 0 %}`.replace('0', bookID);
+    async function accBook(bookID) {
+        const url = `{% url 'admin_buku:acc_request_book' 0 %}`.replace('0', bookID);
 
         fetch(url, {
             method: "POST",
             headers: {
                 "X-CSRFToken": csrf_token,
             },
-            body: new FormData(document.querySelector("#editBookForm")),
         }).then(refreshBooks);
 
-        document.getElementById("editBookForm").reset();
     }
 
     // Fungsi untuk mengisi data modal konfirmasi penghapusan
     function fillDeleteConfirmationModal(bookTitle, bookID) {
         // Set judul buku yang akan dihapus di modal konfirmasi
-        $("#deleteBookTitle").text(bookTitle);
+        $("#deleteRequestBookTitle").text(bookTitle);
 
         // Simpan ID buku yang akan dihapus 
         $("#confirmDeleteButton").data("book-id", bookID);
@@ -398,13 +261,14 @@
         // Ambil ID buku yang akan dihapus dari atribut data
         var bookID = $(this).data("book-id");
 
-        // Panggil fungsi deleteBook dengan bookID sebagai argumen
-        deleteBook(bookID);
+        // Panggil fungsi deleteRequestBook dengan bookID sebagai argumen
+        deleteRequestBook(bookID);
     });
 
-    async function deleteBook(bookID) {
-        const url = `{% url 'admin_buku:delete_book' 0 %}`.replace('0', bookID);
+    async function deleteRequestBook(bookID) {
 
+        const url = `{% url 'admin_buku:delete_request_book' 0 %}`.replace('0', bookID);
+        
         const response = await fetch(url, {
             method: "DELETE",
             headers: {
@@ -427,29 +291,10 @@
         }
     }
 
-    // Fungsi untuk menambahkan buku
-    async function addBook() {
-        fetch(`{% url 'admin_buku:create_book' %}`, {
-            method: "POST",
-            headers: {
-                "X-CSRFToken": csrf_token,
-            },
-            body: new FormData(document.querySelector("#bookForm")),
-        }).then(refreshBooks);
-
-        document.getElementById("bookForm").reset();
-    }
-
-    async function getCarouselBooks() {
-        return fetch("{% url 'daftar_buku:get_books_json' %}").then((res) => res.json());
-    }
-
-    const carouselContainer = document.querySelector('#carousel');
-
     async function refreshBooks() {
         document.getElementById("bookRow").innerHTML = "";
 
-        const books = await getBooks();
+        const books = await getRequestBooks();
 
         books.forEach((book, index) => {
             const card = document.createElement("div");
@@ -468,28 +313,6 @@
         })
 
     }
-
-    async function refreshCarouselBooks() {
-        const books = await getCarouselBooks();
-        let index = 0;
-        let carouselHTML = '';
-        books.forEach((book) => {
-            const carouselItem = document.createElement('div');
-            carouselItem.classList.add('hidden', 'duration-700', 'ease-in-out');
-            carouselItem.setAttribute('data-carousel-item', '');
-
-            const img = document.createElement('img');
-            img.src = book.fields.gambar;
-            img.classList.add('absolute', 'block', 'w-full', '-translate-x-1/2', '-translate-y-1/2', 'top-1/2', 'left-1/2');
-            img.alt = book.fields.judul;
-
-            carouselItem.appendChild(img);
-            console.log(carouselItem);
-            carouselContainer.appendChild(carouselItem);
-        });
-    }
-
-    refreshCarouselBooks();
     
 </script>
 

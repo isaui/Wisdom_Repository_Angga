@@ -204,6 +204,72 @@
         </div>
     </div>
 
+    <div class="modal fade" id="requestBukuModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <!-- Bagian Header Modal -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Request Buku</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <!-- Bagian Body Modal -->
+                <div class="modal-body">
+                    <form id="requestBookForm">
+                        {% csrf_token %}
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="isbn">ISBN:</label>
+                                <input type="text" class="form-control" id="isbn" name="isbn" placeholder="Masukkan ISBN">
+                            </div>
+                            <div class="mb-3">
+                                <label for="judul">Judul:</label>
+                                <input type="text" class="form-control" id="judul" name="judul" placeholder="Masukkan Judul Buku">
+                            </div>
+                            <div class="mb-3">
+                                <label for="penulis">Penulis:</label>
+                                <input type="text" class="form-control" id="penulis" name="penulis" placeholder="Masukkan Nama Penulis">
+                            </div>
+                            <div class="mb-3">
+                                <label for="tahun">Tahun:</label>
+                                <input type="number" class="form-control" id="tahun" name="tahun" placeholder="Masukkan Tahun Terbit">
+                            </div>
+                            <div class="mb-3">
+                                <label for="kategori">Kategori:</label>
+                                <input type="text" class="form-control" id="kategori" name="kategori" placeholder="Masukkan Kategori Buku">
+                            </div>
+                            <div class="mb-3">
+                                <label for="gambar">Gambar:</label>
+                                <input type="text" class="form-control" id="gambar" name="gambar" placeholder="Masukkan URL Gambar">
+                            </div>
+                            <div class="mb-3">
+                                <label for="deskripsi">Deskripsi:</label>
+                                <textarea class="form-control" id="deskripsi" name="deskripsi" rows="4" placeholder="Masukkan Deskripsi Buku"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rating">Rating:</label>
+                                <input type="number" step="0.1" class="form-control" id="rating" name="rating" placeholder="Masukkan Rating Buku">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Bagian Footer Modal -->
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                    <div class="d-flex">
+                        <button type="submit" class="btn btn-success" data-bs-dismiss="modal" onclick="requestBook()">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <button class="floating-button" data-bs-toggle="modal" data-bs-target="#requestBukuModal">
+            Request Buku
+        </button>
+    </div>
+
 
 
 
@@ -336,7 +402,15 @@
                 .catch(error => console.error('Error:', error));
         };
 
-        
+        // Fungsi untuk menambahkan buku
+        async function requestBook() {
+            fetch(`{% url 'daftar_buku:create_request_book' %}`, {
+                method: "POST",
+                body: new FormData(document.querySelector("#requestBookForm")),
+            }).then(refreshBooks);
+
+            document.getElementById("requestBookForm").reset();
+        }
 
         async function getBooks() {
             return fetch("{% url 'daftar_buku:get_books_json' %}").then((res) => res.json());
@@ -400,6 +474,25 @@
             width: 100%;
         }
 
+        .floating-button {
+            position: fixed;
+            bottom: 30px; /* Atur jarak dari bawah halaman sesuai preferensi Anda */
+            right: 30px; /* Atur jarak dari kanan halaman sesuai preferensi Anda */
+            background-color: #C4E2BF;
+            color: #37465D; /* Warna teks hijau tua */
+            border: none; /* Tidak ada border */
+            border-radius: 10px; /* Membuat sudut halus */
+            padding: 10px 20px; /* Atur ukuran tombol sesuai kebutuhan Anda */
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Efek bayangan */
+            transition: background-color 0.3s; /* Animasi warna latar belakang saat hover */
+
+        }
+
+        .floating-button:hover {
+            background-color:#45A049; /* Warna latar belakang yang sedikit lebih gelap saat hover */
+            color: #fff;
+        }
 
         footer {
             background-color: #13294B;
