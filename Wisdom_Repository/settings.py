@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'daftar_buku',
+    'admin_buku',
     'authentication_bookmark',
     'pinjam_buku',
 ]
