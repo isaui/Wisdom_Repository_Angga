@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Buku, Review
+from pinjam_buku.models import Pengembalian
 from .forms import ReviewForm
 
 
@@ -46,10 +47,11 @@ def post_review(request):
     if request.method == "POST":
         
         text = request.POST.get('review_text')
-        print(request.POST.get('idBuku'))
-        print(request.POST.get('review_text'))
         buku = Buku.objects.get(pk= int(request.POST.get('idBuku')))
         review = Review(review_text=text, buku=buku)
         review.save()
+        pengembalian = Pengembalian.objects.filter(idBuku= int(request.POST.get('idBuku')), peminjam = request.user).first()
+        pengembalian.review = not pengembalian.review
+        pengembalian.save()
         return JsonResponse({"success": True})
     return JsonResponse({"message": "Invalid method"})
