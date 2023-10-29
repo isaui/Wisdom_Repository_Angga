@@ -38,7 +38,7 @@
     }
 
     p{
-        padding-left: 30px;
+        padding-left: 50px;
     }
 
     .backimg{
@@ -167,12 +167,12 @@
 <div class="user">
     <p>Hey, {{ name }}!</p>
     <div class="member">
-        <img src="https://www.iconsdb.com/icons/preview/color/37465D/user-xxl.png">
+        <img src="{% static 'authentication_bookmark/img/user.png' %} ">
         <h5>{{ member }}</h5>
     </div>
 </div>
 {% csrf_token %}
-<p>List of Books</p>
+<p><u>List of Books:</u></p>
 <div class="container">
     <div class="card-container" id="product-table"></div>
 </div>
@@ -197,7 +197,7 @@
                     <div class="delete">
                         <img src=https://www.iconsdb.com/icons/preview/red/delete-xxl.png>
                         <button class='deletebutton' onclick="deleteItem(${item.pk})">Delete</button>
-                        <button class='pinjambutton' onclick="pinjamItem(${item.pk})">Pinjam</button>
+                        <button class = 'pinjambutton' onclick='pinjamItem(${item.fields.buku})'>Pinjam</button>
                     </div>
                 </div>
             
@@ -229,10 +229,18 @@
         }
     }
 
-    async function pinjamItem(id){
-        var pinjamBookmarkLink = `pinjam_buku/details/${id}`;
-        fetch(pinjamBookmarkLink)
+    async function pinjamItem(id) {
+        const pinjamBookmarkLink = "{% url 'pinjam_buku:pinjam_buku' 0 %}".replace('0', id);
+        try {
+            const response = await fetch(pinjamBookmarkLink, {
+                method: 'GET' // Sesuaikan dengan metode yang diharapkan oleh view Django
+            });
+
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
+
 
 
     refreshProducts();
