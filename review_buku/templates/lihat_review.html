@@ -92,7 +92,7 @@
         }
 
         .textarea-review {
-            border: 1px solid #dcdcdc; /* Sama seperti textbox "Write a Review" tetapi dengan ukuran yang lebih besar */
+            border: 1px solid #dcdcdc; /* Sama seperti textbox "Write your review" tetapi dengan ukuran yang lebih besar */
             border-radius: 10px;
             border-color: black;
             background-color: #F5F2ED;
@@ -129,124 +129,48 @@
                             <a class="nav-link active text-dark" href="#">Borrowed</a>
                         </li>
                         <li class="nav-item me-2">
-                            <a class="nav-link active text-dark" href="#">Profile</a>
-                        </li>
-                        <li class="nav-item me-2">
-                            <a class="nav-link active text-dark" href="#">Log Out</a>
+                            <a class a class="nav-link active text-dark" href="/daftar_buku/">Back</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-	<div class="container-fluid">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-0 top-section">
-                <p class="text-margin-first">{{ buku.judul }}</p>
-                <p class="text-margin"><i class="fas fa-user"></i> {{ buku.penulis }}</p>
-                <p class="text-margin"><i class="fas fa-star"></i> {{ buku.rating }} / 5</p>
-                <p class="text-margin"><i class="fas fa-calendar"></i> {{ buku.tahun }}</p>
+                <!-- Informasi buku -->
             </div>
             <div class="col-md-0 centered-image">
-                <img src="{{ buku.gambar }}" class="centered-image border-image" alt="Gambar Buku">
-            </div>
-
-            <form method="post" action="/postReview/">
-                <label for="reviewArea">Write your review:</label>
-                {% csrf_token %}
-                <textarea class="textarea-review" name="review_text"></textarea>
-                
-                <!-- Ini adalah tombol Submit yang telah digantikan -->
-                <!-- <input type="submit" value="Review" class="button-pinjam"> -->
-                <input type="submit" value="Review" class="button-pinjam submit-review-btn">
-
-            </form>
-
-            <div class="col-md-0 bottom-section">
-                <button type="button" class="button-back">Back</button>
+                <!-- Gambar buku -->
             </div>
         </div>
-            <!-- <label for="reviewArea">Write your review:</label>
-            
-            {% csrf_token %}
-            <textarea class="textarea-review"></textarea>
-            <div class="col-md-0 bottom-section">
-                <button type="button" class="button-back">Back</button>
-                <button type="button" class="button-pinjam">Review</button>
-            </div> -->
+        
+        <!-- Kartu-kartu ulasan -->
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Ulasan Buku</h2>
+                {% for review in reviews %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ review.judul_buku }}</h5>
+                            <p class="card-text">{{ review.ulasan }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
-    <script>
-        // Tangani tombol "Review" saat diklik
-        document.querySelector('.button-pinjam').addEventListener('click', function() {
-            // Dapatkan teks ulasan dari textarea
-            let reviewText = document.querySelector('.textarea-review').value;
-    
-            // Kirim permintaan Ajax
-            fetch('/postReview/', {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': getCookie('csrftoken'), // Dapatkan token CSRF
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ review_text: reviewText }), // Kirim data ulasan sebagai JSON
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert("Review submitted!");
-                    location.reload(); // Muat ulang halaman
-                } else {
-                    alert("There was an error submitting your review.");
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        });
-    
-        // Fungsi untuk mendapatkan token CSRF dari cookie
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    if (cookie.substring(0, name.length + 1) === name + '=') {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-    </script>
-    
-    <!-- <script>
-        const submitReview = () => {
-            let reviewText = document.querySelector(".textarea-review").value;
-            let csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-            fetch('/postReview/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-CSRFToken': csrfToken
-                },
-                body: 'review_text=' + encodeURIComponent(reviewText)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert("Review submitted!");
-                    location.reload();
-                } else {
-                    alert("There was an error submitting your review.");
-                }
-            });
-        };
-
-        document.querySelector('.submit-review-btn').addEventListener('click', submitReview);
-    </script> -->
 </body>
-
+</html>
+    <script>
+        // Tangani tombol "Back" saat diklik
+        document.getElementById('back-button').addEventListener('click', function() {
+            // Kembali ke halaman daftar buku
+            window.location.href = '/daftar_buku/'; // Ganti '/daftar_buku/' dengan URL yang sesuai
+        });
+        
+        // Tangani tombol "Review" seperti yang sudah ada dalam kode sebelumnya
+    </script>
+</body>
 </html>
