@@ -319,7 +319,7 @@
                         const newUrl = "{% url 'pinjam_buku:pinjam_buku' 0 %}".replace('0', bookId);
                         pinjamButton.href = newUrl;
                         const reviewButton = document.getElementById('book-review-link');
-                        const newUrl2 = "{% url 'review_buku:show' 0 %}".replace('0', bookId);
+                        const newUrl2 = "{% url 'review_buku:show_reviews' 0 %}".replace('0', bookId);
                         reviewButton.href = newUrl2;
                         
                     },
