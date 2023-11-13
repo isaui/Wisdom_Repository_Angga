@@ -13,8 +13,9 @@ from django.views.decorators.csrf import csrf_exempt
 from daftar_buku.models import Buku, Rating
 from daftar_buku.forms import SearchForm
 from daftar_buku.views import daftar_genre
-from admin_buku.forms import BukuForm
-import pandas
+from admin_buku.forms import BukuForm, RequestBuku
+from admin_buku.models import RequestBuku
+import pandas, os
 
 def delete_book(request, bookID):
     book = Buku.objects.get(pk=bookID)
@@ -88,6 +89,46 @@ def edit_book(request, bookID):
     
     return HttpResponseNotFound()
 
+@csrf_exempt
+def delete_request_book(request, bookID):
+    book = RequestBuku.objects.get(pk=bookID)
+
+    if request.method == 'DELETE':
+        book.delete()
+        return JsonResponse({'success': True,})
+
+@csrf_exempt
+def acc_request_book(request, bookID):
+    if request.method == 'POST':
+        request_buku = RequestBuku.objects.get(pk=bookID)
+
+        isbn = request_buku.isbn
+        judul = request_buku.judul
+        penulis = request_buku.penulis
+        tahun = request_buku.tahun
+        kategori = request_buku.kategori
+        gambar = request_buku.gambar
+        deskripsi = request_buku.deskripsi
+        rating = request_buku.rating
+
+        buku = Buku(
+            isbn=isbn,
+            judul=judul,
+            penulis=penulis,
+            tahun=tahun,
+            kategori=kategori,
+            gambar=gambar,
+            deskripsi=deskripsi,
+            rating=rating,
+        )
+
+        buku.save()
+        request_buku.delete()
+
+        return HttpResponse(b"CREATED", status=201)
+    
+    return HttpResponseNotFound()
+
 def search_books(request):
     if not request.method == 'POST':
         if 'search-books' in request.session:
@@ -144,7 +185,8 @@ def sort_books(request, query):
 
 def make_buku(request):
 
-    file_csv = open('daftar_buku\\book\\books.csv', 'r', encoding='utf-8')
+    file_path = os.path.join(os.path.dirname(__file__), 'static/books.csv')
+    file_csv = open(file_path, 'r', encoding='utf-8')
     data = pandas.read_csv(file_csv, encoding='utf-8')
 
     buku = {}
@@ -189,6 +231,18 @@ def show_main(request):
     }
     return render(request, 'main-admin.html', context)
 
+def request_buku(request):
+ 
+    buku_list = RequestBuku.objects.all()
+    paginator = Paginator(buku_list, 12)  
+    page = request.GET.get('page')
+    buku = paginator.get_page(page)
+    context = {
+        'buku': buku,
+        'genre' : daftar_genre
+    }
+    return render(request, 'request-admin.html', context)
+
 def book_details(request):
 
     book_id = request.GET.get('id')
@@ -205,8 +259,29 @@ def book_details(request):
                         'deskripsi':book.deskripsi,
                         'rating': float(rating.rating)})
 
+def request_book_details(request):
+
+    book_id = request.GET.get('id')
+    book = RequestBuku.objects.get(id=book_id)
+
+    rating = Rating.objects.get(id=book.rating.pk)
+    
+    return JsonResponse({'isbn': book.isbn,
+                        'judul': book.judul,
+                        'penulis': book.penulis,
+                        'tahun': book.tahun,
+                        'kategori': book.kategori,
+                        'gambar': book.gambar,
+                        'deskripsi':book.deskripsi,
+                        'rating': float(rating.rating),
+                        'user': book.user.pk,})
+
 def get_books_json(request):
     books = Buku.objects.all()[:12]
+    return HttpResponse(serializers.serialize('json', books))
+
+def get_request_books_json(request):
+    books = RequestBuku.objects.all()[:12]
     return HttpResponse(serializers.serialize('json', books))
 
 def get_user(request):
