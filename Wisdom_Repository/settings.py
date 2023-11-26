@@ -62,6 +62,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CSRF_TRUSTED_ORIGINS = ["https://wisdom-repository-d11-tk.pbp.cs.ui.ac.id/", "https://wisdom-repository-d11-tk.pbp.cs.ui.ac.id/*"]
+
 ROOT_URLCONF = 'Wisdom_Repository.urls'
 
 TEMPLATES = [
