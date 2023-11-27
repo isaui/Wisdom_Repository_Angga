@@ -2,7 +2,7 @@
 ![Wisdom-Repository](./assets/images/Wisdom-Repository.png)
 
 ## Link Deployment
-http://wisdom-repository-d11-tk.pbp.cs.ui.ac.id/
+https://wisdom-repository-d11-tk.pbp.cs.ui.ac.id/
 
 ## Anggota Kelompok
 1. Alwin Djuliansah - 2206813504

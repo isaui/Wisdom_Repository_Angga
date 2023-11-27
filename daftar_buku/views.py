@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.core.paginator import Paginator, Page
 from django.http import JsonResponse
 from django.db.models import Q
+from django.db import transaction
 from django.core.paginator import EmptyPage, PageNotAnInteger
 from django.db.models.functions import Lower
 from .forms import SearchForm
@@ -177,20 +178,22 @@ def make_buku(request):
     buku['rating'] = data['average_rating'].tolist()
 
     counter = 0
-    for i in range(0, len(data['isbn13'])):
-        try:
-            if counter == 100:
-                break
-            rating_obj = Rating(rating=buku['rating'][i])
-            rating_obj.save()
 
-            rating = Rating.objects.get(pk=rating_obj.pk)
-            buku_obj = Buku(isbn=buku['isbn'][i], judul=buku['judul'][i], penulis=buku['penulis'][i], tahun=buku['tahun'][i], kategori=buku['kategori'][i], gambar=buku['gambar'][i], deskripsi=buku['deskripsi'][i], rating=rating)
-            buku_obj.save()
-            counter += 1
-        except:
-            print("tesss")
-            pass
+    with transaction.atomic():
+        for i in range(0, len(data['isbn13'])):
+            try:
+                if counter == 100:
+                    break
+                rating_obj = Rating(rating=buku['rating'][i])
+                rating_obj.save()
+
+                rating = Rating.objects.get(pk=rating_obj.pk)
+                buku_obj = Buku(isbn=buku['isbn'][i], judul=buku['judul'][i], penulis=buku['penulis'][i], tahun=buku['tahun'][i], kategori=buku['kategori'][i], gambar=buku['gambar'][i], deskripsi=buku['deskripsi'][i], rating=rating)
+                buku_obj.save()
+                counter += 1
+            except:
+                print("tesss")
+                pass
 
     return HttpResponseRedirect(reverse('daftar_buku:show_main'))
 
