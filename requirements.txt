@@ -6,3 +6,4 @@ requests
 urllib3
 pandas
 django-environ
+django-cors-headers
