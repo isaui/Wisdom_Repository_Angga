@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'admin_buku',
     'authentication_bookmark',
     'pinjam_buku',
-    'review_buku'
+    'review_buku',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -60,9 +61,16 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 CSRF_TRUSTED_ORIGINS = ["https://wisdom-repository-d11-tk.pbp.cs.ui.ac.id/", "https://wisdom-repository-d11-tk.pbp.cs.ui.ac.id/*"]
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'None'
 
 ROOT_URLCONF = 'Wisdom_Repository.urls'
 
