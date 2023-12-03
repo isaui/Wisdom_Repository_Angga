@@ -77,7 +77,14 @@ def search_books(request):
 
         else:
             return render(request, 'main.html', {'form': form})
-        
+
+@csrf_exempt
+def get_rating(request):
+
+    rating_list = Rating.objects.all()
+    rating_list_json = serializers.serialize('json', rating_list)
+    return HttpResponse(rating_list_json)
+
 @csrf_exempt
 def get_buku_search(request):
 
@@ -88,19 +95,17 @@ def get_buku_search(request):
         return HttpResponse(buku_list_json)
     
 @csrf_exempt    
-def sort_books_json(request):
+def sort_books_json(request, query):
     
-    if request.method == 'POST':
-
-        form = json.loads(request.body)
-        query = form.get('query')
-        if query == 'judul':
-            buku = Buku.objects.all().order_by(Lower('judul'))
-        elif query == 'tahun':
-            buku = Buku.objects.all().order_by('tahun')
-        elif query == 'rating':
-            buku = Buku.objects.all().order_by('-rating__rating')
-        return HttpResponse(buku)
+    if query == 'judul':
+        buku = Buku.objects.all().order_by(Lower('judul'))
+    elif query == 'tahun':
+        buku = Buku.objects.all().order_by('tahun')
+    elif query == 'rating':
+        buku = Buku.objects.all().order_by('-rating__rating')
+    buku_list_json = serializers.serialize('json', buku)
+    
+    return HttpResponse(buku_list_json)
 
    
 
@@ -239,10 +244,11 @@ def sort(request, query):
         }
         return render(request, 'main.html', context)
     
-
+@csrf_exempt
 def get_books_json(request):
     buku_list = Buku.objects.all()
     buku_list_json = serializers.serialize('json', buku_list)
+    print(buku_list[11].rating.rating)
     return HttpResponse(buku_list_json)
 
 
