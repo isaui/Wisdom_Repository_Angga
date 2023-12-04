@@ -65,7 +65,7 @@ MIDDLEWARE = [
 ]
 
 CSRF_TRUSTED_ORIGINS = ["https://wisdom-repository-d11-tk.pbp.cs.ui.ac.id/", "https://wisdom-repository-d11-tk.pbp.cs.ui.ac.id/*", 
-"https://wisdomrepository--wahyuridho5.repl.co/"]
+"https://wisdomrepository--wahyuridho5.repl.co/*"]
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 CSRF_COOKIE_SECURE = True
