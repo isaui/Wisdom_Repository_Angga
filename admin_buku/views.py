@@ -197,13 +197,13 @@ def edit_book_flutter(request, bookID):
     return JsonResponse({"status": "error"}, status=401)
 
 @csrf_exempt
-def delete_book_flutter(request, bookID):
-    book = Buku.objects.get(pk=bookID)
-
-    if request.method == 'DELETE':
+def delete_book_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        book = Buku.objects.get(pk=int(data["bookID"]))
         book.delete()
-        return JsonResponse({'success': True,}, status=200)
-    
+        return JsonResponse({"status": "success"}, status=200)
+        
     return JsonResponse({"status": "error"}, status=401)
 
 @csrf_exempt
