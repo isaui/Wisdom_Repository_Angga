@@ -1,7 +1,7 @@
 from django.urls import path
 from authentication_bookmark.views import show_bookmark
-from authentication_bookmark.views import register #sesuaikan dengan nama fungsi yang dibuat
-from authentication_bookmark.views import login_user #sesuaikan dengan nama fungsi yang dibuat
+from authentication_bookmark.views import register 
+from authentication_bookmark.views import login_user, login_flutter, logout_flutter
 from authentication_bookmark.views import logout_user, delete_bookmark , add_bookmark_ajax, get_bookmark_json, show_json
 from daftar_buku.views import show_main
 
@@ -17,4 +17,6 @@ urlpatterns = [
     path('get-bookmark/', get_bookmark_json, name='get_bookmark_json'),
     path('add-bookmark-ajax/', add_bookmark_ajax, name='add_bookmark_ajax'),
     path('json/', show_json, name='show_json'), 
+    path('login-flutter/', login_flutter, name='login'),
+    path('logout-flutter/', logout_flutter, name='logout'),
 ]
