@@ -160,7 +160,7 @@ def create_book_flutter(request):
     return JsonResponse({"status": "error"}, status=401)
 
 @csrf_exempt
-def edit_book_flutter(request, bookID):
+def edit_book_flutter(request):
     if request.method == 'POST':
         data = json.loads(request.body)
 
@@ -173,7 +173,7 @@ def edit_book_flutter(request, bookID):
         deskripsi=data["deskripsi"]
         rating = float(data["rating"])
 
-        buku = Buku.objects.get(pk=bookID)
+        buku = Buku.objects.get(pk=int(data["bookID"]))
 
         rating_obj = buku.rating
         rating_obj.rating = rating
