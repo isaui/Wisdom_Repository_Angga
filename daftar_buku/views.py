@@ -18,6 +18,7 @@ from django.contrib.sessions.models import Session
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from admin_buku.models import RequestBuku
+import json
 
 daftar_genre = [
         "Fiction",
@@ -33,6 +34,7 @@ daftar_genre = [
     ]
 
 @require_http_methods(["GET", "POST"])
+@csrf_exempt
 def search_books(request):
     
     if not request.method == 'POST':
@@ -77,6 +79,37 @@ def search_books(request):
             return render(request, 'main.html', {'form': form})
 
 @csrf_exempt
+def get_rating(request):
+
+    rating_list = Rating.objects.all()
+    rating_list_json = serializers.serialize('json', rating_list)
+    return HttpResponse(rating_list_json)
+
+@csrf_exempt
+def get_buku_search(request):
+
+    if request.method == 'POST':
+        form = request.POST.get('query')
+        buku = Buku.objects.filter(Q(judul__icontains=form) | Q(penulis__icontains=form) | Q(kategori__icontains=form))
+        buku_list_json = serializers.serialize('json', buku)
+        return HttpResponse(buku_list_json)
+    
+@csrf_exempt    
+def sort_books_json(request, query):
+    
+    if query == 'judul':
+        buku = Buku.objects.all().order_by(Lower('judul'))
+    elif query == 'tahun':
+        buku = Buku.objects.all().order_by('tahun')
+    elif query == 'rating':
+        buku = Buku.objects.all().order_by('-rating__rating')
+    buku_list_json = serializers.serialize('json', buku)
+    
+    return HttpResponse(buku_list_json)
+
+   
+
+@csrf_exempt
 def get_buku_by_author(request):
 
     if request.method == 'POST':
@@ -84,6 +117,7 @@ def get_buku_by_author(request):
         buku = Buku.objects.filter(Q(penulis__icontains=form))
         buku_list_json = serializers.serialize('json', buku)
         return HttpResponse(buku_list_json)
+    
 def sort_books(request, query):
    
     if request.method == 'GET':
@@ -210,10 +244,11 @@ def sort(request, query):
         }
         return render(request, 'main.html', context)
     
-
+@csrf_exempt
 def get_books_json(request):
-    buku_list = Buku.objects.all().order_by('rating')[:10]
+    buku_list = Buku.objects.all()
     buku_list_json = serializers.serialize('json', buku_list)
+    print(buku_list[11].rating.rating)
     return HttpResponse(buku_list_json)
 
 
