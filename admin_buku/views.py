@@ -16,7 +16,7 @@ from daftar_buku.forms import SearchForm
 from daftar_buku.views import daftar_genre
 from admin_buku.forms import BukuForm, RequestBuku
 from admin_buku.models import RequestBuku
-import pandas, os
+import pandas, os, json
 
 def delete_book(request, bookID):
     book = Buku.objects.get(pk=bookID)
@@ -129,6 +129,132 @@ def acc_request_book(request, bookID):
         return HttpResponse(b"CREATED", status=201)
     
     return HttpResponseNotFound()
+
+@csrf_exempt
+def create_book_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+
+        rating_obj = Rating.objects.create(
+            rating = float(data["rating"])
+        )
+        rating_obj.save()
+
+        rating = Rating.objects.get(pk=rating_obj.pk)
+
+        buku = Buku(
+            isbn=data["isbn"],
+            judul=data["judul"],
+            penulis=data["penulis"],
+            tahun=int(data["tahun"]),
+            kategori=data["kategori"],
+            gambar=data["gambar"],
+            deskripsi=data["deskripsi"],
+            rating=rating
+        )
+
+        buku.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    
+    return JsonResponse({"status": "error"}, status=401)
+
+@csrf_exempt
+def edit_book_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+
+        isbn=data["isbn"]
+        judul=data["judul"]
+        penulis=data["penulis"]
+        tahun=int(data["tahun"])
+        kategori=data["kategori"]
+        gambar=data["gambar"]
+        deskripsi=data["deskripsi"]
+        rating = float(data["rating"])
+
+        buku = Buku.objects.get(pk=int(data["bookID"]))
+
+        rating_obj = buku.rating
+        rating_obj.rating = rating
+        rating_obj.save()
+
+        rating = Rating.objects.get(pk=rating_obj.pk)
+
+        buku.isbn = isbn
+        buku.judul = judul
+        buku.penulis = penulis
+        buku.tahun = tahun
+        buku.kategori = kategori
+        buku.gambar = gambar
+        buku.deskripsi = deskripsi
+        buku.rating = rating
+
+        buku.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    
+    return JsonResponse({"status": "error"}, status=401)
+
+@csrf_exempt
+def delete_book_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        book = Buku.objects.get(pk=int(data["bookID"]))
+        book.delete()
+        return JsonResponse({"status": "success"}, status=200)
+        
+    return JsonResponse({"status": "error"}, status=401)
+
+@csrf_exempt
+def acc_request_book_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+
+        request_buku = RequestBuku.objects.get(pk=int(data["bookID"]))
+
+        isbn=data["isbn"]
+        judul=data["judul"]
+        penulis=data["penulis"]
+        tahun=int(data["tahun"])
+        kategori=data["kategori"]
+        gambar=data["gambar"]
+        deskripsi=data["deskripsi"]
+        rating_obj = Rating.objects.create(
+            rating = float(data["rating"])
+        )
+        rating_obj.save()
+
+        rating = Rating.objects.get(pk=rating_obj.pk)
+        
+
+        buku = Buku(
+            isbn=isbn,
+            judul=judul,
+            penulis=penulis,
+            tahun=tahun,
+            kategori=kategori,
+            gambar=gambar,
+            deskripsi=deskripsi,
+            rating=rating,
+        )
+
+        buku.save()
+        request_buku.delete()
+
+        return JsonResponse({"status": "success"}, status=200)
+    
+    return JsonResponse({"status": "error"}, status=401)
+
+@csrf_exempt
+def delete_request_book_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        book = RequestBuku.objects.get(pk=int(data["bookID"]))
+        book.delete()
+        return JsonResponse({"status": "success"}, status=200)
+        
+    return JsonResponse({"status": "error"}, status=401)
 
 def search_books(request):
     if not request.method == 'POST':
@@ -279,14 +405,17 @@ def request_book_details(request):
                         'rating': float(rating.rating),
                         'user': book.user.pk,})
 
+@csrf_exempt
 def get_books_json(request):
-    books = Buku.objects.all()[:12]
-    return HttpResponse(serializers.serialize('json', books))
+    books = Buku.objects.all()
+    return HttpResponse(serializers.serialize('json', books),  content_type="application/json")
 
+@csrf_exempt
 def get_request_books_json(request):
-    books = RequestBuku.objects.all()[:12]
-    return HttpResponse(serializers.serialize('json', books))
+    books = RequestBuku.objects.all()
+    return HttpResponse(serializers.serialize('json', books),  content_type="application/json")
 
+@csrf_exempt
 def get_user(request):
     if request.user.is_authenticated:
         return JsonResponse({'username': request.user.username})
