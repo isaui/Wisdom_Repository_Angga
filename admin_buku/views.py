@@ -207,18 +207,26 @@ def delete_book_flutter(request):
     return JsonResponse({"status": "error"}, status=401)
 
 @csrf_exempt
-def acc_request_book_flutter(request, bookID):
+def acc_request_book_flutter(request):
     if request.method == 'POST':
-        request_buku = RequestBuku.objects.get(pk=bookID)
+        data = json.loads(request.body)
 
-        isbn = request_buku.isbn
-        judul = request_buku.judul
-        penulis = request_buku.penulis
-        tahun = request_buku.tahun
-        kategori = request_buku.kategori
-        gambar = request_buku.gambar
-        deskripsi = request_buku.deskripsi
-        rating = request_buku.rating
+        request_buku = RequestBuku.objects.get(pk=int(data["bookID"]))
+
+        isbn=data["isbn"]
+        judul=data["judul"]
+        penulis=data["penulis"]
+        tahun=int(data["tahun"])
+        kategori=data["kategori"]
+        gambar=data["gambar"]
+        deskripsi=data["deskripsi"]
+        rating_obj = Rating.objects.create(
+            rating = float(data["rating"])
+        )
+        rating_obj.save()
+
+        rating = Rating.objects.get(pk=rating_obj.pk)
+        
 
         buku = Buku(
             isbn=isbn,
@@ -239,13 +247,13 @@ def acc_request_book_flutter(request, bookID):
     return JsonResponse({"status": "error"}, status=401)
 
 @csrf_exempt
-def delete_request_book_flutter(request, bookID):
-    book = RequestBuku.objects.get(pk=bookID)
-
-    if request.method == 'DELETE':
+def delete_request_book_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        book = RequestBuku.objects.get(pk=int(data["bookID"]))
         book.delete()
-        return JsonResponse({'success': True,}, status=200)
-    
+        return JsonResponse({"status": "success"}, status=200)
+        
     return JsonResponse({"status": "error"}, status=401)
 
 def search_books(request):

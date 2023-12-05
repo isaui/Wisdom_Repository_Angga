@@ -27,8 +27,8 @@ urlpatterns = [
     path('create-book-flutter/', create_book_flutter, name='create_book_flutter'),
     path('edit-book-flutter/', edit_book_flutter, name='edit_book_flutter'),
     path('delete-book-flutter/', delete_book_flutter, name='delete_book_flutter'),
-    path('acc-request-book-flutter/<int:bookID>/', acc_request_book_flutter, name='acc_request_book_flutter'),
-    path('delete-request-book-flutter/<int:bookID>/', delete_request_book_flutter, name='delete_request_book_flutter'),
+    path('acc-request-book-flutter/', acc_request_book_flutter, name='acc_request_book_flutter'),
+    path('delete-request-book-flutter/', delete_request_book_flutter, name='delete_request_book_flutter'),
 
     path('get-books/', get_books_json, name='get_books_json'),
     path('get_user/', get_user, name='get_user'),
