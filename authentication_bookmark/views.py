@@ -108,11 +108,16 @@ def login_flutter(request):
     if user is not None:
         if user.is_active:
             auth_login(request, user)
+            if user.is_superuser:
+                tipe = "admin"
+            else:
+                tipe = "biasa"
             # Status login sukses.
             return JsonResponse({
                 "username": user.username,
                 "status": True,
                 "member": user.member,
+                "tipe": tipe,
                 "message": "Login sukses!"
             }, status=200)
         else:
