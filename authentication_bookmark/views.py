@@ -87,6 +87,10 @@ def add_bookmark_ajax(request):
 def get_bookmark_json(request):
     bookmark_item = Bookmark.objects.all()
     return HttpResponse(serializers.serialize('json', bookmark_item))
+@csrf_exempt
+def get_bookmark_user(request):
+    bookmark_user = Bookmark.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize("json", bookmark_user), content_type="application/json")
 
 def show_json(request):
     data = Bookmark.objects.all()
@@ -135,7 +139,6 @@ def login_flutter(request):
 @csrf_exempt
 def logout_flutter(request):
     username = request.user.username
-
     try:
         auth_logout(request)
         return JsonResponse({
@@ -148,16 +151,28 @@ def logout_flutter(request):
         "status": False,
         "message": "Logout gagal."
         }, status=401)
-    
-def register_flutter(request):
-    form = SignupForm()
 
+@csrf_exempt
+def register_flutter(request):
     if request.method == "POST":
         form = SignupForm(request.POST)
         if form.is_valid():
             form.save()
             return JsonResponse({
                 "status": True,
-                "message": "Register sukses!"
+                "message": "Registrasi berhasil!"
             }, status=200)
-    context = {'form':form}
+        else:
+            errors = form.errors.get_json_data(escape_html=False)  # Mendapatkan pesan kesalahan form
+            return JsonResponse({
+                "status": False,
+                "errors": errors,
+                "message": "Registrasi gagal, silakan perbaiki data yang dimasukkan."
+            }, status=400)
+    else:
+        return JsonResponse({
+            "status": False,
+            "message": "Registrasi gagal, metode request tidak valid."
+        }, status=405)
+
+
