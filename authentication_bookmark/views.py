@@ -4,7 +4,9 @@ from django.shortcuts import render
 from django.contrib import messages  
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
-import datetime
+from django.contrib.auth import authenticate, login as auth_login
+from django.http import JsonResponse
+from django.contrib.auth import logout as auth_logout
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib import messages  
@@ -85,6 +87,10 @@ def add_bookmark_ajax(request):
 def get_bookmark_json(request):
     bookmark_item = Bookmark.objects.all()
     return HttpResponse(serializers.serialize('json', bookmark_item))
+@csrf_exempt
+def get_bookmark_user(request):
+    bookmark_user = Bookmark.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize("json", bookmark_user), content_type="application/json")
 
 def show_json(request):
     data = Bookmark.objects.all()
@@ -97,3 +103,76 @@ def delete_bookmark(request, id):
     buku.delete()
     # Kembali ke halaman awal
     return HttpResponseRedirect(reverse('authentication_bookmark:show_bookmark'))
+
+@csrf_exempt
+def login_flutter(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            auth_login(request, user)
+            if user.is_superuser:
+                tipe = "admin"
+            else:
+                tipe = "biasa"
+            # Status login sukses.
+            return JsonResponse({
+                "username": user.username,
+                "status": True,
+                "member": user.member,
+                "tipe": tipe,
+                "message": "Login sukses!"
+            }, status=200)
+        else:
+            return JsonResponse({
+                "status": False,
+                "message": "Login gagal, akun dinonaktifkan."
+            }, status=401)
+
+    else:
+        return JsonResponse({
+            "status": False,
+            "message": "Login gagal, periksa kembali email atau kata sandi."
+        }, status=401)
+
+@csrf_exempt
+def logout_flutter(request):
+    username = request.user.username
+    try:
+        auth_logout(request)
+        return JsonResponse({
+            "username": username,
+            "status": True,
+            "message": "Logout berhasil!"
+        }, status=200)
+    except:
+        return JsonResponse({
+        "status": False,
+        "message": "Logout gagal."
+        }, status=401)
+
+@csrf_exempt
+def register_flutter(request):
+    if request.method == "POST":
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({
+                "status": True,
+                "message": "Registrasi berhasil!"
+            }, status=200)
+        else:
+            errors = form.errors.get_json_data(escape_html=False)  # Mendapatkan pesan kesalahan form
+            return JsonResponse({
+                "status": False,
+                "errors": errors,
+                "message": "Registrasi gagal, silakan perbaiki data yang dimasukkan."
+            }, status=400)
+    else:
+        return JsonResponse({
+            "status": False,
+            "message": "Registrasi gagal, metode request tidak valid."
+        }, status=405)
+
+

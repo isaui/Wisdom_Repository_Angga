@@ -232,19 +232,6 @@
         }
     }
 
-    function pinjamItem(id) {
-        const pinjamBookmarkLink = "{% url 'pinjam_buku:pinjam_buku' 0 %}".replace('0', id);
-        try {
-            const response = fetch(pinjamBookmarkLink, {
-                method: 'GET' // Sesuaikan dengan metode yang diharapkan oleh view Django
-            });
-
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    }
-
-
 
     refreshProducts();
 </script>
